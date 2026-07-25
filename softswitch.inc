@@ -1,0 +1,57 @@
+ST80OFF	=	$C000	; enable RDMAIN/RDAUX/WRMAIN/WRAUX
+ST80ON	=	$C001	; disable RDMAIN/RDAUX/WRMAIN/WRAUX
+RDMAIN	=	$C002	; read MAIN memory
+RDAUX	=	$C003	; read AUX memory
+WRMAIN	=	$C004	; write to MAIN memory
+WRAUX	=	$C005	; write to AUX memory
+ZPMAIN 	=	$C008	; select MAIN ZP
+ZPAUX 	=	$C009	; select AUX ZP
+COL80OFF=	$C00C	; switch to 40 columns(read)
+COL80ON	=	$C00D	; switch to 80 columns(read)
+VBL	=	$C019	; vertical blanking(read)
+SPEAKER =	$C030	; toggle speaker
+STROBE	=	$C040	;
+AN0ON	=	$C058	; switch AN0 on
+AN0OFF	=	$C059	; switch AN0 off
+AN1ON	=	$C05A	; switch AN1 on
+AN1OFF	=	$C05B	; switch AN1 off
+AN2ON	=	$C05C	; switch AN2 on
+AN2OFF	=	$C05D	; switch AN2 off
+CSTIN	=	$C060	; cassette in
+PB0	=	$C061	; push button 0; open-apple key
+PB1	=	$C062	; push button 1; solid-apple key
+PB2	=	$C063	; push button 2
+PDL0	=	$C064	; paddle 0; analog
+PDL1	=	$C065	; paddle 1; analog
+PDL2	=	$C066	; paddle 2; analog
+PDL3	=	$C067	; paddle 3; analog
+PDLRST	=	$C070	; paddle reset
+AN3ON	=	$C05E	; switch AN3 on; ALTCHAROFF
+AN3OFF	=	$C05F	; switch AN3 off; ALTCHAROFF
+TEXTOFF	=	$C050	; switch to graphics mode
+TEXTON 	=	$C051	; switch to text mode
+MIXOFF	=	$C052	; full screen graphic
+MIXON 	=	$C053	; mixed graphic/text
+PAGE2OFF=	$C054	; page 1
+PAGE2ON	=	$C055	; page 2
+HIRESOFF=	$C056	; lo-res mode
+HIRESON	=	$C057	; hi-res mode
+
+; TODO: can I use these?
+GR_LAST_COLOR	= $1C	;
+WINDOW_LEFT	= $20	; 0..39(default: 0)
+WINDOW_RIGHT	= $21	; 1..40(default: 40)
+WINDOW_TOP	= $22	; 0..23(default: 0)
+WINDOW_BOTTOM	= $23	; 1..24(default: 24)
+CURSOR_X	= $24	; 0..39
+CURSOR_Y	= $25	; 0..39
+GR_CURSOR_LO	= $26	; address of current row in GR mode
+GR_CURSOR_HI	= $27	;
+CURSOR_LO	= $28	; address of current row in text mode
+CURSOR_HI	= $29	;
+GR_LAST_X	= $2C	; last GR plot x
+GR_LAST_Y	= $2D	; last GR plot y
+GR_MASK		= $2E	; last GR mask($0F = lo-nibble; $F0 = hi-nibble)
+GR_NIBBLE_DOUBLE= $30	; (color << 4) | (color & 0x0f)
+
+STACK 	=	$0100	; stack starts at $0100

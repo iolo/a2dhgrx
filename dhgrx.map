@@ -1,0 +1,26 @@
+Modules list:
+-------------
+dhgrx.o:
+    CODE              Offs=000000  Size=000920  Align=00100  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+CODE                  000000  00091F  000920  00100
+
+
+Exports list by name:
+---------------------
+
+
+
+Exports list by value:
+----------------------
+
+
+
+Imports list:
+-------------
+

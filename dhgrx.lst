@@ -1,0 +1,1416 @@
+ca65 V2.18 - Ubuntu 2.19-2build1
+Main file   : dhgrx.s
+Current file: dhgrx.s
+
+000000r 1               ; DHGRX - Apple //e Double Hi-Res Graphics Extension
+000000r 1               	.org	$6000
+006000  1               	.pc02	; use 65c02 instructions
+006000  1               	.feature c_comments
+006000  1               
+006000  1               .include	"macro.inc"
+006000  2               .macro  push	r1, r2, r3, r4, r5, r6, r7
+006000  2               .ifblank	r1
+006000  2               	.exitmacro
+006000  2               .else
+006000  2               	lda	r1
+006000  2               	pha
+006000  2               .endif
+006000  2               	push	r2, r3, r4, r5, r6, r7
+006000  2               .endmacro
+006000  2               
+006000  2               
+006000  2               .macro  pull	r1, r2, r3, r4, r5, r6, r7
+006000  2               .ifblank	r1
+006000  2               	.exitmacro
+006000  2               .else
+006000  2               	pla
+006000  2               	sta	r1
+006000  2               .endif
+006000  2               	pull	r2, r3, r4, r5, r6, r7
+006000  2               .endmacro
+006000  2               
+006000  2               .macro	main2aux start, end, dest
+006000  2               	lda	#<start
+006000  2               	sta	$3c
+006000  2               	lda	#>start
+006000  2               	sta	$3d	; src start
+006000  2               	lda	#<end
+006000  2               	sta	$3e
+006000  2               	lda	#>end
+006000  2               	sta	$3f	; src end
+006000  2               	lda	#<dest
+006000  2               	sta	$42
+006000  2               	lda	#>dest
+006000  2               	sta	$43	; dest addr
+006000  2               	sec		; main to aux
+006000  2               	jsr	$c311	; auxmove
+006000  2               .endmacro
+006000  2               
+006000  2               .macro	aux2main start, end, dest
+006000  2               	lda	#<start
+006000  2               	sta	$3c
+006000  2               	lda	#>start
+006000  2               	sta	$3d	; src start
+006000  2               	lda	#<end
+006000  2               	sta	$3e
+006000  2               	lda	#>end
+006000  2               	sta	$3f	; src end
+006000  2               	lda	#<dest
+006000  2               	sta	$42
+006000  2               	lda	#>dest
+006000  2               	sta	$43	; dest addr
+006000  2               	clc		; aux to main
+006000  2               	jsr	$c311	; auxmove
+006000  2               .endmacro
+006000  2               
+006000  2               
+006000  1               
+006000  1               .macro AUX_BANK
+006000  1               	sta $c055
+006000  1               .endmacro
+006000  1               
+006000  1               .macro MAIN_BANK
+006000  1               	sta $c054
+006000  1               .endmacro
+006000  1               
+006000  1               ; zero-page variables
+006000  1               x1	=	$fa
+006000  1               y1	=	$fb
+006000  1               x2	=	$fc
+006000  1               y2	=	$fd
+006000  1               color	=	$fe
+006000  1               ch	=	$ff
+006000  1               src	=	$ce 	; pointer to source address (2 bytes)
+006000  1               dst	=	$eb 	; pointer to destination address (2 bytes)
+006000  1               
+006000  1               ; entry point == jump table
+006000  1               .proc	dhgrx
+006000  1  4C 24 60     	jmp	dhgr_init	; $6000(24576)
+006003  1  4C 50 60     	jmp	dhgr_exit	; $6003
+006006  1  4C 5A 60     	jmp	dhgr_cls	; $6006
+006009  1  4C AE 60     	jmp	dhgr_plot	; $6009
+00600C  1  4C C8 61     	jmp	dhgr_hline	; $600C
+00600F  1  4C 53 62     	jmp	dhgr_vline	; $600F
+006012  1  4C 70 62     	jmp	dhgr_rect	; $6012
+006015  1  4C A1 62     	jmp	dhgr_fillrect	; $6015
+006018  1  4C B8 62     	jmp	dhgr_pixmap	; $6018
+00601B  1  4C EC 62     	jmp	dhgr_bitmap	; $601B
+00601E  1  4C 2F 63     	jmp	dhgr_putc	; $601E
+006021  1  4C 69 63     	jmp	dhgr_puts	; $6021
+006024  1               .endproc
+006024  1               
+006024  1               ; switch to double hi-res mixed/page1
+006024  1               .proc	dhgr_init
+006024  1  8D 50 C0     	sta	$c050 ; graphics
+006027  1  8D 53 C0     	sta	$c053 ; mixed
+00602A  1               	;sta	$c052 ; full
+00602A  1  8D 54 C0     	sta	$c054 ; page1
+00602D  1               	;sta	$c055 ; page2
+00602D  1  8D 57 C0     	sta	$c057 ; hires
+006030  1  8D 5E C0     	sta	$c05e ; an3 on
+006033  1               
+006033  1               	; copy this code(MAIN $6000..$7fff) to AUX to avoid crash while bank switching
+006033  1  A9 00 85 3C  	main2aux $6000, $7fff, $6000
+006037  1  A9 60 85 3D  
+00603B  1  A9 FF 85 3E  
+00604F  1               
+00604F  1  60           	rts
+006050  1               .endproc
+006050  1               
+006050  1               ; switch to text page1
+006050  1               .proc	dhgr_exit
+006050  1  8D 51 C0     	sta	$c051 ; text
+006053  1  8D 5F C0     	sta	$c05f ; an3 off
+006056  1  8D 54 C0     	sta	$c054 ; page1
+006059  1  60           	rts
+00605A  1               .endproc
+00605A  1               
+00605A  1               
+00605A  1               ; clear dobule hi-res page1
+00605A  1               ; @param color
+00605A  1               .proc	dhgr_cls
+00605A  1  A5 FE        	lda	color
+00605C  1  29 0F        	and	#%1111
+00605E  1  AA           	tax
+00605F  1  BD C0 67     	lda	DHGR_FILL_BYTE_0,x
+006062  1  85 FA        	sta	x1
+006064  1  BD D0 67     	lda	DHGR_FILL_BYTE_1,x
+006067  1  85 FB        	sta	y1
+006069  1  BD E0 67     	lda	DHGR_FILL_BYTE_2,x
+00606C  1  85 FC        	sta	x2
+00606E  1  BD F0 67     	lda	DHGR_FILL_BYTE_3,x
+006071  1  85 FD        	sta	y2
+006073  1               
+006073  1  A2 00        	ldx	#0 ; y=0
+006075  1               @loop_y:
+006075  1  A9 00        	lda	#<HGR_BASE
+006077  1  18           	clc
+006078  1  7D 00 67     	adc	HGR_OFFSET_LO,x
+00607B  1  85 EB        	sta	dst
+00607D  1  A9 20        	lda	#>HGR_BASE
+00607F  1  7D 00 66     	adc	HGR_OFFSET_HI,x
+006082  1  85 EC        	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y]
+006084  1               
+006084  1  A0 00        	ldy	#0 ; x=0
+006086  1               @loop_x:
+006086  1               ; AUX dst[x] = byte0
+006086  1  A5 FA        	lda	x1
+006088  1  8D 55 C0     	AUX_BANK
+00608B  1  91 EB        	sta     (dst),y
+00608D  1  8D 54 C0     	MAIN_BANK
+006090  1               
+006090  1               ; MAIN dst[x] = byte1
+006090  1  A5 FB        	lda	y1
+006092  1               	;MAIN_BANK
+006092  1  91 EB        	sta     (dst),y
+006094  1               
+006094  1  C8           	iny	; x++
+006095  1               
+006095  1               ; AUX dst[x] = byte2
+006095  1  A5 FC        	lda	x2
+006097  1  8D 55 C0     	AUX_BANK
+00609A  1  91 EB        	sta     (dst),y
+00609C  1  8D 54 C0     	MAIN_BANK
+00609F  1               
+00609F  1               ; MAIN dst[x] = byte3
+00609F  1  A5 FD        	lda	y2
+0060A1  1               	;MAIN_BANK
+0060A1  1  91 EB        	sta     (dst),y
+0060A3  1               
+0060A3  1  C8           	iny	; x++
+0060A4  1  C0 28        	cpy	#40
+0060A6  1  D0 DE        	bne	@loop_x ; while(x!=40)
+0060A8  1               
+0060A8  1  E8           	inx	; y++
+0060A9  1  E0 C0        	cpx	#192
+0060AB  1  D0 C8        	bne	@loop_y ; while(y!=192)
+0060AD  1               
+0060AD  1  60           	rts
+0060AE  1               .endproc
+0060AE  1               
+0060AE  1               ; draw a pixel
+0060AE  1               ; @param x1
+0060AE  1               ; @param y1
+0060AE  1               ; @param color
+0060AE  1               .proc	dhgr_plot
+0060AE  1  A4 FB        	ldy	y1
+0060B0  1  A9 00        	lda	#<HGR_BASE
+0060B2  1  18           	clc
+0060B3  1  79 00 67     	adc	HGR_OFFSET_LO,y
+0060B6  1  85 EB        	sta	dst
+0060B8  1  A9 20        	lda	#>HGR_BASE
+0060BA  1  79 00 66     	adc	HGR_OFFSET_HI,y
+0060BD  1  85 EC        	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+0060BF  1               
+0060BF  1  A6 FA        	ldx	x1
+0060C1  1  BD 00 64     	lda     DIV7_TBL,x
+0060C4  1  0A           	asl
+0060C5  1  A8           	tay	; Y = (x1 / 7) * 2 = byte offset of x1
+0060C6  1  BD 00 65     	lda	MOD7_TBL,x	; A = x1 % 7 = bit offset of x1
+0060C9  1  D0 1B        	bne	@not_case_a
+0060CB  1               
+0060CB  1               @case_a:
+0060CB  1               	; byte0
+0060CB  1  8D 55 C0     	AUX_BANK
+0060CE  1  B1 EB        	lda	(dst),y
+0060D0  1  8D 54 C0     	MAIN_BANK
+0060D3  1  29 F0        	and	#%11110000
+0060D5  1  85 FF        	sta	ch
+0060D7  1               
+0060D7  1  A5 FE        	lda	color
+0060D9  1  29 0F        	and	#%00001111
+0060DB  1  05 FF        	ora	ch
+0060DD  1               
+0060DD  1  8D 55 C0     	AUX_BANK
+0060E0  1  91 EB        	sta	(dst),y
+0060E2  1  8D 54 C0     	MAIN_BANK
+0060E5  1               
+0060E5  1  60           	rts
+0060E6  1               
+0060E6  1               @not_case_a:
+0060E6  1  3A           	dec
+0060E7  1  D0 30        	bne	@not_case_b
+0060E9  1               
+0060E9  1               @case_b:
+0060E9  1               	; byte0
+0060E9  1  8D 55 C0     	AUX_BANK
+0060EC  1  B1 EB        	lda	(dst),y
+0060EE  1  8D 54 C0     	MAIN_BANK
+0060F1  1  29 8F        	and	#%10001111
+0060F3  1  85 FF        	sta	ch
+0060F5  1               
+0060F5  1  A5 FE        	lda	color
+0060F7  1  0A           	asl
+0060F8  1  0A           	asl
+0060F9  1  0A           	asl
+0060FA  1  0A           	asl
+0060FB  1  29 70        	and	#%01110000
+0060FD  1  05 FF        	ora	ch
+0060FF  1               
+0060FF  1  8D 55 C0     	AUX_BANK
+006102  1  91 EB        	sta	(dst),y
+006104  1  8D 54 C0     	MAIN_BANK
+006107  1               
+006107  1               	; byte1
+006107  1               	;MAIN_BANK
+006107  1  B1 EB        	lda	(dst),y
+006109  1  29 FE        	and	#%11111110
+00610B  1  85 FF        	sta	ch
+00610D  1               
+00610D  1  A5 FE        	lda	color
+00610F  1  4A           	lsr
+006110  1  4A           	lsr
+006111  1  4A           	lsr
+006112  1  29 01        	and	#%00000001
+006114  1  05 FF        	ora	ch
+006116  1               
+006116  1               	;MAIN_BANK
+006116  1  91 EB        	sta	(dst),y
+006118  1               
+006118  1  60           	rts
+006119  1               
+006119  1               @not_case_b:
+006119  1  3A           	dec
+00611A  1  D0 10        	bne	@not_case_c
+00611C  1               
+00611C  1               @case_c:
+00611C  1               	; byte1
+00611C  1               	;MAIN_BANK
+00611C  1  B1 EB        	lda	(dst),y
+00611E  1  29 E1        	and	#%11100001
+006120  1  85 FF        	sta	ch
+006122  1               
+006122  1  A5 FE        	lda	color
+006124  1  0A           	asl
+006125  1  29 1E        	and	#%00011110
+006127  1  05 FF        	ora	ch
+006129  1               
+006129  1               	;MAIN_BANK
+006129  1  91 EB        	sta	(dst),y
+00612B  1               
+00612B  1  60           	rts
+00612C  1               
+00612C  1               @not_case_c:
+00612C  1  3A           	dec
+00612D  1  D0 31        	bne	@not_case_d
+00612F  1               
+00612F  1               @case_d:
+00612F  1               	; byte1
+00612F  1               	;MAIN_BANK
+00612F  1  B1 EB        	lda	(dst),y
+006131  1  29 9F        	and	#%10011111
+006133  1  85 FF        	sta	ch
+006135  1               
+006135  1  A5 FE        	lda	color
+006137  1  0A           	asl
+006138  1  0A           	asl
+006139  1  0A           	asl
+00613A  1  0A           	asl
+00613B  1  0A           	asl
+00613C  1  29 60        	and	#%01100000
+00613E  1  05 FF        	ora	ch
+006140  1               
+006140  1               	;MAIN_BANK
+006140  1  91 EB        	sta	(dst),y
+006142  1               
+006142  1  C8           	iny	; for byte2..3
+006143  1               
+006143  1               	; byte2
+006143  1  8D 55 C0     	AUX_BANK
+006146  1  B1 EB        	lda	(dst),y
+006148  1  8D 54 C0     	MAIN_BANK
+00614B  1  29 FC        	and	#%11111100
+00614D  1  85 FF        	sta	ch
+00614F  1               
+00614F  1  A5 FE        	lda	color
+006151  1  4A           	lsr
+006152  1  4A           	lsr
+006153  1  29 03        	and	#%00000011
+006155  1  05 FF        	ora	ch
+006157  1               
+006157  1  8D 55 C0     	AUX_BANK
+00615A  1  91 EB        	sta	(dst),y
+00615C  1  8D 54 C0     	MAIN_BANK
+00615F  1               
+00615F  1  60           	rts
+006160  1               @not_case_d:
+006160  1  3A           	dec
+006161  1  D0 1E        	bne	@not_case_e
+006163  1               
+006163  1               @case_e:
+006163  1  C8           	iny	; for byte2..3
+006164  1               
+006164  1               	; byte2
+006164  1  8D 55 C0     	AUX_BANK
+006167  1  B1 EB        	lda	(dst),y
+006169  1  8D 54 C0     	MAIN_BANK
+00616C  1  29 C3        	and	#%11000011
+00616E  1  85 FF        	sta	ch
+006170  1               
+006170  1  A5 FE        	lda	color
+006172  1  0A           	asl
+006173  1  0A           	asl
+006174  1  29 3C        	and	#%00111100
+006176  1  05 FF        	ora	ch
+006178  1               
+006178  1  8D 55 C0     	AUX_BANK
+00617B  1  91 EB        	sta	(dst),y
+00617D  1  8D 54 C0     	MAIN_BANK
+006180  1               
+006180  1  60           	rts
+006181  1               
+006181  1               @not_case_e:
+006181  1  3A           	dec
+006182  1  D0 31        	bne	@not_case_f
+006184  1               
+006184  1               @case_f:
+006184  1  C8           	iny	; for byte2..3
+006185  1               
+006185  1               	; byte2
+006185  1  8D 55 C0     	AUX_BANK
+006188  1  B1 EB        	lda	(dst),y
+00618A  1  8D 54 C0     	MAIN_BANK
+00618D  1  29 BF        	and	#%10111111
+00618F  1  85 FF        	sta	ch
+006191  1               
+006191  1  A5 FE        	lda	color
+006193  1  0A           	asl
+006194  1  0A           	asl
+006195  1  0A           	asl
+006196  1  0A           	asl
+006197  1  0A           	asl
+006198  1  0A           	asl
+006199  1  29 40        	and	#%01000000
+00619B  1  05 FF        	ora	ch
+00619D  1               
+00619D  1  8D 55 C0     	AUX_BANK
+0061A0  1  91 EB        	sta	(dst),y
+0061A2  1  8D 54 C0     	MAIN_BANK
+0061A5  1               
+0061A5  1               	; byte3
+0061A5  1               	;MAIN_BANK
+0061A5  1  B1 EB        	lda	(dst),y
+0061A7  1  29 F8        	and	#%11111000
+0061A9  1  85 FF        	sta	ch
+0061AB  1               
+0061AB  1  A5 FE        	lda	color
+0061AD  1  4A           	lsr
+0061AE  1  29 07        	and	#%00000111
+0061B0  1  05 FF        	ora	ch
+0061B2  1               
+0061B2  1               	;MAIN_BANK
+0061B2  1  91 EB        	sta	(dst),y
+0061B4  1               
+0061B4  1  60           	rts
+0061B5  1               @not_case_f:
+0061B5  1               
+0061B5  1               @case_g:
+0061B5  1  C8           	iny	; for byte2..3
+0061B6  1               
+0061B6  1               	;byte3
+0061B6  1               	;MAIN_BANK
+0061B6  1  B1 EB        	lda	(dst),y
+0061B8  1  29 87        	and	#%10000111
+0061BA  1  85 FF        	sta	ch
+0061BC  1               
+0061BC  1  A5 FE        	lda	color
+0061BE  1  0A           	asl
+0061BF  1  0A           	asl
+0061C0  1  0A           	asl
+0061C1  1  29 78        	and	#%01111000
+0061C3  1  05 FF        	ora	ch
+0061C5  1               
+0061C5  1               	;MAIN_BANK
+0061C5  1  91 EB        	sta	(dst),y
+0061C7  1               
+0061C7  1  60           	rts
+0061C8  1               .endproc
+0061C8  1               
+0061C8  1               
+0061C8  1               ; draw horizontal line
+0061C8  1               ; @param x1(modified)
+0061C8  1               ; @param x2
+0061C8  1               ; @param y1
+0061C8  1               ; @param color
+0061C8  1               .proc	dhgr_hline
+0061C8  1  A5 FA        	lda	x1
+0061CA  1  C5 FC        	cmp	x2
+0061CC  1  90 06        	bcc	@no_swap
+0061CE  1  A6 FC        	ldx	x2
+0061D0  1  85 FC        	sta	x2
+0061D2  1  86 FA        	stx	x1
+0061D4  1               @no_swap:
+0061D4  1               
+0061D4  1  A5 FC        	lda	x2
+0061D6  1  38           	sec
+0061D7  1  E5 FA        	sbc	x1
+0061D9  1  C9 06        	cmp	#6	; x2 - x1 < 7
+0061DB  1  B0 0E        	bcs	@loopx_left
+0061DD  1               
+0061DD  1               ; shorter than 7 pixels, use dhgr_plot to draw each pixel(slow)
+0061DD  1               ; ex. hline 1..6
+0061DD  1               @loopx_short:
+0061DD  1  A5 FC        	lda	x2
+0061DF  1  C5 FA        	cmp	x1
+0061E1  1  90 07        	bcc	@end_loopx_short ; while (x1 <= x2)
+0061E3  1  20 AE 60     	jsr 	dhgr_plot
+0061E6  1  E6 FA        	inc	x1
+0061E8  1  D0 F3        	bne 	@loopx_short ; endwhile
+0061EA  1               @end_loopx_short:
+0061EA  1  60           	rts
+0061EB  1               
+0061EB  1               ; longer than 7 pixels, split into 3 parts: left(slow), middle(fast), right(slow)
+0061EB  1               ; ex. 5..22 -> left(slow):5..6, middle(fast):7..20, right(slow):21..22
+0061EB  1               ;
+0061EB  1               @loopx_left:
+0061EB  1  A6 FA        	ldx	x1
+0061ED  1  BD 00 65     	lda	MOD7_TBL,x
+0061F0  1  F0 07        	beq	@end_loopx_left; while (x1 % 7)
+0061F2  1  20 AE 60     	jsr 	dhgr_plot
+0061F5  1  E6 FA        	inc	x1
+0061F7  1  D0 F2        	bne	@loopx_left ; endwhile
+0061F9  1               
+0061F9  1               @end_loopx_left:
+0061F9  1  A6 FB        	ldx	y1
+0061FB  1  BD 00 67     	lda	HGR_OFFSET_LO,x
+0061FE  1  18           	clc
+0061FF  1  69 00        	adc	#<HGR_BASE
+006201  1  85 EB        	sta	dst
+006203  1  BD 00 66     	lda	HGR_OFFSET_HI,x
+006206  1  69 20        	adc	#>HGR_BASE
+006208  1  85 EC        	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y]
+00620A  1               
+00620A  1  A6 FA        	ldx	x1
+00620C  1  BD 00 64     	lda	DIV7_TBL,x
+00620F  1  0A           	asl
+006210  1  A8           	tay	; Y = (x1 / 7) * 2 = byte offset of x1
+006211  1               
+006211  1  A5 FE        	lda	color
+006213  1  29 0F        	and	#%1111
+006215  1  AA           	tax	; X <- color & 0x0f
+006216  1               
+006216  1               @loopx_middle:
+006216  1  A5 FA        	lda	x1
+006218  1  18           	clc
+006219  1  69 07        	adc	#7
+00621B  1  C5 FC        	cmp	x2
+00621D  1  B0 26        	bcs	@loopx_right ; while (x1 + 7 <= x2)
+00621F  1  85 FA        	sta	x1	; x1 += 7
+006221  1               
+006221  1  BD C0 67     	lda	DHGR_FILL_BYTE_0,x
+006224  1  8D 55 C0     	AUX_BANK
+006227  1  91 EB        	sta	(dst),y
+006229  1  8D 54 C0     	MAIN_BANK
+00622C  1  BD D0 67     	lda	DHGR_FILL_BYTE_1,x
+00622F  1  91 EB        	sta	(dst),y
+006231  1               
+006231  1  C8           	iny
+006232  1               
+006232  1  BD E0 67     	lda	DHGR_FILL_BYTE_2,x
+006235  1  8D 55 C0     	AUX_BANK
+006238  1  91 EB        	sta	(dst),y
+00623A  1  8D 54 C0     	MAIN_BANK
+00623D  1  BD F0 67     	lda	DHGR_FILL_BYTE_3,x
+006240  1  91 EB        	sta	(dst),y
+006242  1               
+006242  1  C8           	iny
+006243  1  D0 D1        	bne	@loopx_middle ; endwhile
+006245  1               
+006245  1               @loopx_right:
+006245  1  A5 FC        	lda	x2
+006247  1  C5 FA        	cmp	x1
+006249  1  90 07        	bcc	@end_loopx_right ; while (x1 <= x2)
+00624B  1  20 AE 60     	jsr 	dhgr_plot
+00624E  1  E6 FA        	inc	x1
+006250  1  D0 F3        	bne	@loopx_right ; endwhile
+006252  1               
+006252  1               @end_loopx_right:
+006252  1  60           	rts
+006253  1               .endproc
+006253  1               
+006253  1               
+006253  1               ; draw vertical line
+006253  1               ; @param y1(modified)
+006253  1               ; @param y2
+006253  1               ; @param x1
+006253  1               ; @param color
+006253  1               .proc	dhgr_vline
+006253  1  A5 FB        	lda	y1
+006255  1  C5 FD        	cmp	y2
+006257  1  90 06        	bcc	@no_swap
+006259  1  A6 FD        	ldx	y2
+00625B  1  85 FD        	sta	y2
+00625D  1  86 FB        	stx	y1
+00625F  1               @no_swap:
+00625F  1               
+00625F  1  A5 FD        	lda	y2
+006261  1  38           	sec
+006262  1  E5 FB        	sbc	y1
+006264  1  1A           	inc		; reg.A = y2 - y1 + 1 = length
+006265  1               @loopy:
+006265  1  48           	pha
+006266  1  20 AE 60     	jsr 	dhgr_plot
+006269  1  68           	pla
+00626A  1  E6 FB        	inc	y1
+00626C  1  3A           	dec
+00626D  1  D0 F6        	bne 	@loopy
+00626F  1  60           	rts
+006270  1               .endproc
+006270  1               
+006270  1               
+006270  1               ; draw rectangle
+006270  1               ; @param x1
+006270  1               ; @param x2
+006270  1               ; @param y1
+006270  1               ; @param y2
+006270  1               ; @param color
+006270  1               .proc	dhgr_rect
+006270  1  A5 FA        	lda	x1
+006272  1  48           	pha
+006273  1  20 C8 61     	jsr 	dhgr_hline	; hlin x1,x2,y1
+006276  1  68           	pla
+006277  1  85 FA        	sta	x1
+006279  1               
+006279  1  A5 FA        	lda	x1
+00627B  1  48           	pha
+00627C  1  A5 FB        	lda	y1
+00627E  1  48           	pha
+00627F  1  A5 FD        	lda 	y2
+006281  1  85 FB        	sta 	y1
+006283  1  20 C8 61     	jsr 	dhgr_hline	; hlin x1,x2,y2
+006286  1  68           	pla
+006287  1  85 FB        	sta	y1
+006289  1  68           	pla
+00628A  1  85 FA        	sta	x1
+00628C  1               
+00628C  1  E6 FB        	inc 	y1
+00628E  1  C6 FD        	dec 	y2
+006290  1               
+006290  1  A5 FB        	lda	y1
+006292  1  48           	pha
+006293  1  20 53 62     	jsr 	dhgr_vline	; vlin y1+1,y2-1,x1
+006296  1  68           	pla
+006297  1  85 FB        	sta	y1
+006299  1               
+006299  1  A5 FC        	lda 	x2
+00629B  1  85 FA        	sta 	x1
+00629D  1  20 53 62     	jsr 	dhgr_vline	; vlin y1+1,y2-1,x2
+0062A0  1               
+0062A0  1  60           	rts
+0062A1  1               .endproc
+0062A1  1               
+0062A1  1               
+0062A1  1               ; draw filled rectangle
+0062A1  1               ; @param x1
+0062A1  1               ; @param x2
+0062A1  1               ; @param y1(modified)
+0062A1  1               ; @param y2
+0062A1  1               ; @param color
+0062A1  1               .proc	dhgr_fillrect
+0062A1  1  A5 FD        	lda	y2
+0062A3  1  38           	sec
+0062A4  1  E5 FB        	sbc	y1
+0062A6  1  1A           	inc		; reg.A = y2-y1+1 = height
+0062A7  1               @loopy:
+0062A7  1  48           	pha
+0062A8  1  A5 FA        	lda	x1
+0062AA  1  48           	pha
+0062AB  1  20 C8 61     	jsr 	dhgr_hline
+0062AE  1  68           	pla
+0062AF  1  85 FA        	sta	x1
+0062B1  1  68           	pla
+0062B2  1  E6 FB        	inc	y1
+0062B4  1  3A           	dec
+0062B5  1  D0 F0        	bne 	@loopy
+0062B7  1               
+0062B7  1  60           	rts
+0062B8  1               .endproc
+0062B8  1               
+0062B8  1               
+0062B8  1               ; draw pixmap
+0062B8  1               ; @param x1
+0062B8  1               ; @param y1
+0062B8  1               ; @param width
+0062B8  1               ; @param height
+0062B8  1               ; @param src(modified) - pointer to pixel data; 1 byte per pixel; (x2-x1+1)*(y2-y1+1) bytes
+0062B8  1               .proc	dhgr_pixmap
+0062B8  1  A5 FA        	lda	x1
+0062BA  1  8D EB 62     	sta	@_x1
+0062BD  1  A5 FE        	lda	color
+0062BF  1               
+0062BF  1               @loop:
+0062BF  1  A0 00        	ldy	#0
+0062C1  1  B1 CE        	lda	(src),y
+0062C3  1  C9 10        	cmp	#$10
+0062C5  1  B0 05        	bcs	@skip	; skip transparent(when hi-nibble is not zero)
+0062C7  1  85 FE        	sta	color
+0062C9  1  20 AE 60     	jsr 	dhgr_plot
+0062CC  1               @skip:
+0062CC  1  E6 FA        	inc	x1	; next column
+0062CE  1  A4 FC        	ldy	x2
+0062D0  1  C4 FA        	cpy	x1
+0062D2  1  B0 0E        	bcs	@continue; while ++x1 <= x2
+0062D4  1               
+0062D4  1  AC EB 62     	ldy	@_x1
+0062D7  1  84 FA        	sty	x1	; carriage return
+0062D9  1  E6 FB        	inc	y1	; line feed
+0062DB  1  A4 FD        	ldy	y2
+0062DD  1  C4 FB        	cpy	y1
+0062DF  1  B0 01        	bcs	@continue; while ++y1 <= y2
+0062E1  1               
+0062E1  1  60           	rts
+0062E2  1               
+0062E2  1               @continue:
+0062E2  1  E6 CE        	inc	src	; next byte
+0062E4  1  D0 D9        	bne	@loop
+0062E6  1  E6 CF        	inc	src+1	; next page
+0062E8  1  D0 D5        	bne	@loop	; jmp always
+0062EA  1  60           	rts		; safe guard
+0062EB  1               
+0062EB  1  00           @_x1:	.byte	0
+0062EC  1               .endproc
+0062EC  1               
+0062EC  1               
+0062EC  1               ; draw bitmap
+0062EC  1               ; @param x1
+0062EC  1               ; @param y1
+0062EC  1               ; @param x2
+0062EC  1               ; @param y2
+0062EC  1               ; @param color
+0062EC  1               ; @param src(modified) - pointer to pixel data; 1 bit per pixel; (x2-x1+1)*(y2-y1+1) bytes
+0062EC  1               .proc	dhgr_bitmap
+0062EC  1  A5 FA        	lda	x1
+0062EE  1  8D 2D 63     	sta	@_x1
+0062F1  1  A5 FE        	lda	color
+0062F3  1  8D 2E 63     	sta	@_color
+0062F6  1               
+0062F6  1               @loop:
+0062F6  1  A0 00        	ldy	#0
+0062F8  1  B1 CE        	lda	(src),y
+0062FA  1  A2 08        	ldx	#8	; 8 bits in a byte
+0062FC  1               @loop_bit:
+0062FC  1  0A           	asl
+0062FD  1  90 0C        	bcc	@skip	; skip skip transparent
+0062FF  1  AC 2E 63     	ldy	@_color
+006302  1  84 FE        	sty	color
+006304  1  48           	pha
+006305  1  DA           	phx
+006306  1  20 AE 60     	jsr 	dhgr_plot
+006309  1  FA           	plx
+00630A  1  68           	pla
+00630B  1               @skip:
+00630B  1  E6 FA        	inc	x1	; next column
+00630D  1  A4 FC        	ldy	x2
+00630F  1  C4 FA        	cpy	x1
+006311  1  B0 0E        	bcs	@continue; while x1 <= x2
+006313  1               
+006313  1  AC 2D 63     	ldy	@_x1
+006316  1  84 FA        	sty	x1	; carriage return
+006318  1  E6 FB        	inc	y1	; line feed
+00631A  1  A4 FD        	ldy	y2
+00631C  1  C4 FB        	cpy	y1
+00631E  1  B0 01        	bcs	@continue; while ++y1 <= y2
+006320  1               
+006320  1  60           	rts
+006321  1               
+006321  1               @continue:
+006321  1  CA           	dex		; next bit
+006322  1  D0 D8        	bne	@loop_bit
+006324  1  E6 CE        	inc	src	; next byte
+006326  1  D0 CE        	bne	@loop
+006328  1  E6 CF        	inc	src+1	; next page
+00632A  1  D0 CA        	bne	@loop	; jmp always
+00632C  1  60           	rts		; safe guard
+00632D  1               
+00632D  1  00           @_x1:	.byte	0
+00632E  1  00           @_color:.byte	0
+00632F  1               .endproc
+00632F  1               
+00632F  1               
+00632F  1               ; draw char
+00632F  1               ; @param x1
+00632F  1               ; @param y1
+00632F  1               ; @param color
+00632F  1               ; @param ch
+00632F  1               .proc	dhgr_putc
+00632F  1  A9 00        	lda	#<fonts
+006331  1  85 CE        	sta	src
+006333  1  A9 68        	lda	#>fonts
+006335  1  85 CF        	sta	src+1
+006337  1               
+006337  1  A5 FF        	lda	ch
+006339  1  38           	sec
+00633A  1  E9 20        	sbc	#$20	; reg.A = ch - $20
+00633C  1  85 FF        	sta	ch
+00633E  1               
+00633E  1  A5 CE        	lda	src
+006340  1  18           	clc
+006341  1  65 FF        	adc	ch
+006343  1  90 02        	bcc	@no_carry1
+006345  1  E6 CF        	inc	src+1
+006347  1               @no_carry1:
+006347  1  18           	clc
+006348  1  65 FF        	adc	ch
+00634A  1  90 02        	bcc	@no_carry2
+00634C  1  E6 CF        	inc	src+1
+00634E  1               @no_carry2:
+00634E  1  18           	clc
+00634F  1  65 FF        	adc	ch
+006351  1  90 02        	bcc	@no_carry3
+006353  1  E6 CF        	inc	src+1
+006355  1               @no_carry3:
+006355  1  85 CE        	sta	src
+006357  1               	; src = fonts + (ch - 0x20)*3
+006357  1               
+006357  1  A5 FA        	lda	x1
+006359  1  18           	clc
+00635A  1  69 03        	adc	#3	; width-1
+00635C  1  85 FC        	sta	x2
+00635E  1               
+00635E  1  A5 FB        	lda	y1
+006360  1  18           	clc
+006361  1  69 05        	adc	#5	; height-1
+006363  1  85 FD        	sta	y2
+006365  1               
+006365  1  20 EC 62     	jsr	dhgr_bitmap
+006368  1  60           	rts
+006369  1               .endproc
+006369  1               
+006369  1               
+006369  1               
+006369  1               ; draw text string
+006369  1               ; @param x1(modified)
+006369  1               ; @param y1(modified)
+006369  1               ; @param color
+006369  1               ; @param src - pointer to string ends with zero
+006369  1               .proc	dhgr_puts
+006369  1  A0 00        	ldy	#0
+00636B  1               @loop:
+00636B  1  B1 CE        	lda	(src),y
+00636D  1  F0 48        	beq	@break
+00636F  1  85 FF        	sta	ch
+006371  1  A5 FA 48 A5  	push	x1, y1, color, src, src+1
+006375  1  FB 48 A5 FE  
+006379  1  48 A5 CE 48  
+006380  1  5A           	phy
+006381  1  20 2F 63     	jsr	dhgr_putc
+006384  1  7A           	ply
+006385  1  68 85 CF 68  	pull	src+1, src, color, y1, x1
+006389  1  85 CE 68 85  
+00638D  1  FE 68 85 FB  
+006394  1  C8           	iny		; next char
+006395  1               @no_carry:
+006395  1  A5 FA        	lda	x1
+006397  1  18           	clc
+006398  1  69 04        	adc	#FONT_WIDTH
+00639A  1  85 FA        	sta	x1	; next column
+00639C  1  AD 21 00     	lda	WINDOW_RIGHT
+00639F  1  C5 FA        	cmp	x1
+0063A1  1  B0 C8        	bcs	@loop
+0063A3  1  AD 20 00     	lda	WINDOW_LEFT
+0063A6  1  85 FA        	sta	x1	; carrage return
+0063A8  1  A5 FB        	lda	y1
+0063AA  1  18           	clc
+0063AB  1  69 06        	adc	#FONT_HEIGHT
+0063AD  1  85 FB        	sta	y1	; line feed
+0063AF  1  AD 23 00     	lda	WINDOW_BOTTOM
+0063B2  1  0A           	asl		; *2 (two pixels in a text row)
+0063B3  1  C5 FB        	cmp	y1
+0063B5  1  B0 B4        	bcs	@loop
+0063B7  1               @break:
+0063B7  1  60           	rts
+0063B8  1               .endproc
+0063B8  1               
+0063B8  1               .include	"softswitch.inc"
+0063B8  2               ST80OFF	=	$C000	; enable RDMAIN/RDAUX/WRMAIN/WRAUX
+0063B8  2               ST80ON	=	$C001	; disable RDMAIN/RDAUX/WRMAIN/WRAUX
+0063B8  2               RDMAIN	=	$C002	; read MAIN memory
+0063B8  2               RDAUX	=	$C003	; read AUX memory
+0063B8  2               WRMAIN	=	$C004	; write to MAIN memory
+0063B8  2               WRAUX	=	$C005	; write to AUX memory
+0063B8  2               ZPMAIN 	=	$C008	; select MAIN ZP
+0063B8  2               ZPAUX 	=	$C009	; select AUX ZP
+0063B8  2               COL80OFF=	$C00C	; switch to 40 columns(read)
+0063B8  2               COL80ON	=	$C00D	; switch to 80 columns(read)
+0063B8  2               VBL	=	$C019	; vertical blanking(read)
+0063B8  2               SPEAKER =	$C030	; toggle speaker
+0063B8  2               STROBE	=	$C040	;
+0063B8  2               AN0ON	=	$C058	; switch AN0 on
+0063B8  2               AN0OFF	=	$C059	; switch AN0 off
+0063B8  2               AN1ON	=	$C05A	; switch AN1 on
+0063B8  2               AN1OFF	=	$C05B	; switch AN1 off
+0063B8  2               AN2ON	=	$C05C	; switch AN2 on
+0063B8  2               AN2OFF	=	$C05D	; switch AN2 off
+0063B8  2               CSTIN	=	$C060	; cassette in
+0063B8  2               PB0	=	$C061	; push button 0; open-apple key
+0063B8  2               PB1	=	$C062	; push button 1; solid-apple key
+0063B8  2               PB2	=	$C063	; push button 2
+0063B8  2               PDL0	=	$C064	; paddle 0; analog
+0063B8  2               PDL1	=	$C065	; paddle 1; analog
+0063B8  2               PDL2	=	$C066	; paddle 2; analog
+0063B8  2               PDL3	=	$C067	; paddle 3; analog
+0063B8  2               PDLRST	=	$C070	; paddle reset
+0063B8  2               AN3ON	=	$C05E	; switch AN3 on; ALTCHAROFF
+0063B8  2               AN3OFF	=	$C05F	; switch AN3 off; ALTCHAROFF
+0063B8  2               TEXTOFF	=	$C050	; switch to graphics mode
+0063B8  2               TEXTON 	=	$C051	; switch to text mode
+0063B8  2               MIXOFF	=	$C052	; full screen graphic
+0063B8  2               MIXON 	=	$C053	; mixed graphic/text
+0063B8  2               PAGE2OFF=	$C054	; page 1
+0063B8  2               PAGE2ON	=	$C055	; page 2
+0063B8  2               HIRESOFF=	$C056	; lo-res mode
+0063B8  2               HIRESON	=	$C057	; hi-res mode
+0063B8  2               
+0063B8  2               ; TODO: can I use these?
+0063B8  2               GR_LAST_COLOR	= $1C	;
+0063B8  2               WINDOW_LEFT	= $20	; 0..39(default: 0)
+0063B8  2               WINDOW_RIGHT	= $21	; 1..40(default: 40)
+0063B8  2               WINDOW_TOP	= $22	; 0..23(default: 0)
+0063B8  2               WINDOW_BOTTOM	= $23	; 1..24(default: 24)
+0063B8  2               CURSOR_X	= $24	; 0..39
+0063B8  2               CURSOR_Y	= $25	; 0..39
+0063B8  2               GR_CURSOR_LO	= $26	; address of current row in GR mode
+0063B8  2               GR_CURSOR_HI	= $27	;
+0063B8  2               CURSOR_LO	= $28	; address of current row in text mode
+0063B8  2               CURSOR_HI	= $29	;
+0063B8  2               GR_LAST_X	= $2C	; last GR plot x
+0063B8  2               GR_LAST_Y	= $2D	; last GR plot y
+0063B8  2               GR_MASK		= $2E	; last GR mask($0F = lo-nibble; $F0 = hi-nibble)
+0063B8  2               GR_NIBBLE_DOUBLE= $30	; (color << 4) | (color & 0x0f)
+0063B8  2               
+0063B8  2               STACK 	=	$0100	; stack starts at $0100
+0063B8  2               
+0063B8  1               .include	"math.inc"
+0063B8  2  xx xx xx xx  .align $100
+0063BC  2  xx xx xx xx  
+0063C0  2  xx xx xx xx  
+006400  2               ; faaast n / 7 for HGR/DHGR modes
+006400  2               ;
+006400  2               ; ldx n
+006400  2               ; lda DIV7_TBL,x
+006400  2               .align $100
+006400  2               DIV7_TBL:
+006400  2  00 00 00 00      .BYTE 0,0,0,0,0,0,0
+006404  2  00 00 00     
+006407  2  01 01 01 01      .BYTE 1,1,1,1,1,1,1
+00640B  2  01 01 01     
+00640E  2  02 02 02 02      .BYTE 2,2,2,2,2,2,2
+006412  2  02 02 02     
+006415  2  03 03 03 03      .BYTE 3,3,3,3,3,3,3
+006419  2  03 03 03     
+00641C  2  04 04 04 04      .BYTE 4,4,4,4,4,4,4
+006420  2  04 04 04     
+006423  2  05 05 05 05      .BYTE 5,5,5,5,5,5,5
+006427  2  05 05 05     
+00642A  2  06 06 06 06      .BYTE 6,6,6,6,6,6,6
+00642E  2  06 06 06     
+006431  2  07 07 07 07      .BYTE 7,7,7,7,7,7,7
+006435  2  07 07 07     
+006438  2  08 08 08 08      .BYTE 8,8,8,8,8,8,8
+00643C  2  08 08 08     
+00643F  2  09 09 09 09      .BYTE 9,9,9,9,9,9,9
+006443  2  09 09 09     
+006446  2  0A 0A 0A 0A      .BYTE 10,10,10,10,10,10,10
+00644A  2  0A 0A 0A     
+00644D  2  0B 0B 0B 0B      .BYTE 11,11,11,11,11,11,11
+006451  2  0B 0B 0B     
+006454  2  0C 0C 0C 0C      .BYTE 12,12,12,12,12,12,12
+006458  2  0C 0C 0C     
+00645B  2  0D 0D 0D 0D      .BYTE 13,13,13,13,13,13,13
+00645F  2  0D 0D 0D     
+006462  2  0E 0E 0E 0E      .BYTE 14,14,14,14,14,14,14
+006466  2  0E 0E 0E     
+006469  2  0F 0F 0F 0F      .BYTE 15,15,15,15,15,15,15
+00646D  2  0F 0F 0F     
+006470  2  10 10 10 10      .BYTE 16,16,16,16,16,16,16
+006474  2  10 10 10     
+006477  2  11 11 11 11      .BYTE 17,17,17,17,17,17,17
+00647B  2  11 11 11     
+00647E  2  12 12 12 12      .BYTE 18,18,18,18,18,18,18
+006482  2  12 12 12     
+006485  2  13 13 13 13      .BYTE 19,19,19,19,19,19,19
+006489  2  13 13 13     
+00648C  2               
+00648C  2  14 14 14 14      .BYTE 20,20,20,20,20,20,20
+006490  2  14 14 14     
+006493  2  15 15 15 15      .BYTE 21,21,21,21,21,21,21
+006497  2  15 15 15     
+00649A  2  16 16 16 16      .BYTE 22,22,22,22,22,22,22
+00649E  2  16 16 16     
+0064A1  2  17 17 17 17      .BYTE 23,23,23,23,23,23,23
+0064A5  2  17 17 17     
+0064A8  2  18 18 18 18      .BYTE 24,24,24,24,24,24,24
+0064AC  2  18 18 18     
+0064AF  2  19 19 19 19      .BYTE 25,25,25,25,25,25,25
+0064B3  2  19 19 19     
+0064B6  2  1A 1A 1A 1A      .BYTE 26,26,26,26,26,26,26
+0064BA  2  1A 1A 1A     
+0064BD  2  1B 1B 1B 1B      .BYTE 27,27,27,27,27,27,27
+0064C1  2  1B 1B 1B     
+0064C4  2  1C 1C 1C 1C      .BYTE 28,28,28,28,28,28,28
+0064C8  2  1C 1C 1C     
+0064CB  2  1D 1D 1D 1D      .BYTE 29,29,29,29,29,29,29
+0064CF  2  1D 1D 1D     
+0064D2  2               
+0064D2  2  1E 1E 1E 1E      .BYTE 30,30,30,30,30,30,30
+0064D6  2  1E 1E 1E     
+0064D9  2  1F 1F 1F 1F      .BYTE 31,31,31,31,31,31,31
+0064DD  2  1F 1F 1F     
+0064E0  2  20 20 20 20      .BYTE 32,32,32,32,32,32,32
+0064E4  2  20 20 20     
+0064E7  2  21 21 21 21      .BYTE 33,33,33,33,33,33,33
+0064EB  2  21 21 21     
+0064EE  2  22 22 22 22      .BYTE 34,34,34,34,34,34,34
+0064F2  2  22 22 22     
+0064F5  2  23 23 23 23      .BYTE 35,35,35,35,35,35,35
+0064F9  2  23 23 23     
+0064FC  2  24 24 24 24      .BYTE 36,36,36,36	; 252-255
+006500  2               
+006500  2               ; faaast n % 7 for HGR/DHGR modes
+006500  2               ;
+006500  2               ; ldx n
+006500  2               ; lda MOD7_TBL,x
+006500  2               .align $100
+006500  2               MOD7_TBL:
+006500  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006504  2  04 05 06     
+006507  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00650B  2  04 05 06     
+00650E  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006512  2  04 05 06     
+006515  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006519  2  04 05 06     
+00651C  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006520  2  04 05 06     
+006523  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006527  2  04 05 06     
+00652A  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00652E  2  04 05 06     
+006531  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006535  2  04 05 06     
+006538  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00653C  2  04 05 06     
+00653F  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006543  2  04 05 06     
+006546  2               
+006546  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00654A  2  04 05 06     
+00654D  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006551  2  04 05 06     
+006554  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006558  2  04 05 06     
+00655B  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00655F  2  04 05 06     
+006562  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006566  2  04 05 06     
+006569  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00656D  2  04 05 06     
+006570  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006574  2  04 05 06     
+006577  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00657B  2  04 05 06     
+00657E  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006582  2  04 05 06     
+006585  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006589  2  04 05 06     
+00658C  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006590  2  04 05 06     
+006593  2               
+006593  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+006597  2  04 05 06     
+00659A  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+00659E  2  04 05 06     
+0065A1  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+0065A5  2  04 05 06     
+0065A8  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+0065AC  2  04 05 06     
+0065AF  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+0065B3  2  04 05 06     
+0065B6  2  00 01 02 03      .BYTE 0,1,2,3,4,5,6
+0065BA  2  04 05 06     
+0065BD  2  00 01 02 03      .BYTE 0,1,2,3 ; 252-255
+0065C1  2               
+0065C1  2               
+0065C1  1               .include	"hgr.inc"
+0065C1  2               HGR_PAGE1_BASE = $2000
+0065C1  2               HGR_PAGE2_BASE = $4000
+0065C1  2               HGR_BASE = HGR_PAGE1_BASE
+0065C1  2               
+0065C1  2               ; pre-compute the hgr address for each y value(y=0..191)
+0065C1  2               ; hgr_offset[y] = (y/64)*0x28 + (y%8)*0x400 + ((y/8)&7)*0x80;
+0065C1  2               ;
+0065C1  2               ; see also DHGR_OFFSET_X(or DIV7_TBL)
+0065C1  2               
+0065C1  2  xx xx xx xx  .align $100
+0065C5  2  xx xx xx xx  
+0065C9  2  xx xx xx xx  
+006600  2               HGR_OFFSET_HI:
+006600  2               	; section 0
+006600  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 0
+006604  2  10 14 18 1C  
+006608  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 1
+00660C  2  10 14 18 1C  
+006610  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 2
+006614  2  11 15 19 1D  
+006618  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 3
+00661C  2  11 15 19 1D  
+006620  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 4
+006624  2  12 16 1A 1E  
+006628  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 5
+00662C  2  12 16 1A 1E  
+006630  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 6
+006634  2  13 17 1B 1F  
+006638  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 7
+00663C  2  13 17 1B 1F  
+006640  2               	; section 1
+006640  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 0
+006644  2  10 14 18 1C  
+006648  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 1
+00664C  2  10 14 18 1C  
+006650  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 2
+006654  2  11 15 19 1D  
+006658  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 3
+00665C  2  11 15 19 1D  
+006660  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 4
+006664  2  12 16 1A 1E  
+006668  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 5
+00666C  2  12 16 1A 1E  
+006670  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 6
+006674  2  13 17 1B 1F  
+006678  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 7
+00667C  2  13 17 1B 1F  
+006680  2               	; section 2
+006680  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 0
+006684  2  10 14 18 1C  
+006688  2  00 04 08 0C  	.byte $0, $4, $8, $c, $10, $14, $18, $1c ; block 1
+00668C  2  10 14 18 1C  
+006690  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 2
+006694  2  11 15 19 1D  
+006698  2  01 05 09 0D  	.byte $1, $5, $9, $d, $11, $15, $19, $1d ; block 3
+00669C  2  11 15 19 1D  
+0066A0  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 4
+0066A4  2  12 16 1A 1E  
+0066A8  2  02 06 0A 0E  	.byte $2, $6, $a, $e, $12, $16, $1a, $1e ; block 5
+0066AC  2  12 16 1A 1E  
+0066B0  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 6
+0066B4  2  13 17 1B 1F  
+0066B8  2  03 07 0B 0F  	.byte $3, $7, $b, $f, $13, $17, $1b, $1f ; block 7
+0066BC  2  13 17 1B 1F  
+0066C0  2               	; 192 bytes
+0066C0  2               	;.res 256-192 ; padding for page($ff bytes) aligned
+0066C0  2               	; free 64 bytes!
+0066C0  2               
+0066C0  2  xx xx xx xx  .align $100
+0066C4  2  xx xx xx xx  
+0066C8  2  xx xx xx xx  
+006700  2               HGR_OFFSET_LO:
+006700  2               	; section 0
+006700  2  00 00 00 00  	.byte $00, $00, $00, $00, $00, $00, $00, $00 ; block 0
+006704  2  00 00 00 00  
+006708  2  80 80 80 80  	.byte $80, $80, $80, $80, $80, $80, $80, $80 ; block 1
+00670C  2  80 80 80 80  
+006710  2  00 00 00 00  	.byte $00, $00, $00, $00, $00, $00, $00, $00 ; block 2
+006714  2  00 00 00 00  
+006718  2  80 80 80 80  	.byte $80, $80, $80, $80, $80, $80, $80, $80 ; block 3
+00671C  2  80 80 80 80  
+006720  2  00 00 00 00  	.byte $00, $00, $00, $00, $00, $00, $00, $00 ; block 4
+006724  2  00 00 00 00  
+006728  2  80 80 80 80  	.byte $80, $80, $80, $80, $80, $80, $80, $80 ; block 5
+00672C  2  80 80 80 80  
+006730  2  00 00 00 00  	.byte $00, $00, $00, $00, $00, $00, $00, $00 ; block 6
+006734  2  00 00 00 00  
+006738  2  80 80 80 80  	.byte $80, $80, $80, $80, $80, $80, $80, $80 ; block 7
+00673C  2  80 80 80 80  
+006740  2               	; section 1
+006740  2  28 28 28 28  	.byte $28, $28, $28, $28, $28, $28, $28, $28 ; block 0
+006744  2  28 28 28 28  
+006748  2  A8 A8 A8 A8  	.byte $a8, $a8, $a8, $a8, $a8, $a8, $a8, $a8 ; block 1
+00674C  2  A8 A8 A8 A8  
+006750  2  28 28 28 28  	.byte $28, $28, $28, $28, $28, $28, $28, $28 ; block 2
+006754  2  28 28 28 28  
+006758  2  A8 A8 A8 A8  	.byte $a8, $a8, $a8, $a8, $a8, $a8, $a8, $a8 ; block 3
+00675C  2  A8 A8 A8 A8  
+006760  2  28 28 28 28  	.byte $28, $28, $28, $28, $28, $28, $28, $28 ; block 4
+006764  2  28 28 28 28  
+006768  2  A8 A8 A8 A8  	.byte $a8, $a8, $a8, $a8, $a8, $a8, $a8, $a8 ; block 5
+00676C  2  A8 A8 A8 A8  
+006770  2  28 28 28 28  	.byte $28, $28, $28, $28, $28, $28, $28, $28 ; block 6
+006774  2  28 28 28 28  
+006778  2  A8 A8 A8 A8  	.byte $a8, $a8, $a8, $a8, $a8, $a8, $a8, $a8 ; block 7
+00677C  2  A8 A8 A8 A8  
+006780  2               	; section 2
+006780  2  50 50 50 50  	.byte $50, $50, $50, $50, $50, $50, $50, $50 ; block 0
+006784  2  50 50 50 50  
+006788  2  D0 D0 D0 D0  	.byte $d0, $d0, $d0, $d0, $d0, $d0, $d0, $d0 ; block 1
+00678C  2  D0 D0 D0 D0  
+006790  2  50 50 50 50  	.byte $50, $50, $50, $50, $50, $50, $50, $50 ; block 2
+006794  2  50 50 50 50  
+006798  2  D0 D0 D0 D0  	.byte $d0, $d0, $d0, $d0, $d0, $d0, $d0, $d0 ; block 3
+00679C  2  D0 D0 D0 D0  
+0067A0  2  50 50 50 50  	.byte $50, $50, $50, $50, $50, $50, $50, $50 ; block 4
+0067A4  2  50 50 50 50  
+0067A8  2  D0 D0 D0 D0  	.byte $d0, $d0, $d0, $d0, $d0, $d0, $d0, $d0 ; block 5
+0067AC  2  D0 D0 D0 D0  
+0067B0  2  50 50 50 50  	.byte $50, $50, $50, $50, $50, $50, $50, $50 ; block 6
+0067B4  2  50 50 50 50  
+0067B8  2  D0 D0 D0 D0  	.byte $d0, $d0, $d0, $d0, $d0, $d0, $d0, $d0 ; block 7
+0067BC  2  D0 D0 D0 D0  
+0067C0  2               	; 192 bytes
+0067C0  2               	;.res 256-192 ; padding for page($ff bytes) aligned
+0067C0  2               	; free 64 bytes!
+0067C0  2               
+0067C0  2               ; get address for start of a row in HGR mode
+0067C0  2               ; y: 0..191
+0067C0  2               ; addr: address to store the result(maybe in zero-page)
+0067C0  2               ;.macro	HGR_ADDRESS_Y y, addr
+0067C0  2               ; 			lda			#<HGR_BASE
+0067C0  2               ;				clc
+0067C0  2               ;				adc			HGR_OFFSET_LO,y
+0067C0  2               ;				sta			addr
+0067C0  2               ;				lda			#>HGR_BASE
+0067C0  2               ;				adc			HGR_OFFSET_HI,y
+0067C0  2               ;				sta			addr+1
+0067C0  2               ;.endmacro
+0067C0  2               
+0067C0  2               
+0067C0  1               .include	"dhgr.inc"
+0067C0  2               ; DHGR mode pixel layout
+0067C0  2               ;
+0067C0  2               ; 80 bytes per row(40 in AUX, 40 in MAIN), 7 color-pixels per 4 bytes, total 140 color-pixels per row.
+0067C0  2               ;
+0067C0  2               ; |bank      | AUX        |MAIN         | AUX         | MAIN       |   |
+0067C0  2               ; |----------|------------|-------------+-------------|------------|---|
+0067C0  2               ; |address   | $2000      |$2000        | $2001       | $2001      |...|
+0067C0  2               ; |----------|------------|-------------+-------------|------------|---|
+0067C0  2               ; |bit offset| 7 654 3210 | 7 65 4321 0 | 7 6 5432 10 | 7 6543 210 |...|
+0067C0  2               ; |pixel     | - BBB AAAA | - DD CCCC B | - F EEEE DD | - GGGG FFF |...|
+0067C0  2               ; |pixel bit | - 123 0123 | - 23 0123 0 | - 3 0123 01 | - 0123 012 |...|
+0067C0  2               ; |x         |   1   0    |   3  2    1 |   5 4    3  |   6    5   |...|
+0067C0  2               ;
+0067C0  2               
+0067C0  2               .ifndef DIV7_TBL
+0067C0  2               
+0067C0  2               ; pixel x(0..139) -> byte offset x(0..39) in row
+0067C0  2               ; pixel 0..6 -> byte 0..1, pixel 17..13 -> byte 2..3, ... pixel 138..139 -> byte 38..39
+0067C0  2               ; DHGR_OFFSET_X[x] = (x / 7) * 2
+0067C0  2               ;
+0067C0  2               ; see also HGR_OFFSET_LO/HGR_OFFSET_HI
+0067C0  2               
+0067C0  2               .align $100
+0067C0  2               DHGR_OFFSET_X:
+0067C0  2               	.byte 0, 0, 0, 0, 0, 0, 0 ; pixels 0..6
+0067C0  2               	.byte 2, 2, 2, 2, 2, 2, 2 ; pixels 7..13
+0067C0  2               	.byte 4, 4, 4, 4, 4, 4, 4 ; pixels 14..20
+0067C0  2               	.byte 6, 6, 6, 6, 6, 6, 6 ; pixels 21..27
+0067C0  2               	.byte 8, 8, 8, 8, 8, 8, 8 ; pixels 28..34
+0067C0  2               	.byte 10, 10, 10, 10, 10, 10, 10 ; pixels 35..41
+0067C0  2               	.byte 12, 12, 12, 12, 12, 12, 12 ; pixels 42..48
+0067C0  2               	.byte 14, 14, 14, 14, 14, 14, 14 ; pixels 49..55
+0067C0  2               	.byte 16, 16, 16, 16, 16, 16, 16 ; pixels 56..62
+0067C0  2               	.byte 18, 18, 18, 18, 18, 18, 18 ; pixels 63..69
+0067C0  2               	.byte 20, 20, 20, 20, 20, 20, 20 ; pixels 70..76
+0067C0  2               	.byte 22, 22, 22, 22, 22, 22, 22 ; pixels 77..83
+0067C0  2               	.byte 24, 24, 24, 24, 24, 24, 24 ; pixels 84..90
+0067C0  2               	.byte 26, 26, 26, 26, 26, 26, 26 ; pixels 91..97
+0067C0  2               	.byte 28, 28, 28, 28, 28, 28, 28 ; pixels 98..104
+0067C0  2               	.byte 30, 30, 30, 30, 30, 30, 30 ; pixels 105..111
+0067C0  2               	.byte 32, 32, 32, 32, 32, 32, 32 ; pixels 112..118
+0067C0  2               	.byte 34, 34, 34, 34, 34, 34, 34 ; pixels 119..125
+0067C0  2               	.byte 36, 36, 36, 36, 36, 36, 36 ; pixels 126..132
+0067C0  2               	.byte 38, 38, 38, 38, 38, 38, 38 ; pixels 133..139
+0067C0  2               	;.res 256-140
+0067C0  2               .endif
+0067C0  2               
+0067C0  2               .ifndef MOD7_TBL
+0067C0  2               
+0067C0  2               ; pixel x(0..139) -> pixel group(0..6; A..G in DHGR pixel layout)
+0067C0  2               ; x % 7 = 0..6 -> pixel group 0..6(A..G)
+0067C0  2               ;
+0067C0  2               ; pixel group will determine which 4 bits of the 4 bytes will be used to store the color-pixel.
+0067C0  2               
+0067C0  2               .align $100
+0067C0  2               DHGR_PIXEL_GROUP:
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	.byte 0, 1, 2, 3, 4, 5, 6
+0067C0  2               	;.res 256-140
+0067C0  2               .endif
+0067C0  2               
+0067C0  2               ; color 0..15 -> fill bytes 0..3
+0067C0  2               ;
+0067C0  2               ; to fill 4 bytes(7 consequent color-pixels) with a same color:
+0067C0  2               ;
+0067C0  2               ; lda color
+0067C0  2               ; and #$f
+0067C0  2               ; tax
+0067C0  2               ;
+0067C0  2               ; lda DHGR_FILL_BYTE_0,x
+0067C0  2               ; AUX_BANK
+0067C0  2               ; sta addr
+0067C0  2               ; MAIN_BANK
+0067C0  2               ; lda DHGR_FILL_BYTE_1,x
+0067C0  2               ; sta addr
+0067C0  2               ;
+0067C0  2               ; inc addr
+0067C0  2               ;
+0067C0  2               ; lda DHGR_FILL_BYTE_2,x
+0067C0  2               ; AUX_BANK
+0067C0  2               ; sta addr
+0067C0  2               ; MAIN_BANK
+0067C0  2               ; lda DHGR_FILL_BYTE_3,x
+0067C0  2               ; sta addr
+0067C0  2               
+0067C0  2               DHGR_FILL_BYTE_0:
+0067C0  2  00 11 22 33  	.byte %00000000, %00010001, %00100010, %00110011, %01000100, %01010101, %01100110, %01110111
+0067C4  2  44 55 66 77  
+0067C8  2  08 19 2A 3B    .byte %00001000, %00011001, %00101010, %00111011, %01001100, %01011101, %01101110, %01111111
+0067CC  2  4C 5D 6E 7F  
+0067D0  2               
+0067D0  2               DHGR_FILL_BYTE_1:
+0067D0  2  00 22 44 66  	.byte %00000000, %00100010, %01000100, %01100110, %00001000, %00101010, %01001100, %01101110
+0067D4  2  08 2A 4C 6E  
+0067D8  2  11 33 55 77    .byte %00010001, %00110011, %01010101, %01110111, %00011001, %00111011, %01011101, %01111111
+0067DC  2  19 3B 5D 7F  
+0067E0  2               
+0067E0  2               DHGR_FILL_BYTE_2:
+0067E0  2  00 44 08 4C  	.byte %00000000, %01000100, %00001000, %01001100, %00010001, %01010101, %00011001, %01011101
+0067E4  2  11 55 19 5D  
+0067E8  2  22 66 2A 6E    .byte %00100010, %01100110, %00101010, %01101110, %00110011, %01110111, %00111011, %01111111
+0067EC  2  33 77 3B 7F  
+0067F0  2               
+0067F0  2               DHGR_FILL_BYTE_3:
+0067F0  2  00 08 11 19  	.byte %00000000, %00001000, %00010001, %00011001, %00100010, %00101010, %00110011, %00111011
+0067F4  2  22 2A 33 3B  
+0067F8  2  44 4C 55 5D    .byte %01000100, %01001100, %01010101, %01011101, %01100110, %01101110, %01110111, %01111111
+0067FC  2  66 6E 77 7F  
+006800  2               
+006800  2               
+006800  1               .include	"font.inc"
+006800  2               FONT_WIDTH	= 4
+006800  2               FONT_HEIGHT	= 6
+006800  2               FONT_CODE_BEGIN = $20
+006800  2               FONT_CODE_END = $7F
+006800  2               FONT_GLYPH_BYTES = 3
+006800  2               FONT_GLYPH_COUNT= 96
+006800  2               
+006800  2               ; 4x6 font
+006800  2               ; (bounding box: 3x5)
+006800  2               ; 6 rows in 3 bytes; 2 rows in a byte; 4 pixels in a row
+006800  2               fonts:
+006800  2  00 00 00     	.byte	$00,$00,$00
+006803  2  44 40 40     	.byte	$44,$40,$40
+006806  2  AA 00 00     	.byte	$AA,$00,$00
+006809  2  AE AE A0     	.byte	$AE,$AE,$A0
+00680C  2  6C E6 C0     	.byte	$6C,$E6,$C0
+00680F  2  A2 48 A0     	.byte	$A2,$48,$A0
+006812  2  48 4A 60     	.byte	$48,$4A,$60
+006815  2  44 00 00     	.byte	$44,$00,$00
+006818  2  48 88 40     	.byte	$48,$88,$40
+00681B  2  42 22 40     	.byte	$42,$22,$40
+00681E  2  0A 4A 00     	.byte	$0A,$4A,$00
+006821  2  04 E4 00     	.byte	$04,$E4,$00
+006824  2  00 04 80     	.byte	$00,$04,$80
+006827  2  00 E0 00     	.byte	$00,$E0,$00
+00682A  2  00 04 40     	.byte	$00,$04,$40
+00682D  2  22 48 80     	.byte	$22,$48,$80
+006830  2  6A AA C0     	.byte	$6A,$AA,$C0
+006833  2  4C 44 E0     	.byte	$4C,$44,$E0
+006836  2  C2 48 E0     	.byte	$C2,$48,$E0
+006839  2  C2 42 C0     	.byte	$C2,$42,$C0
+00683C  2  AA E2 20     	.byte	$AA,$E2,$20
+00683F  2  E8 C2 C0     	.byte	$E8,$C2,$C0
+006842  2  68 EA C0     	.byte	$68,$EA,$C0
+006845  2  E2 44 40     	.byte	$E2,$44,$40
+006848  2  6A EA C0     	.byte	$6A,$EA,$C0
+00684B  2  6A E2 C0     	.byte	$6A,$E2,$C0
+00684E  2  04 04 00     	.byte	$04,$04,$00
+006851  2  04 04 80     	.byte	$04,$04,$80
+006854  2  24 84 20     	.byte	$24,$84,$20
+006857  2  0E 0E 00     	.byte	$0E,$0E,$00
+00685A  2  84 24 80     	.byte	$84,$24,$80
+00685D  2  C2 40 40     	.byte	$C2,$40,$40
+006860  2  4E E8 60     	.byte	$4E,$E8,$60
+006863  2  4A EA A0     	.byte	$4A,$EA,$A0
+006866  2  CA CA C0     	.byte	$CA,$CA,$C0
+006869  2  68 88 60     	.byte	$68,$88,$60
+00686C  2  CA AA C0     	.byte	$CA,$AA,$C0
+00686F  2  E8 C8 E0     	.byte	$E8,$C8,$E0
+006872  2  E8 C8 80     	.byte	$E8,$C8,$80
+006875  2  68 AA 60     	.byte	$68,$AA,$60
+006878  2  AA EA A0     	.byte	$AA,$EA,$A0
+00687B  2  E4 44 E0     	.byte	$E4,$44,$E0
+00687E  2  22 2A 40     	.byte	$22,$2A,$40
+006881  2  AA CA A0     	.byte	$AA,$CA,$A0
+006884  2  88 88 E0     	.byte	$88,$88,$E0
+006887  2  AE EA A0     	.byte	$AE,$EA,$A0
+00688A  2  CA AA A0     	.byte	$CA,$AA,$A0
+00688D  2  4A AA 40     	.byte	$4A,$AA,$40
+006890  2  CA C8 80     	.byte	$CA,$C8,$80
+006893  2  4A AC 60     	.byte	$4A,$AC,$60
+006896  2  CA CA A0     	.byte	$CA,$CA,$A0
+006899  2  68 42 C0     	.byte	$68,$42,$C0
+00689C  2  E4 44 40     	.byte	$E4,$44,$40
+00689F  2  AA AA E0     	.byte	$AA,$AA,$E0
+0068A2  2  AA AA 40     	.byte	$AA,$AA,$40
+0068A5  2  AA EE A0     	.byte	$AA,$EE,$A0
+0068A8  2  AA 4A A0     	.byte	$AA,$4A,$A0
+0068AB  2  AA 44 40     	.byte	$AA,$44,$40
+0068AE  2  E2 48 E0     	.byte	$E2,$48,$E0
+0068B1  2  C8 88 C0     	.byte	$C8,$88,$C0
+0068B4  2  88 42 20     	.byte	$88,$42,$20
+0068B7  2  62 22 60     	.byte	$62,$22,$60
+0068BA  2  4A 00 00     	.byte	$4A,$00,$00
+0068BD  2  00 00 E0     	.byte	$00,$00,$E0
+0068C0  2  42 00 00     	.byte	$42,$00,$00
+0068C3  2  06 AA 60     	.byte	$06,$AA,$60
+0068C6  2  8C AA C0     	.byte	$8C,$AA,$C0
+0068C9  2  06 88 60     	.byte	$06,$88,$60
+0068CC  2  26 AA 60     	.byte	$26,$AA,$60
+0068CF  2  04 AC 60     	.byte	$04,$AC,$60
+0068D2  2  24 E4 40     	.byte	$24,$E4,$40
+0068D5  2  06 A6 2C     	.byte	$06,$A6,$2C
+0068D8  2  8C AA A0     	.byte	$8C,$AA,$A0
+0068DB  2  40 44 40     	.byte	$40,$44,$40
+0068DE  2  40 44 48     	.byte	$40,$44,$48
+0068E1  2  8A CC A0     	.byte	$8A,$CC,$A0
+0068E4  2  44 44 60     	.byte	$44,$44,$60
+0068E7  2  0A EA A0     	.byte	$0A,$EA,$A0
+0068EA  2  0C AA A0     	.byte	$0C,$AA,$A0
+0068ED  2  04 AA 40     	.byte	$04,$AA,$40
+0068F0  2  0C AA C8     	.byte	$0C,$AA,$C8
+0068F3  2  06 AA 62     	.byte	$06,$AA,$62
+0068F6  2  0C A8 80     	.byte	$0C,$A8,$80
+0068F9  2  06 82 C0     	.byte	$06,$82,$C0
+0068FC  2  4E 44 20     	.byte	$4E,$44,$20
+0068FF  2  0A AA 60     	.byte	$0A,$AA,$60
+006902  2  0A AA 40     	.byte	$0A,$AA,$40
+006905  2  0A AE A0     	.byte	$0A,$AE,$A0
+006908  2  0A 44 A0     	.byte	$0A,$44,$A0
+00690B  2  0A A6 2C     	.byte	$0A,$A6,$2C
+00690E  2  0E 28 E0     	.byte	$0E,$28,$E0
+006911  2  64 84 60     	.byte	$64,$84,$60
+006914  2  44 44 40     	.byte	$44,$44,$40
+006917  2  C4 24 C0     	.byte	$C4,$24,$C0
+00691A  2  6C 00 00     	.byte	$6C,$00,$00
+00691D  2  A4 A4 A0     	.byte	$A4,$A4,$A0
+006920  2               
+006920  1               ;.include	"pixmap.inc"
+006920  1               ;.include	"bitmap.inc"
+006920  1               

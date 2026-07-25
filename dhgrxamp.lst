@@ -1,0 +1,331 @@
+ca65 V2.18 - Ubuntu 2.19-2build1
+Main file   : dhgrxamp.s
+Current file: dhgrxamp.s
+
+000000r 1               	.org	$4000
+004000  1               	.pc02	; use 64c02 instructions
+004000  1               
+004000  1               ; zero-page variables
+004000  1               x1	=	$fa
+004000  1               y1	=	$fb
+004000  1               x2	=	$fc
+004000  1               y2	=	$fd
+004000  1               color	=	$fe
+004000  1               ch	=	$ff
+004000  1               src	=	$ce 	; pointer to source address (2 bytes)
+004000  1               dst	=	$eb 	; pointer to destination address (2 bytes)
+004000  1               
+004000  1               ; dhgr routines
+004000  1               dhgr_init	=	$6000
+004000  1               dhgr_exit	=	$6003
+004000  1               dhgr_cls	=	$6006
+004000  1               dhgr_plot	=	$6009
+004000  1               dhgr_hline	=	$600c
+004000  1               dhgr_vline	=	$600f
+004000  1               dhgr_rect	=	$6012
+004000  1               dhgr_fillrect	=	$6015
+004000  1               dhgr_pixmap	=	$6018
+004000  1               dhgr_bitmap	=	$601b
+004000  1               dhgr_putc	=	$601e
+004000  1               dhgr_puts	=	$6021
+004000  1               
+004000  1               ; applesoft basic tokens
+004000  1               bas_gr		=	$88
+004000  1               bas_text	=	$89
+004000  1               bas_plot	=	$8d
+004000  1               bas_hlin	=	$8e
+004000  1               bas_vlin	=	$8f
+004000  1               bas_draw	=	$94
+004000  1               bas_xdraw	=	$95
+004000  1               bas_htab	=	$96
+004000  1               bas_home	=	$97
+004000  1               bas_color	=	$a0
+004000  1               bas_vtab	=	$a2
+004000  1               bas_print	=	$ba
+004000  1               bas_to		=	$c1
+004000  1               bas_at		=	$c5
+004000  1               
+004000  1               bas_synerr	=	$dec9
+004000  1               
+004000  1               ; applesoft basic routines and variables
+004000  1               bas_valtyp	=	$11	; flags for last FAC operation($00=num, $ff=str) (2b)
+004000  1               bas_linnum	=	$50	; line number (2b)
+004000  1               bas_varpnt	=	$83	; pointer to last-used variable's value (2b)
+004000  1               bas_fac		=	$9d	; floating point accumulator (6b)
+004000  1               bas_chrget	=	$b1
+004000  1               bas_chrgot	=	$b7
+004000  1               bas_ampvec	=	$03f5
+004000  1               bas_chkcom	=	$debe
+004000  1               bas_frmnum	=	$dd67	; Evaluate expression, make sure it is numeric
+004000  1               bas_frmevl	=	$dd7b	; Evaluate the expression at TXTPTR, leaving the result in FAC.
+004000  1               				; Works for both string and numeric expressions.
+004000  1               bas_mkint	=	$e108	; Convert FAC to integer. Must be positive and less than 32768.
+004000  1               bas_getbyt	=	$e6f8	; Evaluate expression at TXTPTR, and convert it to single byte in X-reg.
+004000  1               bas_getadr	=	$e752	; Convert FAC to a 16-bit value in LINNUM.
+004000  1               
+004000  1               ; entry point
+004000  1  A9 4C        	lda	#$4c		; jmp opcode
+004002  1  8D F5 03     	sta	bas_ampvec
+004005  1  A9 10        	lda	#<dhgr_ampvec
+004007  1  8D F6 03     	sta	bas_ampvec+1
+00400A  1  A9 40        	lda	#>dhgr_ampvec
+00400C  1  8D F7 03     	sta	bas_ampvec+2
+00400F  1  60           	rts
+004010  1               
+004010  1               
+004010  1               .proc	dhgr_ampvec
+004010  1  A0 00        	ldy	#0
+004012  1               @loop:
+004012  1  D9 39 41     	cmp	tokens,y
+004015  1  F0 08        	beq	@match
+004017  1  C8           	iny
+004018  1  C0 0E        	cpy	#num_tokens
+00401A  1  D0 F6        	bne	@loop
+00401C  1  4C C9 DE     	jmp	bas_synerr
+00401F  1               
+00401F  1               @match:
+00401F  1  20 B1 00     	jsr	bas_chrget	; consume token
+004022  1  B9 47 41     	lda	amp_lo,y
+004025  1  8D 32 40     	sta	@amp_addr
+004028  1  B9 55 41     	lda	amp_hi,y
+00402B  1  8D 33 40     	sta	@amp_addr+1
+00402E  1  6C 32 40     	jmp	(@amp_addr)
+004031  1  60           	rts
+004032  1               
+004032  1               @amp_addr:
+004032  1  00 00        	.word	0
+004034  1               .endproc
+004034  1               
+004034  1               
+004034  1               ; &GR - dhgr_init
+004034  1               .proc	amp_gr
+004034  1  20 00 60     	jsr	dhgr_init
+004037  1  60           	rts
+004038  1               .endproc
+004038  1               
+004038  1               
+004038  1               ; &TEXT - dhgr_exit
+004038  1               .proc	amp_text
+004038  1  20 03 60     	jsr	dhgr_exit
+00403B  1  60           	rts
+00403C  1               .endproc
+00403C  1               
+00403C  1               
+00403C  1               ; &COLOR=color
+00403C  1               .proc	amp_color
+00403C  1  20 F8 E6     	jsr	bas_getbyt
+00403F  1  86 FE        	stx	color
+004041  1  60           	rts
+004042  1               .endproc
+004042  1               
+004042  1               
+004042  1               ; &HTAB x1
+004042  1               .proc   amp_htab
+004042  1  20 F8 E6     	jsr	bas_getbyt
+004045  1  86 FA        	stx	x1
+004047  1  60           	rts
+004048  1               .endproc
+004048  1               
+004048  1               
+004048  1               ; &HTAB y1
+004048  1               .proc   amp_vtab
+004048  1  20 F8 E6     	jsr	bas_getbyt
+00404B  1  86 FB        	stx	y1
+00404D  1  60           	rts
+00404E  1               .endproc
+00404E  1               
+00404E  1               
+00404E  1               ; &HOME - dhgr_cls
+00404E  1               .proc	amp_home
+00404E  1  20 06 60     	jsr	dhgr_cls
+004051  1  A9 00        	lda	#0
+004053  1  85 FA        	sta	x1
+004055  1  85 FB        	sta	y1
+004057  1  85 FC        	sta	x2
+004059  1  85 FD        	sta	y2
+00405B  1  A5 FE        	lda	color
+00405D  1  A5 FF        	lda	ch
+00405F  1  60           	rts
+004060  1               .endproc
+004060  1               
+004060  1               
+004060  1               ; &PLOT x,y - dhgr_plot
+004060  1               .proc	amp_plot
+004060  1  20 FF 40     	jsr	_get_x1y1
+004063  1  20 09 60     	jsr	dhgr_plot
+004066  1  60           	rts
+004067  1               .endproc
+004067  1               
+004067  1               
+004067  1               ; &HLIN x1,x2 AT y1 - dhgr_hline
+004067  1               .proc	amp_hlin
+004067  1  20 F8 E6     	jsr	bas_getbyt	; get x1
+00406A  1  86 FA        	stx	x1
+00406C  1  20 BE DE     	jsr	bas_chkcom
+00406F  1  20 F8 E6     	jsr	bas_getbyt	; get x2
+004072  1  86 FC        	stx	x2
+004074  1  20 2B 41     	jsr	_check_bas_at
+004077  1  20 F8 E6     	jsr	bas_getbyt	; get y1
+00407A  1  86 FB        	stx	y1
+00407C  1  20 0C 60     	jsr	dhgr_hline
+00407F  1  60           	rts
+004080  1               @err:
+004080  1  4C C9 DE     	jmp	bas_synerr
+004083  1               .endproc
+004083  1               
+004083  1               
+004083  1               ; &VLIN y1,y2 AT x1 - dhgr_vline
+004083  1               .proc	amp_vlin
+004083  1  20 F8 E6     	jsr	bas_getbyt	; get y1
+004086  1  86 FB        	stx	y1
+004088  1  20 BE DE     	jsr	bas_chkcom
+00408B  1  20 F8 E6     	jsr	bas_getbyt	; get y2
+00408E  1  86 FD        	stx	y2
+004090  1  20 2B 41     	jsr	_check_bas_at
+004093  1  20 F8 E6     	jsr	bas_getbyt	; get x1
+004096  1  86 FA        	stx	x1
+004098  1  20 0F 60     	jsr	dhgr_vline
+00409B  1  60           	rts
+00409C  1               .endproc
+00409C  1               
+00409C  1               
+00409C  1               ; &R x1,y1,x2,y2 - dhgr_rect
+00409C  1               .proc	amp_r
+00409C  1  20 0D 41     	jsr	_get_x1y1x2y2
+00409F  1  20 12 60     	jsr	dhgr_rect
+0040A2  1  60           	rts
+0040A3  1               .endproc
+0040A3  1               
+0040A3  1               
+0040A3  1               ; &F x1,y1,x2,y2 - dhgr_fillrect
+0040A3  1               .proc	amp_f
+0040A3  1  20 0D 41     	jsr	_get_x1y1x2y2
+0040A6  1  20 15 60     	jsr	dhgr_fillrect
+0040A9  1  60           	rts
+0040AA  1               .endproc
+0040AA  1               
+0040AA  1               
+0040AA  1               ; &XDRAW src AT x1,y1,x2,y2 - dhgr_pixmap
+0040AA  1               .proc	amp_xdraw
+0040AA  1  20 F0 40     	jsr	_get_src
+0040AD  1  20 2B 41     	jsr	_check_bas_at
+0040B0  1  20 0D 41     	jsr	_get_x1y1x2y2
+0040B3  1  20 18 60     	jsr	dhgr_pixmap
+0040B6  1  60           	rts
+0040B7  1               .endproc
+0040B7  1               
+0040B7  1               
+0040B7  1               ; &DRAW src AT x1,y1,x2,y2 - dhgr_bitmap
+0040B7  1               .proc	amp_draw
+0040B7  1  20 F0 40     	jsr	_get_src
+0040BA  1  20 2B 41     	jsr	_check_bas_at
+0040BD  1  20 0D 41     	jsr	_get_x1y1x2y2
+0040C0  1  20 1B 60     	jsr	dhgr_bitmap
+0040C3  1  60           	rts
+0040C4  1               .endproc
+0040C4  1               
+0040C4  1               
+0040C4  1               ; &PRINT expr - dhgr_putc for number expr., dhgr_puts for string expr.
+0040C4  1               .proc	amp_print
+0040C4  1  20 7B DD     	jsr	bas_frmevl
+0040C7  1  24 11        	bit	bas_valtyp
+0040C9  1  30 0B        	bmi	@is_str
+0040CB  1               	; number
+0040CB  1  20 08 E1     	jsr	bas_mkint
+0040CE  1  A6 A1        	ldx	bas_fac+4
+0040D0  1  86 FF        	stx	ch
+0040D2  1  20 1E 60     	jsr	dhgr_putc
+0040D5  1  60           	rts
+0040D6  1               
+0040D6  1               @is_str:
+0040D6  1               	; applesoft basic string(length addrlo addrhi) to c string(null terminated)
+0040D6  1  A5 9E        	lda	bas_fac+1
+0040D8  1  85 CE        	sta	src
+0040DA  1  A5 9F        	lda	bas_fac+2
+0040DC  1  85 CF        	sta	src+1
+0040DE  1  A4 9D        	ldy	bas_fac		; length of string
+0040E0  1  B1 CE        	lda	(src),y		; save original char
+0040E2  1  48           	pha
+0040E3  1  5A           	phy
+0040E4  1  A9 00        	lda	#0
+0040E6  1  91 CE        	sta	(src),y		; temp. set 0 to end of string
+0040E8  1  20 21 60     	jsr	dhgr_puts
+0040EB  1  7A           	ply
+0040EC  1  68           	pla
+0040ED  1  91 CE        	sta	(src),y		; restore original char
+0040EF  1  60           	rts
+0040F0  1               .endproc
+0040F0  1               
+0040F0  1               
+0040F0  1               .proc	_get_src
+0040F0  1  20 67 DD     	jsr	bas_frmnum
+0040F3  1  20 52 E7     	jsr	bas_getadr
+0040F6  1  A5 50        	lda	bas_linnum
+0040F8  1  85 CE        	sta	src
+0040FA  1  A5 51        	lda	bas_linnum+1
+0040FC  1  85 CF        	sta	src+1
+0040FE  1  60           	rts
+0040FF  1               .endproc
+0040FF  1               
+0040FF  1               
+0040FF  1               .proc	_get_x1y1
+0040FF  1  20 F8 E6     	jsr	bas_getbyt	; get x1
+004102  1  86 FA        	stx	x1
+004104  1  20 BE DE     	jsr	bas_chkcom
+004107  1  20 F8 E6     	jsr	bas_getbyt	; get y1
+00410A  1  86 FB        	stx	y1
+00410C  1  60           	rts
+00410D  1               .endproc
+00410D  1               
+00410D  1               
+00410D  1               .proc	_get_x1y1x2y2
+00410D  1  20 F8 E6     	jsr	bas_getbyt	; get x1
+004110  1  86 FA        	stx	x1
+004112  1  20 BE DE     	jsr	bas_chkcom
+004115  1  20 F8 E6     	jsr	bas_getbyt	; get y1
+004118  1  86 FB        	stx	y1
+00411A  1  20 BE DE     	jsr	bas_chkcom
+00411D  1  20 F8 E6     	jsr	bas_getbyt	; get x2
+004120  1  86 FC        	stx	x2
+004122  1  20 BE DE     	jsr	bas_chkcom
+004125  1  20 F8 E6     	jsr	bas_getbyt	; get y2
+004128  1  86 FD        	stx	y2
+00412A  1  60           	rts
+00412B  1               .endproc
+00412B  1               
+00412B  1               
+00412B  1               .proc	_check_bas_at
+00412B  1  20 B7 00     	jsr	bas_chrgot	; expect 'AT'
+00412E  1  C9 C5        	cmp	#bas_at
+004130  1  D0 04        	bne	@err
+004132  1  20 B1 00     	jsr	bas_chrget	; consume 'AT'
+004135  1  60           	rts
+004136  1               @err:
+004136  1  4C C9 DE     	jmp	bas_synerr
+004139  1               .endproc
+004139  1               
+004139  1               
+004139  1               tokens:
+004139  1  A0 96 A2     	.byte bas_color, bas_htab, bas_vtab
+00413C  1  95 94        	.byte bas_xdraw, bas_draw
+00413E  1  46 52        	.byte 'F', 'R'
+004140  1  8F 8E 8D     	.byte bas_vlin, bas_hlin, bas_plot
+004143  1  BA 97 89 88  	.byte bas_print, bas_home, bas_text, bas_gr
+004147  1               tokens_end:
+004147  1               
+004147  1               num_tokens	=	tokens_end - tokens
+004147  1               
+004147  1               amp_lo:
+004147  1  3C 42 48     	.byte <amp_color, <amp_htab, <amp_vtab
+00414A  1  AA B7        	.byte <amp_xdraw, <amp_draw
+00414C  1  A3 9C        	.byte <amp_f, <amp_r
+00414E  1  83 67 60     	.byte <amp_vlin, <amp_hlin, <amp_plot
+004151  1  C4 4E 38 34  	.byte <amp_print, <amp_home, <amp_text, <amp_gr
+004155  1               
+004155  1               amp_hi:
+004155  1  40 40 40     	.byte >amp_color, >amp_htab, >amp_vtab
+004158  1  40 40        	.byte >amp_xdraw, >amp_draw
+00415A  1  40 40        	.byte >amp_f, >amp_r
+00415C  1  40 40 40     	.byte >amp_vlin, >amp_hlin, >amp_plot
+00415F  1  40 40 40 40  	.byte >amp_print, >amp_home, >amp_text, >amp_gr
+004162  1               
