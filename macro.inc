@@ -1,25 +1,25 @@
-.macro  push	r1, r2, r3, r4, r5, r6, r7
+.macro  PUSH_VARS r1, r2, r3, r4, r5, r6, r7
 .ifblank	r1
 	.exitmacro
 .else
 	lda	r1
 	pha
 .endif
-	push	r2, r3, r4, r5, r6, r7
+	PUSH_VARS r2, r3, r4, r5, r6, r7
 .endmacro
 
 
-.macro  pull	r1, r2, r3, r4, r5, r6, r7
+.macro  PULL_VARS r1, r2, r3, r4, r5, r6, r7
 .ifblank	r1
 	.exitmacro
 .else
 	pla
 	sta	r1
 .endif
-	pull	r2, r3, r4, r5, r6, r7
+	PULL_VARS	r2, r3, r4, r5, r6, r7
 .endmacro
 
-.macro	main2aux start, end, dest
+.macro	MAIN2AUX start, end, dest
 	lda	#<start
 	sta	$3c
 	lda	#>start
@@ -36,7 +36,7 @@
 	jsr	$c311	; auxmove
 .endmacro
 
-.macro	aux2main start, end, dest
+.macro	AUX2MAIN start, end, dest
 	lda	#<start
 	sta	$3c
 	lda	#>start

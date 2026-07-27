@@ -8,7 +8,7 @@ FONT_GLYPH_COUNT= 96
 ; 4x6 font
 ; (bounding box: 3x5)
 ; 6 rows in 3 bytes; 2 rows in a byte; 4 pixels in a row
-fonts:
+font4x6:
 	.byte	$00,$00,$00
 	.byte	$44,$40,$40
 	.byte	$AA,$00,$00

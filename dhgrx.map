@@ -1,14 +1,14 @@
 Modules list:
 -------------
 dhgrx.o:
-    CODE              Offs=000000  Size=000920  Align=00100  Fill=0000
+    CODE              Offs=000000  Size=000D20  Align=00100  Fill=0000
 
 
 Segment list:
 -------------
 Name                   Start     End    Size  Align
 ----------------------------------------------------
-CODE                  000000  00091F  000920  00100
+CODE                  000000  000D1F  000D20  00100
 
 
 Exports list by name:

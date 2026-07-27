@@ -12,6 +12,10 @@
 ; |x         |   1   0    |   3  2    1 |   5 4    3  |   6    5   |...|
 ;
 
+DHGR_WIDTH = 140  ; 140 color-pixels, 7 color-pixels per 4 bytes = 20 groups of 4 bytes = 80 bytes per row
+DHGR_HEIGHT = 192
+DHGR_BYTES_PER_ROW = 80 ; 40 bytes in AUX + 40 bytes in MAIN
+
 .ifndef DIV7_TBL
 
 ; pixel x(0..139) -> byte offset x(0..39) in row
@@ -117,3 +121,24 @@ DHGR_FILL_BYTE_3:
 	.byte %00000000, %00001000, %00010001, %00011001, %00100010, %00101010, %00110011, %00111011
   .byte %01000100, %01001100, %01010101, %01011101, %01100110, %01101110, %01110111, %01111111
 
+.macro DHGR_FILL_4BYTES color, addr
+  lda color
+  and #$f
+  tax
+
+  lda DHGR_FILL_BYTE_0,x
+  AUX_BANK
+  sta addr
+  MAIN_BANK
+  lda DHGR_FILL_BYTE_1,x
+  sta addr
+
+  inc addr
+
+  lda DHGR_FILL_BYTE_2,x
+  AUX_BANK
+  sta addr
+  MAIN_BANK
+  lda DHGR_FILL_BYTE_3,x
+  sta addr
+.endmacro

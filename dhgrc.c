@@ -309,22 +309,22 @@ const uint8_t DHGR_OFFSET_X[DHGR_WIDTH] = {
 #define DHGR_PIXEL_OFFSET(x, y) (HGR_OFFSET[y] + DHGR_OFFSET_X[x])
 
 enum DhgrColor {
-  BLACK = 0,
-  DKBLUE = 1,
-  DKGREEN = 2,
-  BLUE = 3,
-  BROWN = 4,
-  LTGRAY = 5,
-  GREEN = 6,
-  AQUA = 7,
-  RED = 8,
-  PURPLE = 9,
-  DKGRAY = 10,
-  LTBLUE = 11,
-  ORANGE = 12,
-  PINK = 13,
-  YELLOW = 14,
-  WHITE = 15
+  BLACK   = 0, // 0000
+  DKBLUE  = 1, // 0001
+  DKGREEN = 2, // 0010
+  BLUE    = 3, // 0011
+  BROWN   = 4, // 0100
+  LTGRAY  = 5, // 0101
+  GREEN   = 6, // 0110
+  AQUA    = 7, // 0111
+  RED     = 8, // 1000
+  PURPLE  = 9, // 1001
+  DKGRAY  = 10,// 1010
+  LTBLUE  = 11,// 1011
+  ORANGE  = 12,// 1100
+  PINK    = 13,// 1101
+  YELLOW  = 14,// 1110
+  WHITE   = 15 // 1111
 };
 
 const char *DHGR_COLOR_NAMES[DHGR_COLORS] = {
@@ -923,6 +923,7 @@ void text_test() {
 }
 
 void main() {
+  /*
   char c;
 
   while (1) {
@@ -984,4 +985,34 @@ void main() {
     cgetc();
     dhgr_exit();
   }
+  */
+  register uint8_t y;
+  register uint8_t* addr;
+
+// |bank      | AUX        |MAIN         | AUX         | MAIN       |   |
+// |----------|------------|-------------+-------------|------------|---|
+// |address   | $2000      |$2000        | $2001       | $2001      |...|
+// |----------|------------|-------------+-------------|------------|---|
+// |bit offset| 7 654 3210 | 7 65 4321 0 | 7 6 5432 10 | 7 6543 210 |...|
+// |pixel     | - BBB AAAA | - DD CCCC B | - F EEEE DD | - GGGG FFF |...|
+// |pixel bit | - 123 0123 | - 23 0123 0 | - 3 0123 01 | - 0123 012 |...|
+// |x         |   1   0    |   3  2    1 |   5 4    3  |   6    5   |...|
+  dhgr_init();
+  cls(BLACK);
+  for (y = 0; y < 192; y++) {
+    addr = HGR_BASE + HGR_OFFSET[y];
+    AUX_BANK();
+    *addr = y & 0b0001111;
+    MAIN_BANK();
+  }
+  cgetc();
+  cls(WHITE);
+  for (y = 0; y < 192; y++) {
+    addr = HGR_BASE + HGR_OFFSET[y];
+    AUX_BANK();
+    *addr = y & 0b0001111;
+    MAIN_BANK();
+  }
+  cgetc();
+  dhgr_exit();
 }

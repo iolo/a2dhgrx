@@ -37,6 +37,9 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	jmp	dhgr_bitmap	; $601B
 	jmp	dhgr_putc	; $601E
 	jmp	dhgr_puts	; $6021
+	jmp	dhgr_put8	; $6024
+	jmp	dhgr_putc8	; $6027
+	jmp	dhgr_puts8	; $602A
 .endproc
 
 ; switch to double hi-res mixed/page1
@@ -50,7 +53,7 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	sta	$c05e ; an3 on
 
 	; copy this code(MAIN $6000..$7fff) to AUX to avoid crash while bank switching
-	main2aux $6000, $7fff, $6000
+	MAIN2AUX $6000, $7fff, $6000
 
 	rts
 .endproc
@@ -116,11 +119,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	sta     (dst),y
 
 	iny	; x++
-	cpy	#40
+	cpy	#(DHGR_BYTES_PER_ROW/2)	; 40 in aux + 40 in main
 	bne	@loop_x ; while(x!=40)
 
 	inx	; y++
-	cpx	#192
+	cpx	#DHGR_HEIGHT
 	bne	@loop_y ; while(y!=192)
 
 	rts
@@ -144,10 +147,10 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	lda     DIV7_TBL,x
 	asl
 	tay	; Y = (x1 / 7) * 2 = byte offset of x1
-	lda	MOD7_TBL,x	; A = x1 % 7 = bit offset of x1
-	bne	@not_case_a
+	lda	MOD7_TBL,x	; A = x1 % 7 = color pixel group
+	bne	@not_group_a
 
-@case_a:
+@group_a:
 	; byte0
 	AUX_BANK
 	lda	(dst),y
@@ -165,11 +168,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 	rts
 
-@not_case_a:
+@not_group_a:
 	dec
-	bne	@not_case_b
+	bne	@not_group_b
 
-@case_b:
+@group_b:
 	; byte0
 	AUX_BANK
 	lda	(dst),y
@@ -207,11 +210,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 	rts
 
-@not_case_b:
+@not_group_b:
 	dec
-	bne	@not_case_c
+	bne	@not_group_c
 
-@case_c:
+@group_c:
 	; byte1
 	;MAIN_BANK
 	lda	(dst),y
@@ -228,11 +231,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 	rts
 
-@not_case_c:
+@not_group_c:
 	dec
-	bne	@not_case_d
+	bne	@not_group_d
 
-@case_d:
+@group_d:
 	; byte1
 	;MAIN_BANK
 	lda	(dst),y
@@ -271,11 +274,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	MAIN_BANK
 
 	rts
-@not_case_d:
+@not_group_d:
 	dec
-	bne	@not_case_e
+	bne	@not_group_e
 
-@case_e:
+@group_e:
 	iny	; for byte2..3
 
 	; byte2
@@ -297,11 +300,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 	rts
 
-@not_case_e:
+@not_group_e:
 	dec
-	bne	@not_case_f
+	bne	@not_group_f
 
-@case_f:
+@group_f:
 	iny	; for byte2..3
 
 	; byte2
@@ -340,9 +343,9 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	sta	(dst),y
 
 	rts
-@not_case_f:
+@not_group_f:
 
-@case_g:
+@group_g:
 	iny	; for byte2..3
 
 	;byte3
@@ -481,17 +484,12 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	stx	y1
 @no_swap:
 
-	lda	y2
-	sec
-	sbc	y1
-	inc		; reg.A = y2 - y1 + 1 = length
 @loopy:
-	pha
 	jsr 	dhgr_plot
-	pla
 	inc	y1
-	dec
-	bne 	@loopy
+	lda	y2
+	cmp	y1
+	bcs	@loopy ; while (y1 <= y2)
 	rts
 .endproc
 
@@ -503,32 +501,22 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 ; @param y2
 ; @param color
 .proc	dhgr_rect
-	lda	x1
-	pha
+	PUSH_VARS x1
 	jsr 	dhgr_hline	; hlin x1,x2,y1
-	pla
-	sta	x1
+	PULL_VARS x1
 
-	lda	x1
-	pha
-	lda	y1
-	pha
+	PUSH_VARS x1, y1
 	lda 	y2
 	sta 	y1
 	jsr 	dhgr_hline	; hlin x1,x2,y2
-	pla
-	sta	y1
-	pla
-	sta	x1
+	PULL_VARS y1, x1
 
 	inc 	y1
 	dec 	y2
 
-	lda	y1
-	pha
+	PUSH_VARS y1
 	jsr 	dhgr_vline	; vlin y1+1,y2-1,x1
-	pla
-	sta	y1
+	PULL_VARS y1
 
 	lda 	x2
 	sta 	x1
@@ -545,77 +533,75 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 ; @param y2
 ; @param color
 .proc	dhgr_fillrect
-	lda	y2
-	sec
-	sbc	y1
-	inc		; reg.A = y2-y1+1 = height
-@loopy:
-	pha
-	lda	x1
-	pha
-	jsr 	dhgr_hline
-	pla
-	sta	x1
-	pla
-	inc	y1
-	dec
-	bne 	@loopy
+	lda	y1
+	cmp	y2
+	bcc	@no_swap
+	ldx	y2
+	sta	y2
+	stx	y1
+@no_swap:
 
+@loopy:
+	PUSH_VARS x1
+	jsr 	dhgr_hline
+	PULL_VARS x1
+	inc	y1
+	lda	y2
+	cmp	y1
+	bcs	@loopy ; while (y1 <= y2)
 	rts
 .endproc
 
 
 ; draw pixmap
-; @param x1
-; @param y1
-; @param width
-; @param height
-; @param src(modified) - pointer to pixel data; 1 byte per pixel; (x2-x1+1)*(y2-y1+1) bytes
+;
+; @param x1(modified)
+; @param y1(modified)
+; @param x2
+; @param y2
+; @param src - pointer to pixel data; 1 byte per pixel; (x2-x1+1)*(y2-y1+1) bytes
 .proc	dhgr_pixmap
 	lda	x1
 	sta	@_x1
-	lda	color
 
-@loop:
 	ldy	#0
+@loop:
 	lda	(src),y
-	cmp	#$10
-	bcs	@skip	; skip transparent(when hi-nibble is not zero)
 	sta	color
+	and	#$f0
+	bne	@skip	; skip transparent(when hi-nibble is not zero)
+	phy
 	jsr 	dhgr_plot
+	ply
 @skip:
-	inc	x1	; next column
-	ldy	x2
-	cpy	x1
-	bcs	@continue; while ++x1 <= x2
+	iny	; next pixel
 
-	ldy	@_x1
-	sty	x1	; carriage return
-	inc	y1	; line feed
-	ldy	y2
-	cpy	y1
-	bcs	@continue; while ++y1 <= y2
+	inc	x1
+	ldx	x2
+	cpx	x1
+	bcs	@loop	; x2 >= ++x1
+
+	ldx	@_x1
+	stx	x1	; reset x1(next row, first column)
+	inc	y1
+	ldx	y2
+	cpx	y1
+	bcs	@loop	; y2 >= ++y1
 
 	rts
-
-@continue:
-	inc	src	; next byte
-	bne	@loop
-	inc	src+1	; next page
-	bne	@loop	; jmp always
-	rts		; safe guard
 
 @_x1:	.byte	0
 .endproc
 
 
 ; draw bitmap
-; @param x1
-; @param y1
+;
+; @param x1(modified)
+; @param y1(modified)
 ; @param x2
 ; @param y2
 ; @param color
-; @param src(modified) - pointer to pixel data; 1 bit per pixel; (x2-x1+1)*(y2-y1+1) bytes
+; @param src - pointer to pixel data; 1 bit per pixel; (x2-x1+1)*(y2-y1+1) bytes
 .proc	dhgr_bitmap
 	lda	x1
 	sta	@_x1
@@ -665,49 +651,41 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 .endproc
 
 
-; draw char
-; @param x1
-; @param y1
+; draw char with 4x6 font
+;
+; @param x1(modified)
+; @param y1(modified)
 ; @param color
 ; @param ch
 .proc	dhgr_putc
-	lda	#<fonts
+	lda	#<font4x6
 	sta	src
-	lda	#>fonts
+	lda	#>font4x6
 	sta	src+1
 
 	lda	ch
 	sec
-	sbc	#$20	; reg.A = ch - $20
+	sbc	#$20	; A = ch - $20
 	sta	ch
 
 	lda	src
 	clc
 	adc	ch
-	bcc	@no_carry1
-	inc	src+1
-@no_carry1:
-	clc
 	adc	ch
-	bcc	@no_carry2
-	inc	src+1
-@no_carry2:
-	clc
 	adc	ch
-	bcc	@no_carry3
-	inc	src+1
-@no_carry3:
 	sta	src
-	; src = fonts + (ch - 0x20)*3
+	lda	src+1
+	adc	#$00
+	sta	src+1	; src = font4x6 + (ch - 0x20)*3
 
 	lda	x1
 	clc
-	adc	#3	; width-1
+	adc	#(FONT_WIDTH-1)
 	sta	x2
 
 	lda	y1
 	clc
-	adc	#5	; height-1
+	adc	#(FONT_HEIGHT-1)
 	sta	y2
 
 	jsr	dhgr_bitmap
@@ -716,7 +694,8 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 
 
-; draw text string
+; draw text string with 4x6 font
+;
 ; @param x1(modified)
 ; @param y1(modified)
 ; @param color
@@ -727,38 +706,258 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	lda	(src),y
 	beq	@break
 	sta	ch
-	push	x1, y1, color, src, src+1
+	PUSH_VARS x1, y1, color, src, src+1
 	phy
 	jsr	dhgr_putc
 	ply
-	pull	src+1, src, color, y1, x1
+	PULL_VARS src+1, src, color, y1, x1
 	iny		; next char
-@no_carry:
+
 	lda	x1
 	clc
 	adc	#FONT_WIDTH
-	sta	x1	; next column
-	lda	WINDOW_RIGHT
+	sta	x1
+	lda	#(DHGR_WIDTH-1)
 	cmp	x1
 	bcs	@loop
-	lda	WINDOW_LEFT
+	lda	#0
 	sta	x1	; carrage return
 	lda	y1
 	clc
 	adc	#FONT_HEIGHT
 	sta	y1	; line feed
-	lda	WINDOW_BOTTOM
-	asl		; *2 (two pixels in a text row)
+	lda	#(DHGR_HEIGHT-1)
 	cmp	y1
 	bcs	@loop
 @break:
 	rts
 .endproc
 
+
+; draw 7x8 bitmap; fast but byte-aligned
+;
+; @param x1(modified) 0..79
+; @param y1(modified) 0..191
+; @param src - pointer to pixel data; 1 bit per pixel; MSB ignored; 1*8=8bytes.
+.proc dhgr_put8
+	ldy	#0	; Y = src offset
+	lda	x1
+	lsr
+	sta	x1	; x1 = x1 / 2 = dst offset
+	bcc	@loopy_even
+
+@loopy_odd:
+	ldx	y1
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	dst
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+
+	lda	(src),y
+
+	phy
+	ldy	x1
+	sta	(dst),y ; dst[x] = src[y]
+	ply
+
+	inc	y1
+	iny
+	cpy	#8 ; font height
+	bne	@loopy_odd
+	rts
+
+@loopy_even:
+	ldx	y1
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	dst
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+
+	lda	(src),y
+
+	phy
+	ldy	x1
+	AUX_BANK
+	sta	(dst),y	; dst[x] = src[y]
+	MAIN_BANK
+	ply
+
+	inc	y1
+	iny
+	cpy	#8
+	bne	@loopy_even
+	rts
+.endproc
+
+; draw 14x16 bitmap; fast but byte-aligned
+;
+; @param x1(modified) 0..79
+; @param y1(modified) 0..191
+; @param src - pointer to pixel data; 1 bit per pixel; MSB ignored; 2*8=16bytes
+.proc dhgr_put16
+	ldy	#0	; Y = src offset
+	lda	x1
+	lsr		;
+	sta	x1	; x1 = x1 / 2 = dst offset
+	bcc	@loopy_even
+
+@loopy_odd:
+	ldx	y1
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	dst
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+
+	; first byte: main bank
+	lda	(src),y
+
+	phy
+	ldy	x1
+	sta	(dst),y	; dst[x] = src[y]
+	ply
+
+	; second byte: aux bank & next address
+	iny
+	lda	(src),y
+
+	ldy	x1
+	iny
+	AUX_BANK
+	sta	(dst),y	; dst[x+1] = src[++y]
+	MAIN_BANK
+
+	inc	y1
+	iny
+	cpy	#8 ; font height
+	bne	@loopy_odd
+	rts
+
+@loopy_even:
+	ldx	y1
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	dst
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+
+	; first byte: aux bank
+	lda	(src),y
+
+	phy
+	ldy	x1
+	AUX_BANK
+	sta	(dst),y	; dst[x] = src[y]
+	MAIN_BANK
+	ply
+
+	; second byte: main bank & same address
+	iny
+	lda	(src),y
+
+	ldy	x1
+	sta	(dst),y	; dst[x] = src[++y]
+
+	inc	y1
+	iny
+	cpy	#16
+	bne	@loopy_even
+	rts
+.endproc
+
+; draw char
+; @param x1(modified)
+; @param y1(modified)
+; @param ch
+.proc dhgr_putc8
+	lda	#<font7x8
+	sta	src
+	lda	#>font7x8
+	sta	src+1
+
+	lda	ch
+	sec
+	sbc	#$20	; A = ch - $20
+	sta	ch
+	lsr
+	lsr
+	lsr
+	lsr
+	lsr
+	pha	; hi((ch - $20) * 8)
+
+	lda	ch
+	asl
+	asl
+	asl	; lo((ch - $20) * 8)
+
+	clc
+	adc	src
+	sta	src
+
+	pla
+	adc	src+1
+	sta	src+1
+
+	jsr	dhgr_put8
+	;jsr	dhgr_put16
+	rts
+.endproc
+
+
+; draw text string
+; @param x1(modified)
+; @param y1(modified)
+; @param src - pointer to string ends with zero
+.proc	dhgr_puts8
+	ldy	#0
+@loop:
+	lda	(src),y
+	beq	@break
+	sta	ch
+	PUSH_VARS x1, y1, src, src+1
+	phy
+	jsr	dhgr_putc8
+	ply
+	PULL_VARS src+1, src, y1, x1
+	iny		; next char
+
+	lda	x1
+	clc
+	adc	#1	; x1+=1 foward
+	sta	x1
+	cmp	#(DHGR_BYTES_PER_ROW)
+	bcc	@loop	; if x1 < 80
+
+	lda	#0
+	sta	x1	; x=0 carrage return
+
+	lda	y1
+	clc
+	adc	#8	; y1+=8 line feed
+	sta	y1
+	cmp	#(DHGR_HEIGHT-8)
+	bcc	@loop ; while y1 < 192-8
+@break:
+	rts
+.endproc
+
+
 .include	"softswitch.inc"
 .include	"math.inc"
 .include	"hgr.inc"
 .include	"dhgr.inc"
-.include	"font.inc"
+.include	"4x6.inc"
+.include	"7x8.inc"
 ;.include	"pixmap.inc"
 ;.include	"bitmap.inc"

@@ -104,7 +104,6 @@ Current file: dhgrc.s
 000000r 2               .endmacro
 000000r 2               
 000000r 1               	.forceimport	__STARTUP__
-000000r 1               	.import		_clrscr
 000000r 1               	.import		_cputsxy
 000000r 1               	.import		_cgetc
 000000r 1               	.import		_open
@@ -4538,251 +4537,180 @@ Current file: dhgrc.s
 0002F8r 1  EC 95 84 ED  	.byte	$EC,$95,$84,$ED,$94,$84,$EB,$8B,$A4,$21,$00
 0002FCr 1  94 84 EB 8B  
 000300r 1  A4 21 00     
-000303r 1               L173E:
-000303r 1  50 52 45 53  	.byte	$50,$52,$45,$53,$53,$20,$41,$4E,$59,$20,$4B,$45,$59,$20,$54,$4F
-000307r 1  53 20 41 4E  
-00030Br 1  59 20 4B 45  
-000313r 1  20 43 4F 4E  	.byte	$20,$43,$4F,$4E,$54,$49,$4E,$55,$45,$2E,$2E,$2E,$00
-000317r 1  54 49 4E 55  
-00031Br 1  45 2E 2E 2E  
-000320r 1               L1728:
-000320r 1  46 49 4C 4C  	.byte	$46,$49,$4C,$4C,$52,$45,$43,$54,$20,$54,$45,$53,$54,$00
-000324r 1  52 45 43 54  
-000328r 1  20 54 45 53  
-00032Er 1               L16E0:
-00032Er 1  36 2E 20 46  	.byte	$36,$2E,$20,$46,$49,$4C,$4C,$52,$45,$43,$54,$00
-000332r 1  49 4C 4C 52  
-000336r 1  45 43 54 00  
-00033Ar 1               L0509:
-00033Ar 1  69 6D 61 67  	.byte	$69,$6D,$61,$67,$65,$31,$2E,$64,$68,$67,$72,$00
-00033Er 1  65 31 2E 64  
-000342r 1  68 67 72 00  
-000346r 1               L1710:
-000346r 1  48 4C 49 4E  	.byte	$48,$4C,$49,$4E,$45,$20,$54,$45,$53,$54,$00
-00034Ar 1  45 20 54 45  
-00034Er 1  53 54 00     
-000351r 1               L1730:
-000351r 1  49 4D 41 47  	.byte	$49,$4D,$41,$47,$45,$20,$54,$45,$53,$54,$00
-000355r 1  45 20 54 45  
-000359r 1  53 54 00     
-00035Cr 1               L1718:
-00035Cr 1  56 4C 49 4E  	.byte	$56,$4C,$49,$4E,$45,$20,$54,$45,$53,$54,$00
-000360r 1  45 20 54 45  
-000364r 1  53 54 00     
-000367r 1               L1708:
-000367r 1  50 4C 4F 54  	.byte	$50,$4C,$4F,$54,$20,$54,$45,$53,$54,$00
-00036Br 1  20 54 45 53  
-00036Fr 1  54 00        
-000371r 1               L1720	:=	L1728+4
-000371r 1               L1738:
-000371r 1  54 45 58 54  	.byte	$54,$45,$58,$54,$20,$54,$45,$53,$54,$00
-000375r 1  20 54 45 53  
-000379r 1  54 00        
-00037Br 1               L16C2:
-00037Br 1  44 48 47 52  	.byte	$44,$48,$47,$52,$20,$54,$45,$53,$54,$00
-00037Fr 1  20 54 45 53  
-000383r 1  54 00        
-000385r 1               L16D6:
-000385r 1  34 2E 20 56  	.byte	$34,$2E,$20,$56,$4C,$49,$4E,$45,$00
-000389r 1  4C 49 4E 45  
-00038Dr 1  00           
-00038Er 1               L16D1:
-00038Er 1  33 2E 20 48  	.byte	$33,$2E,$20,$48,$4C,$49,$4E,$45,$00
-000392r 1  4C 49 4E 45  
-000396r 1  00           
-000397r 1               L16E5:
-000397r 1  37 2E 20 49  	.byte	$37,$2E,$20,$49,$4D,$41,$47,$45,$00
-00039Br 1  4D 41 47 45  
-00039Fr 1  00           
-0003A0r 1               L1700:
-0003A0r 1  43 4C 53 20  	.byte	$43,$4C,$53,$20,$54,$45,$53,$54,$00
-0003A4r 1  54 45 53 54  
-0003A8r 1  00           
-0003A9r 1               L16EA:
-0003A9r 1  38 2E 20 54  	.byte	$38,$2E,$20,$54,$45,$58,$54,$00
-0003ADr 1  45 58 54 00  
-0003B1r 1               L16DB:
-0003B1r 1  35 2E 20 52  	.byte	$35,$2E,$20,$52,$45,$43,$54,$00
-0003B5r 1  45 43 54 00  
-0003B9r 1               L01AA:
-0003B9r 1  44 4B 47 52  	.byte	$44,$4B,$47,$52,$45,$45,$4E,$00
-0003BDr 1  45 45 4E 00  
-0003C1r 1               L16EF:
-0003C1r 1  51 2E 20 51  	.byte	$51,$2E,$20,$51,$55,$49,$54,$00
-0003C5r 1  55 49 54 00  
-0003C9r 1               L16CC:
-0003C9r 1  32 2E 20 50  	.byte	$32,$2E,$20,$50,$4C,$4F,$54,$00
-0003CDr 1  4C 4F 54 00  
-0003D1r 1               L01BE:
-0003D1r 1  4F 52 41 4E  	.byte	$4F,$52,$41,$4E,$47,$45,$00
-0003D5r 1  47 45 00     
-0003D8r 1               L01BC:
-0003D8r 1  4C 54 42 4C  	.byte	$4C,$54,$42,$4C,$55,$45,$00
-0003DCr 1  55 45 00     
-0003DFr 1               L01BA:
-0003DFr 1  44 4B 47 52  	.byte	$44,$4B,$47,$52,$41,$59,$00
-0003E3r 1  41 59 00     
-0003E6r 1               L01B8:
-0003E6r 1  50 55 52 50  	.byte	$50,$55,$52,$50,$4C,$45,$00
-0003EAr 1  4C 45 00     
-0003EDr 1               L01B0:
-0003EDr 1  4C 54 47 52  	.byte	$4C,$54,$47,$52,$41,$59,$00
-0003F1r 1  41 59 00     
-0003F4r 1               L01A8:
-0003F4r 1  44 4B 42 4C  	.byte	$44,$4B,$42,$4C,$55,$45,$00
-0003F8r 1  55 45 00     
-0003FBr 1               L01C2:
-0003FBr 1  59 45 4C 4C  	.byte	$59,$45,$4C,$4C,$4F,$57,$00
-0003FFr 1  4F 57 00     
-000402r 1               L16C7:
-000402r 1  31 2E 20 43  	.byte	$31,$2E,$20,$43,$4C,$53,$00
-000406r 1  4C 53 00     
-000409r 1               L14E2:
-000409r 1  EC 97 86 EC  	.byte	$EC,$97,$86,$EC,$9D,$8C,$00
-00040Dr 1  9D 8C 00     
-000410r 1               L01B2	:=	L01AA+2
-000410r 1               L01AE:
-000410r 1  42 52 4F 57  	.byte	$42,$52,$4F,$57,$4E,$00
-000414r 1  4E 00        
-000416r 1               L01C4:
-000416r 1  57 48 49 54  	.byte	$57,$48,$49,$54,$45,$00
-00041Ar 1  45 00        
-00041Cr 1               L01A6:
-00041Cr 1  42 4C 41 43  	.byte	$42,$4C,$41,$43,$4B,$00
-000420r 1  4B 00        
-000422r 1               L01B4:
-000422r 1  41 51 55 41  	.byte	$41,$51,$55,$41,$00
-000426r 1  00           
-000427r 1               L01C0:
-000427r 1  50 49 4E 4B  	.byte	$50,$49,$4E,$4B,$00
-00042Br 1  00           
-00042Cr 1               L01AC	:=	L01BC+2
-00042Cr 1               L14BE:
-00042Cr 1  E3 85 92 00  	.byte	$E3,$85,$92,$00
-000430r 1               L14C0:
-000430r 1  E3 85 93 00  	.byte	$E3,$85,$93,$00
-000434r 1               L14C2:
-000434r 1  E3 85 94 00  	.byte	$E3,$85,$94,$00
-000438r 1               L14C4:
-000438r 1  E3 85 95 00  	.byte	$E3,$85,$95,$00
-00043Cr 1               L14C6:
-00043Cr 1  E3 85 96 00  	.byte	$E3,$85,$96,$00
-000440r 1               L14C8:
-000440r 1  E3 85 97 00  	.byte	$E3,$85,$97,$00
-000444r 1               L14CA:
-000444r 1  E3 85 98 00  	.byte	$E3,$85,$98,$00
-000448r 1               L14CC:
-000448r 1  E3 85 99 00  	.byte	$E3,$85,$99,$00
-00044Cr 1               L14CE:
-00044Cr 1  E3 85 9A 00  	.byte	$E3,$85,$9A,$00
-000450r 1               L14D0:
-000450r 1  E3 85 9B 00  	.byte	$E3,$85,$9B,$00
-000454r 1               L14D2:
-000454r 1  E3 85 9C 00  	.byte	$E3,$85,$9C,$00
-000458r 1               L14D4:
-000458r 1  E3 85 9D 00  	.byte	$E3,$85,$9D,$00
-00045Cr 1               L14D6:
-00045Cr 1  E3 85 9E 00  	.byte	$E3,$85,$9E,$00
-000460r 1               L14D8:
-000460r 1  E3 85 9F 00  	.byte	$E3,$85,$9F,$00
-000464r 1               L14DA:
-000464r 1  E3 85 A0 00  	.byte	$E3,$85,$A0,$00
-000468r 1               L14DC:
-000468r 1  E3 85 A1 00  	.byte	$E3,$85,$A1,$00
-00046Cr 1               L14DE:
-00046Cr 1  E3 85 A2 00  	.byte	$E3,$85,$A2,$00
-000470r 1               L14E0:
-000470r 1  E3 85 A3 00  	.byte	$E3,$85,$A3,$00
-000474r 1               L14B4:
-000474r 1  E3 85 8D 00  	.byte	$E3,$85,$8D,$00
-000478r 1               L14E4:
-000478r 1  E3 84 B1 00  	.byte	$E3,$84,$B1,$00
-00047Cr 1               L14E6:
-00047Cr 1  E3 84 B2 00  	.byte	$E3,$84,$B2,$00
-000480r 1               L14E8:
-000480r 1  E3 84 B3 00  	.byte	$E3,$84,$B3,$00
-000484r 1               L14EA:
-000484r 1  E3 84 B4 00  	.byte	$E3,$84,$B4,$00
-000488r 1               L14EC:
-000488r 1  E3 84 B5 00  	.byte	$E3,$84,$B5,$00
-00048Cr 1               L14EE:
-00048Cr 1  E3 84 B6 00  	.byte	$E3,$84,$B6,$00
-000490r 1               L14F0:
-000490r 1  E3 84 B7 00  	.byte	$E3,$84,$B7,$00
-000494r 1               L14F2:
-000494r 1  E3 84 B9 00  	.byte	$E3,$84,$B9,$00
-000498r 1               L14F4:
-000498r 1  E3 84 BA 00  	.byte	$E3,$84,$BA,$00
-00049Cr 1               L14F6:
-00049Cr 1  E3 84 BB 00  	.byte	$E3,$84,$BB,$00
-0004A0r 1               L14F8:
-0004A0r 1  E3 84 BC 00  	.byte	$E3,$84,$BC,$00
-0004A4r 1               L14FA:
-0004A4r 1  E3 84 BD 00  	.byte	$E3,$84,$BD,$00
-0004A8r 1               L14FC:
-0004A8r 1  E3 84 BE 00  	.byte	$E3,$84,$BE,$00
-0004ACr 1               L14FE:
-0004ACr 1  E3 84 BF 00  	.byte	$E3,$84,$BF,$00
-0004B0r 1               L1500:
-0004B0r 1  E3 85 80 00  	.byte	$E3,$85,$80,$00
-0004B4r 1               L1502:
-0004B4r 1  E3 85 81 00  	.byte	$E3,$85,$81,$00
-0004B8r 1               L1504:
-0004B8r 1  E3 85 82 00  	.byte	$E3,$85,$82,$00
-0004BCr 1               L1506:
-0004BCr 1  E3 85 84 00  	.byte	$E3,$85,$84,$00
-0004C0r 1               L1508:
-0004C0r 1  E3 85 85 00  	.byte	$E3,$85,$85,$00
-0004C4r 1               L150A:
-0004C4r 1  E3 85 86 00  	.byte	$E3,$85,$86,$00
-0004C8r 1               L150C:
-0004C8r 1  E3 85 87 00  	.byte	$E3,$85,$87,$00
-0004CCr 1               L150E:
-0004CCr 1  E3 85 88 00  	.byte	$E3,$85,$88,$00
-0004D0r 1               L1510:
-0004D0r 1  E3 85 8A 00  	.byte	$E3,$85,$8A,$00
-0004D4r 1               L1512:
-0004D4r 1  E3 85 8B 00  	.byte	$E3,$85,$8B,$00
-0004D8r 1               L1514:
-0004D8r 1  E3 85 8C 00  	.byte	$E3,$85,$8C,$00
-0004DCr 1               L1516	:=	L14B4+0
-0004DCr 1               L1518:
-0004DCr 1  E3 85 8E 00  	.byte	$E3,$85,$8E,$00
-0004E0r 1               L14B2	:=	L1514+0
-0004E0r 1               L14B0	:=	L1512+0
-0004E0r 1               L14AE	:=	L1510+0
-0004E0r 1               L14AC:
-0004E0r 1  E3 85 89 00  	.byte	$E3,$85,$89,$00
-0004E4r 1               L14AA	:=	L150E+0
-0004E4r 1               L14A8	:=	L150C+0
-0004E4r 1               L14A6	:=	L150A+0
-0004E4r 1               L14A4	:=	L1508+0
-0004E4r 1               L14A2:
-0004E4r 1  E3 85 83 00  	.byte	$E3,$85,$83,$00
-0004E8r 1               L14A0	:=	L1504+0
-0004E8r 1               L149E	:=	L1502+0
-0004E8r 1               L149C	:=	L14F2+0
-0004E8r 1               L149A:
-0004E8r 1  E3 84 B8 00  	.byte	$E3,$84,$B8,$00
-0004ECr 1               L1498	:=	L14F0+0
-0004ECr 1               L1496	:=	L14EA+0
-0004ECr 1               L1494	:=	L14E6+0
-0004ECr 1               L1492	:=	L14E4+0
-0004ECr 1               L14BA:
-0004ECr 1  E3 85 90 00  	.byte	$E3,$85,$90,$00
-0004F0r 1               L01B6:
-0004F0r 1  52 45 44 00  	.byte	$52,$45,$44,$00
-0004F4r 1               L14B8:
-0004F4r 1  E3 85 8F 00  	.byte	$E3,$85,$8F,$00
-0004F8r 1               L14BC:
-0004F8r 1  E3 85 91 00  	.byte	$E3,$85,$91,$00
-0004FCr 1               L14B6	:=	L1518+0
-0004FCr 1               
-0004FCr 1               ; ---------------------------------------------------------------
-0004FCr 1               ; void __near__ dhgr_init (void)
-0004FCr 1               ; ---------------------------------------------------------------
-0004FCr 1               
-0004FCr 1               .segment	"CODE"
+000303r 1               L0509:
+000303r 1  69 6D 61 67  	.byte	$69,$6D,$61,$67,$65,$31,$2E,$64,$68,$67,$72,$00
+000307r 1  65 31 2E 64  
+00030Br 1  68 67 72 00  
+00030Fr 1               L01AA:
+00030Fr 1  44 4B 47 52  	.byte	$44,$4B,$47,$52,$45,$45,$4E,$00
+000313r 1  45 45 4E 00  
+000317r 1               L01BE:
+000317r 1  4F 52 41 4E  	.byte	$4F,$52,$41,$4E,$47,$45,$00
+00031Br 1  47 45 00     
+00031Er 1               L01B0:
+00031Er 1  4C 54 47 52  	.byte	$4C,$54,$47,$52,$41,$59,$00
+000322r 1  41 59 00     
+000325r 1               L01BC:
+000325r 1  4C 54 42 4C  	.byte	$4C,$54,$42,$4C,$55,$45,$00
+000329r 1  55 45 00     
+00032Cr 1               L01A8:
+00032Cr 1  44 4B 42 4C  	.byte	$44,$4B,$42,$4C,$55,$45,$00
+000330r 1  55 45 00     
+000333r 1               L14E2:
+000333r 1  EC 97 86 EC  	.byte	$EC,$97,$86,$EC,$9D,$8C,$00
+000337r 1  9D 8C 00     
+00033Ar 1               L01B8:
+00033Ar 1  50 55 52 50  	.byte	$50,$55,$52,$50,$4C,$45,$00
+00033Er 1  4C 45 00     
+000341r 1               L01BA:
+000341r 1  44 4B 47 52  	.byte	$44,$4B,$47,$52,$41,$59,$00
+000345r 1  41 59 00     
+000348r 1               L01C2:
+000348r 1  59 45 4C 4C  	.byte	$59,$45,$4C,$4C,$4F,$57,$00
+00034Cr 1  4F 57 00     
+00034Fr 1               L01AE:
+00034Fr 1  42 52 4F 57  	.byte	$42,$52,$4F,$57,$4E,$00
+000353r 1  4E 00        
+000355r 1               L01C4:
+000355r 1  57 48 49 54  	.byte	$57,$48,$49,$54,$45,$00
+000359r 1  45 00        
+00035Br 1               L01B2	:=	L01AA+2
+00035Br 1               L01A6:
+00035Br 1  42 4C 41 43  	.byte	$42,$4C,$41,$43,$4B,$00
+00035Fr 1  4B 00        
+000361r 1               L01AC	:=	L01BC+2
+000361r 1               L01B4:
+000361r 1  41 51 55 41  	.byte	$41,$51,$55,$41,$00
+000365r 1  00           
+000366r 1               L01C0:
+000366r 1  50 49 4E 4B  	.byte	$50,$49,$4E,$4B,$00
+00036Ar 1  00           
+00036Br 1               L1498:
+00036Br 1  E3 84 B7 00  	.byte	$E3,$84,$B7,$00
+00036Fr 1               L149A:
+00036Fr 1  E3 84 B8 00  	.byte	$E3,$84,$B8,$00
+000373r 1               L149C:
+000373r 1  E3 84 B9 00  	.byte	$E3,$84,$B9,$00
+000377r 1               L149E:
+000377r 1  E3 85 81 00  	.byte	$E3,$85,$81,$00
+00037Br 1               L14A0:
+00037Br 1  E3 85 82 00  	.byte	$E3,$85,$82,$00
+00037Fr 1               L14A2:
+00037Fr 1  E3 85 83 00  	.byte	$E3,$85,$83,$00
+000383r 1               L14A4:
+000383r 1  E3 85 85 00  	.byte	$E3,$85,$85,$00
+000387r 1               L14A6:
+000387r 1  E3 85 86 00  	.byte	$E3,$85,$86,$00
+00038Br 1               L14A8:
+00038Br 1  E3 85 87 00  	.byte	$E3,$85,$87,$00
+00038Fr 1               L14AA:
+00038Fr 1  E3 85 88 00  	.byte	$E3,$85,$88,$00
+000393r 1               L14AC:
+000393r 1  E3 85 89 00  	.byte	$E3,$85,$89,$00
+000397r 1               L14AE:
+000397r 1  E3 85 8A 00  	.byte	$E3,$85,$8A,$00
+00039Br 1               L14B0:
+00039Br 1  E3 85 8B 00  	.byte	$E3,$85,$8B,$00
+00039Fr 1               L14B2:
+00039Fr 1  E3 85 8C 00  	.byte	$E3,$85,$8C,$00
+0003A3r 1               L14B4:
+0003A3r 1  E3 85 8D 00  	.byte	$E3,$85,$8D,$00
+0003A7r 1               L14B6:
+0003A7r 1  E3 85 8E 00  	.byte	$E3,$85,$8E,$00
+0003ABr 1               L14B8:
+0003ABr 1  E3 85 8F 00  	.byte	$E3,$85,$8F,$00
+0003AFr 1               L14BA:
+0003AFr 1  E3 85 90 00  	.byte	$E3,$85,$90,$00
+0003B3r 1               L14BC:
+0003B3r 1  E3 85 91 00  	.byte	$E3,$85,$91,$00
+0003B7r 1               L14BE:
+0003B7r 1  E3 85 92 00  	.byte	$E3,$85,$92,$00
+0003BBr 1               L14C0:
+0003BBr 1  E3 85 93 00  	.byte	$E3,$85,$93,$00
+0003BFr 1               L14C2:
+0003BFr 1  E3 85 94 00  	.byte	$E3,$85,$94,$00
+0003C3r 1               L14C4:
+0003C3r 1  E3 85 95 00  	.byte	$E3,$85,$95,$00
+0003C7r 1               L14C6:
+0003C7r 1  E3 85 96 00  	.byte	$E3,$85,$96,$00
+0003CBr 1               L14C8:
+0003CBr 1  E3 85 97 00  	.byte	$E3,$85,$97,$00
+0003CFr 1               L14CA:
+0003CFr 1  E3 85 98 00  	.byte	$E3,$85,$98,$00
+0003D3r 1               L14CC:
+0003D3r 1  E3 85 99 00  	.byte	$E3,$85,$99,$00
+0003D7r 1               L14CE:
+0003D7r 1  E3 85 9A 00  	.byte	$E3,$85,$9A,$00
+0003DBr 1               L14D0:
+0003DBr 1  E3 85 9B 00  	.byte	$E3,$85,$9B,$00
+0003DFr 1               L14D2:
+0003DFr 1  E3 85 9C 00  	.byte	$E3,$85,$9C,$00
+0003E3r 1               L14D4:
+0003E3r 1  E3 85 9D 00  	.byte	$E3,$85,$9D,$00
+0003E7r 1               L14D6:
+0003E7r 1  E3 85 9E 00  	.byte	$E3,$85,$9E,$00
+0003EBr 1               L14D8:
+0003EBr 1  E3 85 9F 00  	.byte	$E3,$85,$9F,$00
+0003EFr 1               L14DA:
+0003EFr 1  E3 85 A0 00  	.byte	$E3,$85,$A0,$00
+0003F3r 1               L14DC:
+0003F3r 1  E3 85 A1 00  	.byte	$E3,$85,$A1,$00
+0003F7r 1               L14DE:
+0003F7r 1  E3 85 A2 00  	.byte	$E3,$85,$A2,$00
+0003FBr 1               L14E0:
+0003FBr 1  E3 85 A3 00  	.byte	$E3,$85,$A3,$00
+0003FFr 1               L01B6:
+0003FFr 1  52 45 44 00  	.byte	$52,$45,$44,$00
+000403r 1               L14E4:
+000403r 1  E3 84 B1 00  	.byte	$E3,$84,$B1,$00
+000407r 1               L14E6:
+000407r 1  E3 84 B2 00  	.byte	$E3,$84,$B2,$00
+00040Br 1               L14E8:
+00040Br 1  E3 84 B3 00  	.byte	$E3,$84,$B3,$00
+00040Fr 1               L14EA:
+00040Fr 1  E3 84 B4 00  	.byte	$E3,$84,$B4,$00
+000413r 1               L14EC:
+000413r 1  E3 84 B5 00  	.byte	$E3,$84,$B5,$00
+000417r 1               L14EE:
+000417r 1  E3 84 B6 00  	.byte	$E3,$84,$B6,$00
+00041Br 1               L14F0	:=	L1498+0
+00041Br 1               L14F2	:=	L149C+0
+00041Br 1               L14F4:
+00041Br 1  E3 84 BA 00  	.byte	$E3,$84,$BA,$00
+00041Fr 1               L14F6:
+00041Fr 1  E3 84 BB 00  	.byte	$E3,$84,$BB,$00
+000423r 1               L14F8:
+000423r 1  E3 84 BC 00  	.byte	$E3,$84,$BC,$00
+000427r 1               L14FA:
+000427r 1  E3 84 BD 00  	.byte	$E3,$84,$BD,$00
+00042Br 1               L14FC:
+00042Br 1  E3 84 BE 00  	.byte	$E3,$84,$BE,$00
+00042Fr 1               L14FE:
+00042Fr 1  E3 84 BF 00  	.byte	$E3,$84,$BF,$00
+000433r 1               L1500:
+000433r 1  E3 85 80 00  	.byte	$E3,$85,$80,$00
+000437r 1               L1502	:=	L149E+0
+000437r 1               L1504	:=	L14A0+0
+000437r 1               L1506:
+000437r 1  E3 85 84 00  	.byte	$E3,$85,$84,$00
+00043Br 1               L1508	:=	L14A4+0
+00043Br 1               L150A	:=	L14A6+0
+00043Br 1               L150C	:=	L14A8+0
+00043Br 1               L150E	:=	L14AA+0
+00043Br 1               L1510	:=	L14AE+0
+00043Br 1               L1512	:=	L14B0+0
+00043Br 1               L1514	:=	L14B2+0
+00043Br 1               L1516	:=	L14B4+0
+00043Br 1               L1518	:=	L14B6+0
+00043Br 1               L1494	:=	L14E6+0
+00043Br 1               L1492	:=	L14E4+0
+00043Br 1               L1496	:=	L14EA+0
+00043Br 1               
+00043Br 1               ; ---------------------------------------------------------------
+00043Br 1               ; void __near__ dhgr_init (void)
+00043Br 1               ; ---------------------------------------------------------------
+00043Br 1               
+00043Br 1               .segment	"CODE"
 000000r 1               
 000000r 1               .proc	_dhgr_init: near
 000000r 1               
@@ -5063,15 +4991,15 @@ Current file: dhgrc.s
 000199r 1  92 rr        	sta     (sp)
 00019Br 1  64 rr        	stz     regbank+2
 00019Dr 1  A2 00        	ldx     #$00
-00019Fr 1  A5 rr        L1749:	lda     regbank+2
+00019Fr 1  A5 rr        L16EB:	lda     regbank+2
 0001A1r 1  C9 C0        	cmp     #$C0
 0001A3r 1  90 03 4C rr  	jcs     L0215
 0001A7r 1  rr           
 0001A8r 1  0A           	asl     a
-0001A9r 1  90 02        	bcc     L1748
+0001A9r 1  90 02        	bcc     L16EA
 0001ABr 1  E8           	inx
 0001ACr 1  18           	clc
-0001ADr 1  69 rr        L1748:	adc     #<(_HGR_OFFSET)
+0001ADr 1  69 rr        L16EA:	adc     #<(_HGR_OFFSET)
 0001AFr 1  85 rr        	sta     ptr1
 0001B1r 1  8A           	txa
 0001B2r 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -5086,19 +5014,19 @@ Current file: dhgrc.s
 0001C1r 1  69 20        	adc     #$20
 0001C3r 1  85 rr        	sta     regbank+4+1
 0001C5r 1  A9 00        	lda     #$00
-0001C7r 1  85 rr        L1747:	sta     regbank+3
+0001C7r 1  85 rr        L16E9:	sta     regbank+3
 0001C9r 1  A2 00        	ldx     #$00
 0001CBr 1  A5 rr        	lda     regbank+3
 0001CDr 1  C9 28        	cmp     #$28
-0001CFr 1  B0 5F        	bcs     L174A
+0001CFr 1  B0 5F        	bcs     L16EC
 0001D1r 1  8D 55 C0     	sta     $c055
 0001D4r 1  A5 rr        	lda     regbank+4
 0001D6r 1  A6 rr        	ldx     regbank+4+1
 0001D8r 1  18           	clc
 0001D9r 1  65 rr        	adc     regbank+3
-0001DBr 1  90 01        	bcc     L1742
+0001DBr 1  90 01        	bcc     L16E4
 0001DDr 1  E8           	inx
-0001DEr 1  85 rr        L1742:	sta     ptr1
+0001DEr 1  85 rr        L16E4:	sta     ptr1
 0001E0r 1  86 rr        	stx     ptr1+1
 0001E2r 1  A5 rr        	lda     regbank+1
 0001E4r 1  92 rr        	sta     (ptr1)
@@ -5106,9 +5034,9 @@ Current file: dhgrc.s
 0001E8r 1  A6 rr        	ldx     regbank+4+1
 0001EAr 1  18           	clc
 0001EBr 1  65 rr        	adc     regbank+3
-0001EDr 1  90 01        	bcc     L1743
+0001EDr 1  90 01        	bcc     L16E5
 0001EFr 1  E8           	inx
-0001F0r 1  1A           L1743:	ina
+0001F0r 1  1A           L16E5:	ina
 0001F1r 1  D0 01        	bne     L0230
 0001F3r 1  E8           	inx
 0001F4r 1  85 rr        L0230:	sta     ptr1
@@ -5121,9 +5049,9 @@ Current file: dhgrc.s
 000203r 1  A6 rr        	ldx     regbank+4+1
 000205r 1  18           	clc
 000206r 1  65 rr        	adc     regbank+3
-000208r 1  90 01        	bcc     L1744
+000208r 1  90 01        	bcc     L16E6
 00020Ar 1  E8           	inx
-00020Br 1  85 rr        L1744:	sta     ptr1
+00020Br 1  85 rr        L16E6:	sta     ptr1
 00020Dr 1  86 rr        	stx     ptr1+1
 00020Fr 1  A5 rr        	lda     regbank+0
 000211r 1  92 rr        	sta     (ptr1)
@@ -5131,9 +5059,9 @@ Current file: dhgrc.s
 000215r 1  A6 rr        	ldx     regbank+4+1
 000217r 1  18           	clc
 000218r 1  65 rr        	adc     regbank+3
-00021Ar 1  90 01        	bcc     L1745
+00021Ar 1  90 01        	bcc     L16E7
 00021Cr 1  E8           	inx
-00021Dr 1  1A           L1745:	ina
+00021Dr 1  1A           L16E7:	ina
 00021Er 1  D0 01        	bne     L0239
 000220r 1  E8           	inx
 000221r 1  85 rr        L0239:	sta     ptr1
@@ -5143,9 +5071,9 @@ Current file: dhgrc.s
 000229r 1  A9 02        	lda     #$02
 00022Br 1  18           	clc
 00022Cr 1  65 rr        	adc     regbank+3
-00022Er 1  80 97        	bra     L1747
-000230r 1  E6 rr        L174A:	inc     regbank+2
-000232r 1  4C rr rr     	jmp     L1749
+00022Er 1  80 97        	bra     L16E9
+000230r 1  E6 rr        L16EC:	inc     regbank+2
+000232r 1  4C rr rr     	jmp     L16EB
 000235r 1  A0 07        L0215:	ldy     #$07
 000237r 1  A2 05        	ldx     #$05
 000239r 1  B1 rr        L023B:	lda     (sp),y
@@ -5176,10 +5104,10 @@ Current file: dhgrc.s
 000252r 1  A2 00        	ldx     #$00
 000254r 1  B1 rr        	lda     (sp),y
 000256r 1  0A           	asl     a
-000257r 1  90 02        	bcc     L174C
+000257r 1  90 02        	bcc     L16EE
 000259r 1  E8           	inx
 00025Ar 1  18           	clc
-00025Br 1  69 rr        L174C:	adc     #<(_HGR_OFFSET)
+00025Br 1  69 rr        L16EE:	adc     #<(_HGR_OFFSET)
 00025Dr 1  85 rr        	sta     ptr1
 00025Fr 1  8A           	txa
 000260r 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -5295,10 +5223,10 @@ Current file: dhgrc.s
 000318r 1  A2 00        	ldx     #$00
 00031Ar 1  B1 rr        	lda     (sp),y
 00031Cr 1  0A           	asl     a
-00031Dr 1  90 02        	bcc     L174F
+00031Dr 1  90 02        	bcc     L16F1
 00031Fr 1  E8           	inx
 000320r 1  18           	clc
-000321r 1  69 rr        L174F:	adc     #<(_HGR_OFFSET)
+000321r 1  69 rr        L16F1:	adc     #<(_HGR_OFFSET)
 000323r 1  85 rr        	sta     ptr1
 000325r 1  8A           	txa
 000326r 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -5327,7 +5255,7 @@ Current file: dhgrc.s
 000351r 1  A9 07        	lda     #$07
 000353r 1  20 rr rr     	jsr     tosumoda0
 000356r 1  E0 00        	cpx     #$00
-000358r 1  F0 03 4C rr  	jne     L1751
+000358r 1  F0 03 4C rr  	jne     L16F3
 00035Cr 1  rr           
 00035Dr 1  C9 00        	cmp     #$00
 00035Fr 1  F0 24        	beq     L0264
@@ -5346,7 +5274,7 @@ Current file: dhgrc.s
 00037Br 1  C9 06        	cmp     #$06
 00037Dr 1  D0 03 4C rr  	jeq     L02C0
 000381r 1  rr           
-000382r 1  4C rr rr     	jmp     L1751
+000382r 1  4C rr rr     	jmp     L16F3
 000385r 1  9C 55 C0     L0264:	stz     $c055
 000388r 1  B2 rr        	lda     (regbank+4)
 00038Ar 1  29 F0        	and     #$F0
@@ -5357,7 +5285,7 @@ Current file: dhgrc.s
 000394r 1  05 rr        	ora     ptr1
 000396r 1  92 rr        	sta     (regbank+4)
 000398r 1  8D 54 C0     	sta     $c054
-00039Br 1  4C rr rr     	jmp     L1751
+00039Br 1  4C rr rr     	jmp     L16F3
 00039Er 1  8D 55 C0     L026E:	sta     $c055
 0003A1r 1  B2 rr        	lda     (regbank+4)
 0003A3r 1  29 8F        	and     #$8F
@@ -5384,7 +5312,7 @@ Current file: dhgrc.s
 0003CAr 1  4A           	lsr     a
 0003CBr 1  4A           	lsr     a
 0003CCr 1  29 01        	and     #$01
-0003CEr 1  4C rr rr     	jmp     L1754
+0003CEr 1  4C rr rr     	jmp     L16F6
 0003D1r 1  A5 rr        L027E:	lda     regbank+4
 0003D3r 1  A6 rr        	ldx     regbank+4+1
 0003D5r 1  20 rr rr     	jsr     pushax
@@ -5395,7 +5323,7 @@ Current file: dhgrc.s
 0003E0r 1  B1 rr        	lda     (sp),y
 0003E2r 1  0A           	asl     a
 0003E3r 1  29 1E        	and     #$1E
-0003E5r 1  4C rr rr     	jmp     L1754
+0003E5r 1  4C rr rr     	jmp     L16F6
 0003E8r 1  B2 rr        L0285:	lda     (regbank+4)
 0003EAr 1  29 9F        	and     #$9F
 0003ECr 1  85 rr        	sta     ptr1
@@ -5434,7 +5362,7 @@ Current file: dhgrc.s
 000429r 1  05 rr        	ora     ptr1
 00042Br 1  92 rr        	sta     (sreg)
 00042Dr 1  8D 54 C0     	sta     $c054
-000430r 1  4C rr rr     	jmp     L1751
+000430r 1  4C rr rr     	jmp     L16F3
 000433r 1  8D 55 C0     L0299:	sta     $c055
 000436r 1  A5 rr        	lda     regbank+4
 000438r 1  A6 rr        	ldx     regbank+4+1
@@ -5461,7 +5389,7 @@ Current file: dhgrc.s
 00045Cr 1  05 rr        	ora     ptr1
 00045Er 1  92 rr        	sta     (sreg)
 000460r 1  8D 54 C0     	sta     $c054
-000463r 1  4C rr rr     	jmp     L1751
+000463r 1  4C rr rr     	jmp     L16F3
 000466r 1  8D 55 C0     L02A8:	sta     $c055
 000469r 1  A5 rr        	lda     regbank+4
 00046Br 1  A6 rr        	ldx     regbank+4+1
@@ -5512,7 +5440,7 @@ Current file: dhgrc.s
 0004B9r 1  B1 rr        	lda     (sp),y
 0004BBr 1  4A           	lsr     a
 0004BCr 1  29 07        	and     #$07
-0004BEr 1  80 26        	bra     L1754
+0004BEr 1  80 26        	bra     L16F6
 0004C0r 1  A5 rr        L02C0:	lda     regbank+4
 0004C2r 1  A6 rr        	ldx     regbank+4+1
 0004C4r 1  1A           	ina
@@ -5535,10 +5463,10 @@ Current file: dhgrc.s
 0004E2r 1  0A           	asl     a
 0004E3r 1  0A           	asl     a
 0004E4r 1  29 78        	and     #$78
-0004E6r 1  05 rr        L1754:	ora     ptr1
+0004E6r 1  05 rr        L16F6:	ora     ptr1
 0004E8r 1  A0 00        	ldy     #$00
 0004EAr 1  20 rr rr     	jsr     staspidx
-0004EDr 1  B2 rr        L1751:	lda     (sp)
+0004EDr 1  B2 rr        L16F3:	lda     (sp)
 0004EFr 1  85 rr        	sta     regbank+4
 0004F1r 1  A0 01        	ldy     #$01
 0004F3r 1  B1 rr        	lda     (sp),y
@@ -5565,10 +5493,10 @@ Current file: dhgrc.s
 000506r 1  A2 00        	ldx     #$00
 000508r 1  B1 rr        	lda     (sp),y
 00050Ar 1  0A           	asl     a
-00050Br 1  90 02        	bcc     L1758
+00050Br 1  90 02        	bcc     L16FA
 00050Dr 1  E8           	inx
 00050Er 1  18           	clc
-00050Fr 1  69 rr        L1758:	adc     #<(_HGR_OFFSET)
+00050Fr 1  69 rr        L16FA:	adc     #<(_HGR_OFFSET)
 000511r 1  85 rr        	sta     ptr1
 000513r 1  8A           	txa
 000514r 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -5654,7 +5582,7 @@ Current file: dhgrc.s
 0005BBr 1  8A           	txa
 0005BCr 1  05 rr        	ora     ptr1+1
 0005BEr 1  68           	pla
-0005BFr 1  4C rr rr     	jmp     L1757
+0005BFr 1  4C rr rr     	jmp     L16F9
 0005C2r 1  B2 rr        L02EC:	lda     (regbank+4)
 0005C4r 1  85 rr        	sta     regbank+2
 0005C6r 1  29 1E        	and     #$1E
@@ -5691,7 +5619,7 @@ Current file: dhgrc.s
 0005FFr 1  8A           	txa
 000600r 1  05 rr        	ora     ptr1+1
 000602r 1  68           	pla
-000603r 1  80 7C        	bra     L1757
+000603r 1  80 7C        	bra     L16F9
 000605r 1  8D 55 C0     L0303:	sta     $c055
 000608r 1  A5 rr        	lda     regbank+4
 00060Ar 1  A6 rr        	ldx     regbank+4+1
@@ -5743,14 +5671,14 @@ Current file: dhgrc.s
 00065Br 1  A5 rr        	lda     regbank+0
 00065Dr 1  29 07        	and     #$07
 00065Fr 1  0A           	asl     a
-000660r 1  90 01        	bcc     L1756
+000660r 1  90 01        	bcc     L16F8
 000662r 1  E8           	inx
-000663r 1  05 rr        L1756:	ora     ptr1
+000663r 1  05 rr        L16F8:	ora     ptr1
 000665r 1  48           	pha
 000666r 1  8A           	txa
 000667r 1  05 rr        	ora     ptr1+1
 000669r 1  68           	pla
-00066Ar 1  80 15        	bra     L1757
+00066Ar 1  80 15        	bra     L16F9
 00066Cr 1  A5 rr        L0322:	lda     regbank+4
 00066Er 1  A6 rr        	ldx     regbank+4+1
 000670r 1  1A           	ina
@@ -5764,7 +5692,7 @@ Current file: dhgrc.s
 00067Er 1  4A           	lsr     a
 00067Fr 1  4A           	lsr     a
 000680r 1  4A           	lsr     a
-000681r 1  A2 00        L1757:	ldx     #$00
+000681r 1  A2 00        L16F9:	ldx     #$00
 000683r 1  48           L02D2:	pha
 000684r 1  A0 00        	ldy     #$00
 000686r 1  B1 rr        L0329:	lda     (sp),y
@@ -5793,8 +5721,8 @@ Current file: dhgrc.s
 00069Br 1  38           	sec
 00069Cr 1  88           	dey
 00069Dr 1  F1 rr        	sbc     (sp),y
-00069Fr 1  90 19        	bcc     L175A
-0006A1r 1  F0 17        	beq     L175A
+00069Fr 1  90 19        	bcc     L16FC
+0006A1r 1  F0 17        	beq     L16FC
 0006A3r 1  C8           	iny
 0006A4r 1  B1 rr        	lda     (sp),y
 0006A6r 1  20 rr rr     	jsr     pusha
@@ -5807,13 +5735,13 @@ Current file: dhgrc.s
 0006B3r 1  91 rr        	sta     (sp),y
 0006B5r 1  20 rr rr     	jsr     incsp1
 0006B8r 1  A0 02        	ldy     #$02
-0006BAr 1  B1 rr        L175A:	lda     (sp),y
+0006BAr 1  B1 rr        L16FC:	lda     (sp),y
 0006BCr 1  38           	sec
 0006BDr 1  C8           	iny
 0006BEr 1  F1 rr        	sbc     (sp),y
 0006C0r 1  C9 07        	cmp     #$07
-0006C2r 1  B0 4B        	bcs     L175D
-0006C4r 1  80 1E        	bra     L175B
+0006C2r 1  B0 4B        	bcs     L16FF
+0006C4r 1  80 1E        	bra     L16FD
 0006C6r 1  20 rr rr     L0335:	jsr     decsp2
 0006C9r 1  A0 05        	ldy     #$05
 0006CBr 1  B1 rr        	lda     (sp),y
@@ -5830,7 +5758,7 @@ Current file: dhgrc.s
 0006DDr 1  B1 rr        	lda     (sp),y
 0006DFr 1  20 rr rr     	jsr     _plot
 0006E2r 1  A0 03        	ldy     #$03
-0006E4r 1  B1 rr        L175B:	lda     (sp),y
+0006E4r 1  B1 rr        L16FD:	lda     (sp),y
 0006E6r 1  38           	sec
 0006E7r 1  88           	dey
 0006E8r 1  F1 rr        	sbc     (sp),y
@@ -5853,7 +5781,7 @@ Current file: dhgrc.s
 000708r 1  B1 rr        	lda     (sp),y
 00070Ar 1  20 rr rr     	jsr     _plot
 00070Dr 1  A0 03        	ldy     #$03
-00070Fr 1  B1 rr        L175D:	lda     (sp),y
+00070Fr 1  B1 rr        L16FF:	lda     (sp),y
 000711r 1  20 rr rr     	jsr     pusha0
 000714r 1  A9 07        	lda     #$07
 000716r 1  20 rr rr     	jsr     tosumoda0
@@ -5952,7 +5880,7 @@ Current file: dhgrc.s
 0007ADr 1  20 rr rr     	jsr     incsp1
 0007B0r 1  A0 03        L0359:	ldy     #$03
 0007B2r 1  B1 rr        	lda     (sp),y
-0007B4r 1  92 rr        L175E:	sta     (sp)
+0007B4r 1  92 rr        L1700:	sta     (sp)
 0007B6r 1  38           	sec
 0007B7r 1  A0 02        	ldy     #$02
 0007B9r 1  F1 rr        	sbc     (sp),y
@@ -5972,7 +5900,7 @@ Current file: dhgrc.s
 0007D5r 1  18           	clc
 0007D6r 1  A9 01        	lda     #$01
 0007D8r 1  72 rr        	adc     (sp)
-0007DAr 1  80 D8        	bra     L175E
+0007DAr 1  80 D8        	bra     L1700
 0007DCr 1  4C rr rr     L0361:	jmp     incsp5
 0007DFr 1               
 0007DFr 1               .endproc
@@ -6072,7 +6000,7 @@ Current file: dhgrc.s
 00086Dr 1  20 rr rr     	jsr     decsp1
 000870r 1  A0 04        	ldy     #$04
 000872r 1  B1 rr        	lda     (sp),y
-000874r 1  92 rr        L1761:	sta     (sp)
+000874r 1  92 rr        L1703:	sta     (sp)
 000876r 1  38           	sec
 000877r 1  A0 02        	ldy     #$02
 000879r 1  F1 rr        	sbc     (sp),y
@@ -6096,7 +6024,7 @@ Current file: dhgrc.s
 00089Er 1  18           	clc
 00089Fr 1  A9 01        	lda     #$01
 0008A1r 1  72 rr        	adc     (sp)
-0008A3r 1  80 CF        	bra     L1761
+0008A3r 1  80 CF        	bra     L1703
 0008A5r 1  4C rr rr     L0388:	jmp     incsp6
 0008A8r 1               
 0008A8r 1               .endproc
@@ -6248,9 +6176,9 @@ Current file: dhgrc.s
 0009B7r 1  8A           	txa
 0009B8r 1  C8           	iny
 0009B9r 1  F1 rr        	sbc     (sp),y
-0009BBr 1  70 02        	bvs     L1766
+0009BBr 1  70 02        	bvs     L1708
 0009BDr 1  49 80        	eor     #$80
-0009BFr 1  10 1F        L1766:	bpl     L03C6
+0009BFr 1  10 1F        L1708:	bpl     L03C6
 0009C1r 1  88           	dey
 0009C2r 1  B1 rr        	lda     (sp),y
 0009C4r 1  A0 02        	ldy     #$02
@@ -6275,9 +6203,9 @@ Current file: dhgrc.s
 0009E8r 1  88           	dey
 0009E9r 1  B1 rr        	lda     (sp),y
 0009EBr 1  20 rr rr     	jsr     tosicmp
-0009EEr 1  F0 02        	beq     L1767
+0009EEr 1  F0 02        	beq     L1709
 0009F0r 1  10 85        	bpl     L03B8
-0009F2r 1  A0 0A        L1767:	ldy     #$0A
+0009F2r 1  A0 0A        L1709:	ldy     #$0A
 0009F4r 1  B1 rr        	lda     (sp),y
 0009F6r 1  A0 02        	ldy     #$02
 0009F8r 1  18           	clc
@@ -6416,9 +6344,9 @@ Current file: dhgrc.s
 000AEBr 1  18           	clc
 000AECr 1  A0 16        	ldy     #$16
 000AEEr 1  71 rr        	adc     (sp),y
-000AF0r 1  90 01        	bcc     L176C
+000AF0r 1  90 01        	bcc     L170E
 000AF2r 1  E8           	inx
-000AF3r 1  A0 0C        L176C:	ldy     #$0C
+000AF3r 1  A0 0C        L170E:	ldy     #$0C
 000AF5r 1  20 rr rr     	jsr     staxysp
 000AF8r 1  A0 0F        	ldy     #$0F
 000AFAr 1  B1 rr        	lda     (sp),y
@@ -6428,9 +6356,9 @@ Current file: dhgrc.s
 000B00r 1  18           	clc
 000B01r 1  A0 15        	ldy     #$15
 000B03r 1  71 rr        	adc     (sp),y
-000B05r 1  90 01        	bcc     L176D
+000B05r 1  90 01        	bcc     L170F
 000B07r 1  E8           	inx
-000B08r 1  A0 0A        L176D:	ldy     #$0A
+000B08r 1  A0 0A        L170F:	ldy     #$0A
 000B0Ar 1  20 rr rr     	jsr     staxysp
 000B0Dr 1  A0 08        	ldy     #$08
 000B0Fr 1  A9 00        	lda     #$00
@@ -6654,7 +6582,7 @@ Current file: dhgrc.s
 000CA1r 1  90 01        	bcc     L0425
 000CA3r 1  E8           	inx
 000CA4r 1  20 rr rr     L0425:	jsr     tosmulax
-000CA7r 1  80 3C        	bra     L1777
+000CA7r 1  80 3C        	bra     L1719
 000CA9r 1  A0 05        L041F:	ldy     #$05
 000CABr 1  20 rr rr     	jsr     pushwysp
 000CAEr 1  A0 0B        	ldy     #$0B
@@ -6684,7 +6612,7 @@ Current file: dhgrc.s
 000CDEr 1  E8           	inx
 000CDFr 1  20 rr rr     L042E:	jsr     tosmulax
 000CE2r 1  20 rr rr     	jsr     tosaddax
-000CE5r 1  20 rr rr     L1777:	jsr     addeq0sp
+000CE5r 1  20 rr rr     L1719:	jsr     addeq0sp
 000CE8r 1  A0 07        	ldy     #$07
 000CEAr 1  B1 rr        	lda     (sp),y
 000CECr 1  AA           	tax
@@ -6749,7 +6677,7 @@ Current file: dhgrc.s
 000D49r 1  20 rr rr     	jsr     _plot
 000D4Cr 1  A0 03        	ldy     #$03
 000D4Er 1  B1 rr        	lda     (sp),y
-000D50r 1  F0 30        	beq     L178C
+000D50r 1  F0 30        	beq     L172E
 000D52r 1  38           	sec
 000D53r 1  E9 01        	sbc     #$01
 000D55r 1  20 rr rr     	jsr     pusha
@@ -6774,7 +6702,7 @@ Current file: dhgrc.s
 000D7Br 1  B1 rr        	lda     (sp),y
 000D7Dr 1  20 rr rr     	jsr     _floodfill
 000D80r 1  A0 03        L043F:	ldy     #$03
-000D82r 1  B1 rr        L178C:	lda     (sp),y
+000D82r 1  B1 rr        L172E:	lda     (sp),y
 000D84r 1  C9 8B        	cmp     #$8B
 000D86r 1  B0 2A        	bcs     L044B
 000D88r 1  1A           	ina
@@ -6800,7 +6728,7 @@ Current file: dhgrc.s
 000DAFr 1  20 rr rr     	jsr     _floodfill
 000DB2r 1  A0 02        L044B:	ldy     #$02
 000DB4r 1  B1 rr        	lda     (sp),y
-000DB6r 1  F0 33        	beq     L178D
+000DB6r 1  F0 33        	beq     L172F
 000DB8r 1  C8           	iny
 000DB9r 1  B1 rr        	lda     (sp),y
 000DBBr 1  20 rr rr     	jsr     pusha
@@ -6827,7 +6755,7 @@ Current file: dhgrc.s
 000DE4r 1  B1 rr        	lda     (sp),y
 000DE6r 1  20 rr rr     	jsr     _floodfill
 000DE9r 1  A0 02        L0457:	ldy     #$02
-000DEBr 1  B1 rr        L178D:	lda     (sp),y
+000DEBr 1  B1 rr        L172F:	lda     (sp),y
 000DEDr 1  C9 BF        	cmp     #$BF
 000DEFr 1  B0 30        	bcs     L0463
 000DF1r 1  C8           	iny
@@ -6838,10 +6766,10 @@ Current file: dhgrc.s
 000DFBr 1  1A           	ina
 000DFCr 1  20 rr rr     	jsr     _scrn
 000DFFr 1  D2 rr        	cmp     (sp)
-000E01r 1  D0 03        	bne     L178B
+000E01r 1  D0 03        	bne     L172D
 000E03r 1  8A           	txa
 000E04r 1  F0 03        	beq     L0464
-000E06r 1  4C rr rr     L178B:	jmp     incsp4
+000E06r 1  4C rr rr     L172D:	jmp     incsp4
 000E09r 1  20 rr rr     L0464:	jsr     decsp2
 000E0Cr 1  A0 05        	ldy     #$05
 000E0Er 1  B1 rr        	lda     (sp),y
@@ -6870,7 +6798,7 @@ Current file: dhgrc.s
 000E24r 1               
 000E24r 1  20 rr rr     	jsr     decsp1
 000E27r 1  A9 00        	lda     #$00
-000E29r 1  92 rr        L1792:	sta     (sp)
+000E29r 1  92 rr        L1734:	sta     (sp)
 000E2Br 1  C9 10        	cmp     #$10
 000E2Dr 1  B0 33        	bcs     L0471
 000E2Fr 1  20 rr rr     	jsr     decsp2
@@ -6883,10 +6811,10 @@ Current file: dhgrc.s
 000E3Dr 1  A2 00        	ldx     #$00
 000E3Fr 1  B1 rr        	lda     (sp),y
 000E41r 1  0A           	asl     a
-000E42r 1  90 02        	bcc     L178F
+000E42r 1  90 02        	bcc     L1731
 000E44r 1  E8           	inx
 000E45r 1  18           	clc
-000E46r 1  69 rr        L178F:	adc     #<(_DHGR_COLOR_NAMES)
+000E46r 1  69 rr        L1731:	adc     #<(_DHGR_COLOR_NAMES)
 000E48r 1  85 rr        	sta     ptr1
 000E4Ar 1  8A           	txa
 000E4Br 1  69 rr        	adc     #>(_DHGR_COLOR_NAMES)
@@ -6900,7 +6828,7 @@ Current file: dhgrc.s
 000E5Ar 1  20 rr rr     	jsr     _cls
 000E5Dr 1  B2 rr        	lda     (sp)
 000E5Fr 1  1A           	ina
-000E60r 1  80 C7        	bra     L1792
+000E60r 1  80 C7        	bra     L1734
 000E62r 1  4C rr rr     L0471:	jmp     incsp1
 000E65r 1               
 000E65r 1               .endproc
@@ -8173,20 +8101,20 @@ Current file: dhgrc.s
 0016FDr 1  A0 04        	ldy     #$04
 0016FFr 1  B1 rr        	lda     (sp),y
 001701r 1  C9 13        	cmp     #$13
-001703r 1  B0 10        	bcs     L1794
+001703r 1  B0 10        	bcs     L1736
 001705r 1  88           	dey
 001706r 1  B1 rr        	lda     (sp),y
 001708r 1  C9 15        	cmp     #$15
-00170Ar 1  B0 09        	bcs     L1794
+00170Ar 1  B0 09        	bcs     L1736
 00170Cr 1  88           	dey
 00170Dr 1  B1 rr        	lda     (sp),y
 00170Fr 1  C9 1C        	cmp     #$1C
-001711r 1  B0 02        	bcs     L1794
-001713r 1  80 06        	bra     L1796
-001715r 1  A2 00        L1794:	ldx     #$00
+001711r 1  B0 02        	bcs     L1736
+001713r 1  80 06        	bra     L1738
+001715r 1  A2 00        L1736:	ldx     #$00
 001717r 1  8A           	txa
 001718r 1  4C rr rr     	jmp     L147A
-00171Br 1  64 rr        L1796:	stz     regbank+4
+00171Br 1  64 rr        L1738:	stz     regbank+4
 00171Dr 1  64 rr        	stz     regbank+4+1
 00171Fr 1  A0 04        	ldy     #$04
 001721r 1  B1 rr        	lda     (sp),y
@@ -8300,10 +8228,10 @@ Current file: dhgrc.s
 0017D2r 1  A2 00        	ldx     #$00
 0017D4r 1  B1 rr        	lda     (sp),y
 0017D6r 1  0A           	asl     a
-0017D7r 1  90 02        	bcc     L1798
+0017D7r 1  90 02        	bcc     L173A
 0017D9r 1  E8           	inx
 0017DAr 1  18           	clc
-0017DBr 1  69 rr        L1798:	adc     #<(_HGR_OFFSET)
+0017DBr 1  69 rr        L173A:	adc     #<(_HGR_OFFSET)
 0017DDr 1  85 rr        	sta     ptr1
 0017DFr 1  8A           	txa
 0017E0r 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -8361,10 +8289,10 @@ Current file: dhgrc.s
 00182Dr 1  A2 00        	ldx     #$00
 00182Fr 1  B1 rr        	lda     (sp),y
 001831r 1  0A           	asl     a
-001832r 1  90 02        	bcc     L179A
+001832r 1  90 02        	bcc     L173C
 001834r 1  E8           	inx
 001835r 1  18           	clc
-001836r 1  69 rr        L179A:	adc     #<(_HGR_OFFSET)
+001836r 1  69 rr        L173C:	adc     #<(_HGR_OFFSET)
 001838r 1  85 rr        	sta     ptr1
 00183Ar 1  8A           	txa
 00183Br 1  69 rr        	adc     #>(_HGR_OFFSET)
@@ -8421,7 +8349,7 @@ Current file: dhgrc.s
 001885r 1  A5 rr        	lda     regbank+5
 001887r 1  20 rr rr     	jsr     pusha
 00188Ar 1  64 rr        	stz     regbank+5
-00188Cr 1  A5 rr        L179D:	lda     regbank+5
+00188Cr 1  A5 rr        L173F:	lda     regbank+5
 00188Er 1  C9 0C        	cmp     #$0C
 001890r 1  B0 2A        	bcs     L1550
 001892r 1  20 rr rr     	jsr     decsp2
@@ -8445,7 +8373,7 @@ Current file: dhgrc.s
 0018B3r 1  B1 rr        	lda     (ptr1),y
 0018B5r 1  20 rr rr     	jsr     _putbyte_xor
 0018B8r 1  E6 rr        	inc     regbank+5
-0018BAr 1  80 D0        	bra     L179D
+0018BAr 1  80 D0        	bra     L173F
 0018BCr 1  B2 rr        L1550:	lda     (sp)
 0018BEr 1  85 rr        	sta     regbank+5
 0018C0r 1  4C rr rr     	jmp     incsp5
@@ -8473,7 +8401,7 @@ Current file: dhgrc.s
 0018D7r 1  20 rr rr     	jsr     pusha
 0018DAr 1  A9 00        	lda     #$00
 0018DCr 1  64 rr        	stz     regbank+5
-0018DEr 1  85 rr        L17A3:	sta     regbank+4
+0018DEr 1  85 rr        L1745:	sta     regbank+4
 0018E0r 1  A5 rr        	lda     regbank+5
 0018E2r 1  C9 0C        	cmp     #$0C
 0018E4r 1  90 03 4C rr  	jcs     L155E
@@ -8603,7 +8531,7 @@ Current file: dhgrc.s
 0019CBr 1  A9 02        	lda     #$02
 0019CDr 1  18           	clc
 0019CEr 1  65 rr        	adc     regbank+4
-0019D0r 1  4C rr rr     	jmp     L17A3
+0019D0r 1  4C rr rr     	jmp     L1745
 0019D3r 1  A0 00        L155E:	ldy     #$00
 0019D5r 1  B1 rr        L158D:	lda     (sp),y
 0019D7r 1  99 rr rr     	sta     regbank+2,y
@@ -8902,14 +8830,14 @@ Current file: dhgrc.s
 001BB8r 1  A0 05        	ldy     #$05
 001BBAr 1  91 rr        	sta     (sp),y
 001BBCr 1  C9 80        	cmp     #$80
-001BBEr 1  B0 0A        	bcs     L17A8
+001BBEr 1  B0 0A        	bcs     L174A
 001BC0r 1  B1 rr        	lda     (sp),y
 001BC2r 1  A2 00        	ldx     #$00
 001BC4r 1  20 rr rr     	jsr     stax0sp
 001BC7r 1  4C rr rr     	jmp     L1605
-001BCAr 1  B1 rr        L17A8:	lda     (sp),y
+001BCAr 1  B1 rr        L174A:	lda     (sp),y
 001BCCr 1  C9 C0        	cmp     #$C0
-001BCEr 1  B0 39        	bcs     L17AA
+001BCEr 1  B0 39        	bcs     L174C
 001BD0r 1  A0 07        	ldy     #$07
 001BD2r 1  B1 rr        	lda     (sp),y
 001BD4r 1  AA           	tax
@@ -8939,9 +8867,9 @@ Current file: dhgrc.s
 001C01r 1  A6 rr        	ldx     ptr1+1
 001C03r 1  20 rr rr     	jsr     stax0sp
 001C06r 1  4C rr rr     	jmp     L1605
-001C09r 1  B1 rr        L17AA:	lda     (sp),y
+001C09r 1  B1 rr        L174C:	lda     (sp),y
 001C0Br 1  C9 F0        	cmp     #$F0
-001C0Dr 1  B0 66        	bcs     L17AC
+001C0Dr 1  B0 66        	bcs     L174E
 001C0Fr 1  A0 07        	ldy     #$07
 001C11r 1  B1 rr        	lda     (sp),y
 001C13r 1  AA           	tax
@@ -8996,9 +8924,9 @@ Current file: dhgrc.s
 001C6Er 1  A6 rr        	ldx     ptr1+1
 001C70r 1  20 rr rr     	jsr     stax0sp
 001C73r 1  80 5B        	bra     L1605
-001C75r 1  B1 rr        L17AC:	lda     (sp),y
+001C75r 1  B1 rr        L174E:	lda     (sp),y
 001C77r 1  C9 F8        	cmp     #$F8
-001C79r 1  B0 4B        	bcs     L17AD
+001C79r 1  B0 4B        	bcs     L174F
 001C7Br 1  A0 07        	ldy     #$07
 001C7Dr 1  B1 rr        	lda     (sp),y
 001C7Fr 1  AA           	tax
@@ -9041,7 +8969,7 @@ Current file: dhgrc.s
 001CC0r 1  B2 rr        	lda     (regsave)
 001CC2r 1  A0 02        	ldy     #$02
 001CC4r 1  91 rr        	sta     (sp),y
-001CC6r 1  A9 7F        L17AD:	lda     #$7F
+001CC6r 1  A9 7F        L174F:	lda     #$7F
 001CC8r 1  92 rr        	sta     (sp)
 001CCAr 1  A9 00        	lda     #$00
 001CCCr 1  A0 01        	ldy     #$01
@@ -9187,229 +9115,97 @@ Current file: dhgrc.s
 001DCFr 1               
 001DCFr 1               .segment	"CODE"
 001DCFr 1               
-001DCFr 1  20 rr rr     	jsr     decsp1
-001DD2r 1  20 rr rr     L16BA:	jsr     _clrscr
-001DD5r 1  20 rr rr     	jsr     decsp2
-001DD8r 1  A9 00        	lda     #$00
-001DDAr 1  A0 01        	ldy     #$01
-001DDCr 1  91 rr        	sta     (sp),y
-001DDEr 1  92 rr        	sta     (sp)
-001DE0r 1  A9 rr        	lda     #<(L16C2)
-001DE2r 1  A2 rr        	ldx     #>(L16C2)
-001DE4r 1  20 rr rr     	jsr     _cputsxy
-001DE7r 1  20 rr rr     	jsr     decsp2
-001DEAr 1  A9 00        	lda     #$00
-001DECr 1  A0 01        	ldy     #$01
-001DEEr 1  91 rr        	sta     (sp),y
-001DF0r 1  98           	tya
-001DF1r 1  92 rr        	sta     (sp)
-001DF3r 1  A9 rr        	lda     #<(L16C7)
-001DF5r 1  A2 rr        	ldx     #>(L16C7)
-001DF7r 1  20 rr rr     	jsr     _cputsxy
-001DFAr 1  20 rr rr     	jsr     decsp2
-001DFDr 1  A9 00        	lda     #$00
-001DFFr 1  A0 01        	ldy     #$01
-001E01r 1  91 rr        	sta     (sp),y
-001E03r 1  A9 02        	lda     #$02
-001E05r 1  92 rr        	sta     (sp)
-001E07r 1  A9 rr        	lda     #<(L16CC)
-001E09r 1  A2 rr        	ldx     #>(L16CC)
-001E0Br 1  20 rr rr     	jsr     _cputsxy
-001E0Er 1  20 rr rr     	jsr     decsp2
-001E11r 1  A9 00        	lda     #$00
-001E13r 1  A0 01        	ldy     #$01
-001E15r 1  91 rr        	sta     (sp),y
-001E17r 1  A9 03        	lda     #$03
-001E19r 1  92 rr        	sta     (sp)
-001E1Br 1  A9 rr        	lda     #<(L16D1)
-001E1Dr 1  A2 rr        	ldx     #>(L16D1)
-001E1Fr 1  20 rr rr     	jsr     _cputsxy
-001E22r 1  20 rr rr     	jsr     decsp2
-001E25r 1  A9 00        	lda     #$00
-001E27r 1  A0 01        	ldy     #$01
-001E29r 1  91 rr        	sta     (sp),y
-001E2Br 1  A9 04        	lda     #$04
-001E2Dr 1  92 rr        	sta     (sp)
-001E2Fr 1  A9 rr        	lda     #<(L16D6)
-001E31r 1  A2 rr        	ldx     #>(L16D6)
-001E33r 1  20 rr rr     	jsr     _cputsxy
-001E36r 1  20 rr rr     	jsr     decsp2
-001E39r 1  A9 00        	lda     #$00
-001E3Br 1  A0 01        	ldy     #$01
-001E3Dr 1  91 rr        	sta     (sp),y
-001E3Fr 1  A9 05        	lda     #$05
-001E41r 1  92 rr        	sta     (sp)
-001E43r 1  A9 rr        	lda     #<(L16DB)
-001E45r 1  A2 rr        	ldx     #>(L16DB)
-001E47r 1  20 rr rr     	jsr     _cputsxy
-001E4Ar 1  20 rr rr     	jsr     decsp2
-001E4Dr 1  A9 00        	lda     #$00
-001E4Fr 1  A0 01        	ldy     #$01
-001E51r 1  91 rr        	sta     (sp),y
-001E53r 1  A9 06        	lda     #$06
-001E55r 1  92 rr        	sta     (sp)
-001E57r 1  A9 rr        	lda     #<(L16E0)
-001E59r 1  A2 rr        	ldx     #>(L16E0)
-001E5Br 1  20 rr rr     	jsr     _cputsxy
-001E5Er 1  20 rr rr     	jsr     decsp2
-001E61r 1  A9 00        	lda     #$00
-001E63r 1  A0 01        	ldy     #$01
-001E65r 1  91 rr        	sta     (sp),y
-001E67r 1  A9 07        	lda     #$07
-001E69r 1  92 rr        	sta     (sp)
-001E6Br 1  A9 rr        	lda     #<(L16E5)
-001E6Dr 1  A2 rr        	ldx     #>(L16E5)
-001E6Fr 1  20 rr rr     	jsr     _cputsxy
-001E72r 1  20 rr rr     	jsr     decsp2
-001E75r 1  A9 00        	lda     #$00
-001E77r 1  A0 01        	ldy     #$01
-001E79r 1  91 rr        	sta     (sp),y
-001E7Br 1  A9 08        	lda     #$08
-001E7Dr 1  92 rr        	sta     (sp)
-001E7Fr 1  A9 rr        	lda     #<(L16EA)
-001E81r 1  A2 rr        	ldx     #>(L16EA)
-001E83r 1  20 rr rr     	jsr     _cputsxy
-001E86r 1  20 rr rr     	jsr     decsp2
-001E89r 1  A9 00        	lda     #$00
-001E8Br 1  A0 01        	ldy     #$01
-001E8Dr 1  91 rr        	sta     (sp),y
-001E8Fr 1  A9 09        	lda     #$09
-001E91r 1  92 rr        	sta     (sp)
-001E93r 1  A9 rr        	lda     #<(L16EF)
-001E95r 1  A2 rr        	ldx     #>(L16EF)
-001E97r 1  20 rr rr     	jsr     _cputsxy
-001E9Ar 1  20 rr rr     	jsr     _cgetc
-001E9Dr 1  92 rr        	sta     (sp)
-001E9Fr 1  C9 71        	cmp     #$71
-001EA1r 1  F0 06        	beq     L17B2
-001EA3r 1  B2 rr        	lda     (sp)
-001EA5r 1  C9 51        	cmp     #$51
-001EA7r 1  D0 06        	bne     L16F3
-001EA9r 1  20 rr rr     L17B2:	jsr     _dhgr_exit
-001EACr 1  4C rr rr     	jmp     incsp1
-001EAFr 1  20 rr rr     L16F3:	jsr     _dhgr_init
-001EB2r 1  B2 rr        	lda     (sp)
-001EB4r 1  C9 31        	cmp     #$31
-001EB6r 1  F0 2B        	beq     L16FC
-001EB8r 1  C9 32        	cmp     #$32
-001EBAr 1  F0 41        	beq     L1704
-001EBCr 1  C9 33        	cmp     #$33
-001EBEr 1  F0 57        	beq     L170C
-001EC0r 1  C9 34        	cmp     #$34
-001EC2r 1  F0 6C        	beq     L1714
-001EC4r 1  C9 35        	cmp     #$35
-001EC6r 1  D0 03 4C rr  	jeq     L171C
-001ECAr 1  rr           
-001ECBr 1  C9 36        	cmp     #$36
-001ECDr 1  D0 03 4C rr  	jeq     L1724
-001ED1r 1  rr           
-001ED2r 1  C9 37        	cmp     #$37
-001ED4r 1  D0 03 4C rr  	jeq     L172C
-001ED8r 1  rr           
-001ED9r 1  C9 38        	cmp     #$38
-001EDBr 1  D0 03 4C rr  	jeq     L1734
-001EDFr 1  rr           
-001EE0r 1  4C rr rr     	jmp     L16FA
-001EE3r 1  20 rr rr     L16FC:	jsr     decsp2
-001EE6r 1  A9 00        	lda     #$00
-001EE8r 1  A0 01        	ldy     #$01
-001EEAr 1  91 rr        	sta     (sp),y
-001EECr 1  A9 14        	lda     #$14
-001EEEr 1  92 rr        	sta     (sp)
-001EF0r 1  A9 rr        	lda     #<(L1700)
-001EF2r 1  A2 rr        	ldx     #>(L1700)
-001EF4r 1  20 rr rr     	jsr     _cputsxy
-001EF7r 1  20 rr rr     	jsr     _cls_test
-001EFAr 1  4C rr rr     	jmp     L16FA
-001EFDr 1  20 rr rr     L1704:	jsr     decsp2
-001F00r 1  A9 00        	lda     #$00
-001F02r 1  A0 01        	ldy     #$01
-001F04r 1  91 rr        	sta     (sp),y
-001F06r 1  A9 14        	lda     #$14
-001F08r 1  92 rr        	sta     (sp)
-001F0Ar 1  A9 rr        	lda     #<(L1708)
-001F0Cr 1  A2 rr        	ldx     #>(L1708)
-001F0Er 1  20 rr rr     	jsr     _cputsxy
-001F11r 1  20 rr rr     	jsr     _plot_test
-001F14r 1  4C rr rr     	jmp     L16FA
-001F17r 1  20 rr rr     L170C:	jsr     decsp2
-001F1Ar 1  A9 00        	lda     #$00
-001F1Cr 1  A0 01        	ldy     #$01
-001F1Er 1  91 rr        	sta     (sp),y
-001F20r 1  A9 14        	lda     #$14
-001F22r 1  92 rr        	sta     (sp)
-001F24r 1  A9 rr        	lda     #<(L1710)
-001F26r 1  A2 rr        	ldx     #>(L1710)
-001F28r 1  20 rr rr     	jsr     _cputsxy
-001F2Br 1  20 rr rr     	jsr     _hline_test
-001F2Er 1  80 7B        	bra     L16FA
-001F30r 1  20 rr rr     L1714:	jsr     decsp2
-001F33r 1  A9 00        	lda     #$00
-001F35r 1  A0 01        	ldy     #$01
-001F37r 1  91 rr        	sta     (sp),y
-001F39r 1  A9 14        	lda     #$14
-001F3Br 1  92 rr        	sta     (sp)
-001F3Dr 1  A9 rr        	lda     #<(L1718)
-001F3Fr 1  A2 rr        	ldx     #>(L1718)
-001F41r 1  20 rr rr     	jsr     _cputsxy
-001F44r 1  20 rr rr     	jsr     _vline_test
-001F47r 1  80 62        	bra     L16FA
-001F49r 1  20 rr rr     L171C:	jsr     decsp2
-001F4Cr 1  A9 00        	lda     #$00
-001F4Er 1  A0 01        	ldy     #$01
-001F50r 1  91 rr        	sta     (sp),y
-001F52r 1  A9 14        	lda     #$14
-001F54r 1  92 rr        	sta     (sp)
-001F56r 1  A9 rr        	lda     #<(L1720)
-001F58r 1  A2 rr        	ldx     #>(L1720)
-001F5Ar 1  20 rr rr     	jsr     _cputsxy
-001F5Dr 1  20 rr rr     	jsr     _rect_test
-001F60r 1  80 49        	bra     L16FA
-001F62r 1  20 rr rr     L1724:	jsr     decsp2
-001F65r 1  A9 00        	lda     #$00
-001F67r 1  A0 01        	ldy     #$01
-001F69r 1  91 rr        	sta     (sp),y
-001F6Br 1  A9 14        	lda     #$14
-001F6Dr 1  92 rr        	sta     (sp)
-001F6Fr 1  A9 rr        	lda     #<(L1728)
-001F71r 1  A2 rr        	ldx     #>(L1728)
-001F73r 1  20 rr rr     	jsr     _cputsxy
-001F76r 1  20 rr rr     	jsr     _fillrect_test
-001F79r 1  80 30        	bra     L16FA
-001F7Br 1  20 rr rr     L172C:	jsr     decsp2
-001F7Er 1  A9 00        	lda     #$00
-001F80r 1  A0 01        	ldy     #$01
-001F82r 1  91 rr        	sta     (sp),y
-001F84r 1  A9 14        	lda     #$14
-001F86r 1  92 rr        	sta     (sp)
-001F88r 1  A9 rr        	lda     #<(L1730)
-001F8Ar 1  A2 rr        	ldx     #>(L1730)
-001F8Cr 1  20 rr rr     	jsr     _cputsxy
-001F8Fr 1  20 rr rr     	jsr     _image_test
-001F92r 1  80 17        	bra     L16FA
-001F94r 1  20 rr rr     L1734:	jsr     decsp2
-001F97r 1  A9 00        	lda     #$00
-001F99r 1  A0 01        	ldy     #$01
-001F9Br 1  91 rr        	sta     (sp),y
-001F9Dr 1  A9 14        	lda     #$14
-001F9Fr 1  92 rr        	sta     (sp)
-001FA1r 1  A9 rr        	lda     #<(L1738)
-001FA3r 1  A2 rr        	ldx     #>(L1738)
-001FA5r 1  20 rr rr     	jsr     _cputsxy
-001FA8r 1  20 rr rr     	jsr     _text_test
-001FABr 1  20 rr rr     L16FA:	jsr     decsp2
-001FAEr 1  A9 00        	lda     #$00
-001FB0r 1  A0 01        	ldy     #$01
-001FB2r 1  91 rr        	sta     (sp),y
-001FB4r 1  A9 14        	lda     #$14
-001FB6r 1  92 rr        	sta     (sp)
-001FB8r 1  A9 rr        	lda     #<(L173E)
-001FBAr 1  A2 rr        	ldx     #>(L173E)
-001FBCr 1  20 rr rr     	jsr     _cputsxy
-001FBFr 1  20 rr rr     	jsr     _cgetc
-001FC2r 1  20 rr rr     	jsr     _dhgr_exit
-001FC5r 1  4C rr rr     	jmp     L16BA
-001FC8r 1               
-001FC8r 1               .endproc
-001FC8r 1               
-001FC8r 1               
+001DCFr 1  A5 rr        	lda     regbank+5
+001DD1r 1  20 rr rr     	jsr     pusha
+001DD4r 1  A5 rr        	lda     regbank+3
+001DD6r 1  A6 rr        	ldx     regbank+4
+001DD8r 1  20 rr rr     	jsr     pushax
+001DDBr 1  20 rr rr     	jsr     _dhgr_init
+001DDEr 1  A9 00        	lda     #$00
+001DE0r 1  20 rr rr     	jsr     _cls
+001DE3r 1  64 rr        	stz     regbank+5
+001DE5r 1  A5 rr        L1758:	lda     regbank+5
+001DE7r 1  C9 C0        	cmp     #$C0
+001DE9r 1  B0 34        	bcs     L16BE
+001DEBr 1  A2 00        	ldx     #$00
+001DEDr 1  A5 rr        	lda     regbank+5
+001DEFr 1  0A           	asl     a
+001DF0r 1  90 02        	bcc     L1756
+001DF2r 1  E8           	inx
+001DF3r 1  18           	clc
+001DF4r 1  69 rr        L1756:	adc     #<(_HGR_OFFSET)
+001DF6r 1  85 rr        	sta     ptr1
+001DF8r 1  8A           	txa
+001DF9r 1  69 rr        	adc     #>(_HGR_OFFSET)
+001DFBr 1  85 rr        	sta     ptr1+1
+001DFDr 1  A0 01        	ldy     #$01
+001DFFr 1  B1 rr        	lda     (ptr1),y
+001E01r 1  AA           	tax
+001E02r 1  B2 rr        	lda     (ptr1)
+001E04r 1  48           	pha
+001E05r 1  8A           	txa
+001E06r 1  18           	clc
+001E07r 1  69 20        	adc     #$20
+001E09r 1  AA           	tax
+001E0Ar 1  68           	pla
+001E0Br 1  85 rr        	sta     regbank+3
+001E0Dr 1  86 rr        	stx     regbank+3+1
+001E0Fr 1  8D 55 C0     	sta     $c055
+001E12r 1  A5 rr        	lda     regbank+5
+001E14r 1  29 0F        	and     #$0F
+001E16r 1  92 rr        	sta     (regbank+3)
+001E18r 1  8D 54 C0     	sta     $c054
+001E1Br 1  E6 rr        	inc     regbank+5
+001E1Dr 1  80 C6        	bra     L1758
+001E1Fr 1  20 rr rr     L16BE:	jsr     _cgetc
+001E22r 1  A9 0F        	lda     #$0F
+001E24r 1  20 rr rr     	jsr     _cls
+001E27r 1  64 rr        	stz     regbank+5
+001E29r 1  A5 rr        L1759:	lda     regbank+5
+001E2Br 1  C9 C0        	cmp     #$C0
+001E2Dr 1  B0 34        	bcs     L16D2
+001E2Fr 1  A2 00        	ldx     #$00
+001E31r 1  A5 rr        	lda     regbank+5
+001E33r 1  0A           	asl     a
+001E34r 1  90 02        	bcc     L1757
+001E36r 1  E8           	inx
+001E37r 1  18           	clc
+001E38r 1  69 rr        L1757:	adc     #<(_HGR_OFFSET)
+001E3Ar 1  85 rr        	sta     ptr1
+001E3Cr 1  8A           	txa
+001E3Dr 1  69 rr        	adc     #>(_HGR_OFFSET)
+001E3Fr 1  85 rr        	sta     ptr1+1
+001E41r 1  A0 01        	ldy     #$01
+001E43r 1  B1 rr        	lda     (ptr1),y
+001E45r 1  AA           	tax
+001E46r 1  B2 rr        	lda     (ptr1)
+001E48r 1  48           	pha
+001E49r 1  8A           	txa
+001E4Ar 1  18           	clc
+001E4Br 1  69 20        	adc     #$20
+001E4Dr 1  AA           	tax
+001E4Er 1  68           	pla
+001E4Fr 1  85 rr        	sta     regbank+3
+001E51r 1  86 rr        	stx     regbank+3+1
+001E53r 1  8D 55 C0     	sta     $c055
+001E56r 1  A5 rr        	lda     regbank+5
+001E58r 1  29 0F        	and     #$0F
+001E5Ar 1  92 rr        	sta     (regbank+3)
+001E5Cr 1  8D 54 C0     	sta     $c054
+001E5Fr 1  E6 rr        	inc     regbank+5
+001E61r 1  80 C6        	bra     L1759
+001E63r 1  20 rr rr     L16D2:	jsr     _cgetc
+001E66r 1  20 rr rr     	jsr     _dhgr_exit
+001E69r 1  B2 rr        	lda     (sp)
+001E6Br 1  85 rr        	sta     regbank+3
+001E6Dr 1  A0 01        	ldy     #$01
+001E6Fr 1  B1 rr        	lda     (sp),y
+001E71r 1  85 rr        	sta     regbank+4
+001E73r 1  C8           	iny
+001E74r 1  B1 rr        	lda     (sp),y
+001E76r 1  85 rr        	sta     regbank+5
+001E78r 1  4C rr rr     	jmp     incsp3
+001E7Br 1               
+001E7Br 1               .endproc
+001E7Br 1               
+001E7Br 1               

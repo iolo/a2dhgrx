@@ -72,17 +72,3 @@ HGR_OFFSET_LO:
 	; 192 bytes
 	;.res 256-192 ; padding for page($ff bytes) aligned
 	; free 64 bytes!
-
-; get address for start of a row in HGR mode
-; y: 0..191
-; addr: address to store the result(maybe in zero-page)
-;.macro	HGR_ADDRESS_Y y, addr
-; 			lda			#<HGR_BASE
-;				clc
-;				adc			HGR_OFFSET_LO,y
-;				sta			addr
-;				lda			#>HGR_BASE
-;				adc			HGR_OFFSET_HI,y
-;				sta			addr+1
-;.endmacro
-
