@@ -1,24 +1,48 @@
-.macro  PUSH_VARS r1, r2, r3, r4, r5, r6, r7
-.ifblank	r1
-	.exitmacro
-.else
-	lda	r1
-	pha
-.endif
-	PUSH_VARS r2, r3, r4, r5, r6, r7
+.macro TXY
+	phx
+	ply
+.endmacro
+
+.macro TYX
+	phy
+	plx
+.endmacro
+
+; modified: A
+.macro  PUSH r1, r2, r3, r4, r5, r6, r7
+  .ifblank	r1
+    .exitmacro
+  .else
+    lda	r1
+    pha
+  .endif
+	PUSH r2, r3, r4, r5, r6, r7
 .endmacro
 
 
-.macro  PULL_VARS r1, r2, r3, r4, r5, r6, r7
-.ifblank	r1
-	.exitmacro
-.else
-	pla
-	sta	r1
-.endif
-	PULL_VARS	r2, r3, r4, r5, r6, r7
+; modified: A
+.macro  PULL r1, r2, r3, r4, r5, r6, r7
+  .ifblank	r1
+    .exitmacro
+  .else
+    pla
+    sta	r1
+  .endif
+	PULL r2, r3, r4, r5, r6, r7
 .endmacro
 
+
+.macro AUX_BANK
+	sta $c055
+.endmacro
+
+
+.macro MAIN_BANK
+	sta $c054
+.endmacro
+
+
+; modified: A
 .macro	MAIN2AUX start, end, dest
 	lda	#<start
 	sta	$3c
@@ -36,6 +60,8 @@
 	jsr	$c311	; auxmove
 .endmacro
 
+
+; modified: A
 .macro	AUX2MAIN start, end, dest
 	lda	#<start
 	sta	$3c

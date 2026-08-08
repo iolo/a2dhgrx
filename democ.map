@@ -1,0 +1,397 @@
+Modules list:
+-------------
+democ.o:
+    CODE              Offs=000000  Size=000823  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=0000F6  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=00002E  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(_cursor.o):
+    BSS               Offs=000000  Size=000001  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(addysp.o):
+    CODE              Offs=000823  Size=00000E  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(callmain.o):
+    CODE              Offs=000831  Size=000017  Align=00001  Fill=0000
+    DATA              Offs=00002E  Size=000004  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(cgetc.o):
+    CODE              Offs=000848  Size=00002D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(clrscr.o):
+/usr/share/cc65/lib/apple2enh.lib(condes.o):
+    CODE              Offs=000875  Size=00000C  Align=00001  Fill=0000
+    DATA              Offs=000032  Size=000025  Align=00001  Fill=0000
+    ONCE              Offs=000000  Size=00000C  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(cputc.o):
+    CODE              Offs=000881  Size=00005B  Align=00001  Fill=0000
+    ONCE              Offs=00000C  Size=000007  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(cputs.o):
+    CODE              Offs=0008DC  Size=000023  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(crt0.o):
+    CODE              Offs=0008FF  Size=000012  Align=00001  Fill=0000
+    RODATA            Offs=0000F6  Size=000007  Align=00001  Fill=0000
+    DATA              Offs=000057  Size=000003  Align=00001  Fill=0000
+    STARTUP           Offs=000000  Size=000034  Align=00001  Fill=0000
+    ONCE              Offs=000013  Size=00006A  Align=00001  Fill=0000
+    INIT              Offs=000000  Size=00001D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(decsp1.o):
+    CODE              Offs=000911  Size=000009  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(decsp2.o):
+    CODE              Offs=00091A  Size=00000D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(decsp3.o):
+    CODE              Offs=000927  Size=00000D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(decsp4.o):
+    CODE              Offs=000934  Size=00000D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(decsp5.o):
+    CODE              Offs=000941  Size=00000D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(exehdr.o):
+    EXEHDR            Offs=000000  Size=00003A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(gotoxy.o):
+    CODE              Offs=00094E  Size=000011  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(home.o):
+    LOWCODE           Offs=000000  Size=00000A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp1.o):
+    CODE              Offs=00095F  Size=000007  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp2.o):
+    CODE              Offs=000966  Size=000015  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp3.o):
+    CODE              Offs=00097B  Size=000005  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp4.o):
+    CODE              Offs=000980  Size=000005  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp5.o):
+    CODE              Offs=000985  Size=000005  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp6.o):
+    CODE              Offs=00098A  Size=000005  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(incsp7.o):
+    CODE              Offs=00098F  Size=000005  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(mod.o):
+    CODE              Offs=000994  Size=000011  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(mul8.o):
+    CODE              Offs=0009A5  Size=00003A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(mulax6.o):
+    CODE              Offs=0009DF  Size=000016  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(negabs.o):
+    CODE              Offs=0009F5  Size=000012  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(popa.o):
+    CODE              Offs=000A07  Size=00000A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(popptr1.o):
+    CODE              Offs=000A11  Size=00000E  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(pusha.o):
+    CODE              Offs=000A1F  Size=000016  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(pushax.o):
+    CODE              Offs=000A35  Size=00001A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(rand.o):
+    CODE              Offs=000A4F  Size=000031  Align=00001  Fill=0000
+    DATA              Offs=00005A  Size=000004  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(shelp.o):
+    CODE              Offs=000A80  Size=000020  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(subysp.o):
+    CODE              Offs=000AA0  Size=00000D  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(udiv.o):
+    CODE              Offs=000AAD  Size=00004F  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(vtabz.o):
+    LOWCODE           Offs=00000A  Size=00000A  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(zerobss.o):
+    CODE              Offs=000AFC  Size=000023  Align=00001  Fill=0000
+/usr/share/cc65/lib/apple2enh.lib(zeropage.o):
+    ZEROPAGE          Offs=000000  Size=00001A  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+ZEROPAGE              000080  000099  00001A  00001
+EXEHDR                0007C9  000802  00003A  00001
+STARTUP               000803  000836  000034  00001
+LOWCODE               000837  00084A  000014  00001
+CODE                  004000  004B1E  000B1F  00001
+RODATA                004B1F  004C1B  0000FD  00001
+DATA                  004C1C  004C79  00005E  00001
+INIT                  004C7A  004C96  00001D  00001
+BSS                   004C97  004C97  000001  00001
+ONCE                  004C97  004D15  00007F  00001
+
+
+Exports list by name:
+---------------------
+HOME                      000837 RLA    VTABZ                     000841 RLA    
+__BSS_RUN__               004C97 RLA    __BSS_SIZE__              000001 REA    
+__CONSTRUCTOR_COUNT__     000001 REA    __CONSTRUCTOR_TABLE__     004D14 RLA    
+__DESTRUCTOR_COUNT__      000000 REA    __DESTRUCTOR_TABLE__      004C1C RLA    
+__EXEHDR__                000001 REA    __FILETYPE__              000006 REA    
+__HIMEM__                 009600 REA    __LCADDR__                00D400 REA    
+__LCSIZE__                000C00 REA    __LC_LAST__               00D400 RLA    
+__LC_START__              00D400 RLA    __MAIN_LAST__             004D16 RLA    
+__MAIN_START__            000803 RLA    __ONCE_LOAD__             004C97 RLA    
+__ONCE_RUN__              004C97 RLA    __ONCE_SIZE__             00007F REA    
+__STACKSIZE__             000800 REA    __STARTUP__               000001 REA    
+_cgetc                    004848 RLA    _clrscr                   000837 RLA    
+_cputc                    004886 RLA    _cputsxy                  0048DC RLA    
+_main                     0045DC RLA    _rand                     004A4F RLA    
+addysp                    004824 RLA    callmain                  004831 RLA    
+cursor                    004C97 RLA    decsp1                    004911 RLA    
+decsp2                    00491A RLA    decsp3                    004927 RLA    
+decsp4                    004934 RLA    decsp5                    004941 RLA    
+donelib                   004875 RLA    gotoxy                    00494E RLA    
+incsp1                    00495F RLA    incsp2                    00496D RLA    
+incsp3                    00497B RLA    incsp4                    004980 RLA    
+incsp5                    004985 RLA    incsp6                    00498A RLA    
+incsp7                    00498F RLA    initconio                 004CA3  LAI   
+initlib                   004C97 RLA    mulax6                    0049DF RLA    
+negax                     0049F9 RLA    popa                      004A07 RLA    
+popax                     004966 RLA    popptr1                   004A11 RLA    
+popsargsudiv16            004A80 RLA    ptr1                      000088 RLZ    
+ptr4                      00008E RLZ    pusha                     004A23 RLA    
+pusha0                    004A37 RLA    pushax                    004A39 RLA    
+putchardirect             0048C2 RLA    sp                        000080 RLZ    
+sreg                      000082 RLZ    subysp                    004AA0 RLA    
+tmp1                      000090 RLZ    tmp2                      000091 RLZ    
+tosmoda0                  004994 RLA    tosumula0                 0049A5 RLA    
+udiv16                    004ABE RLA    zerobss                   004AFC RLA    
+
+
+
+Exports list by value:
+----------------------
+__DESTRUCTOR_COUNT__      000000 REA    __BSS_SIZE__              000001 REA    
+__CONSTRUCTOR_COUNT__     000001 REA    __EXEHDR__                000001 REA    
+__STARTUP__               000001 REA    __FILETYPE__              000006 REA    
+__ONCE_SIZE__             00007F REA    sp                        000080 RLZ    
+sreg                      000082 RLZ    ptr1                      000088 RLZ    
+ptr4                      00008E RLZ    tmp1                      000090 RLZ    
+tmp2                      000091 RLZ    __STACKSIZE__             000800 REA    
+__MAIN_START__            000803 RLA    HOME                      000837 RLA    
+_clrscr                   000837 RLA    VTABZ                     000841 RLA    
+__LCSIZE__                000C00 REA    _main                     0045DC RLA    
+addysp                    004824 RLA    callmain                  004831 RLA    
+_cgetc                    004848 RLA    donelib                   004875 RLA    
+_cputc                    004886 RLA    putchardirect             0048C2 RLA    
+_cputsxy                  0048DC RLA    decsp1                    004911 RLA    
+decsp2                    00491A RLA    decsp3                    004927 RLA    
+decsp4                    004934 RLA    decsp5                    004941 RLA    
+gotoxy                    00494E RLA    incsp1                    00495F RLA    
+popax                     004966 RLA    incsp2                    00496D RLA    
+incsp3                    00497B RLA    incsp4                    004980 RLA    
+incsp5                    004985 RLA    incsp6                    00498A RLA    
+incsp7                    00498F RLA    tosmoda0                  004994 RLA    
+tosumula0                 0049A5 RLA    mulax6                    0049DF RLA    
+negax                     0049F9 RLA    popa                      004A07 RLA    
+popptr1                   004A11 RLA    pusha                     004A23 RLA    
+pusha0                    004A37 RLA    pushax                    004A39 RLA    
+_rand                     004A4F RLA    popsargsudiv16            004A80 RLA    
+subysp                    004AA0 RLA    udiv16                    004ABE RLA    
+zerobss                   004AFC RLA    __DESTRUCTOR_TABLE__      004C1C RLA    
+__BSS_RUN__               004C97 RLA    __ONCE_LOAD__             004C97 RLA    
+__ONCE_RUN__              004C97 RLA    cursor                    004C97 RLA    
+initlib                   004C97 RLA    initconio                 004CA3  LAI   
+__CONSTRUCTOR_TABLE__     004D14 RLA    __MAIN_LAST__             004D16 RLA    
+__HIMEM__                 009600 REA    __LCADDR__                00D400 REA    
+__LC_LAST__               00D400 RLA    __LC_START__              00D400 RLA    
+
+
+
+Imports list:
+-------------
+HOME (home.o):
+    clrscr.o                  apple2/clrscr.s(8)
+VTABZ (vtabz.o):
+    gotoxy.o                  apple2/gotoxy.s(9)
+    cputc.o                   apple2/cputc.s(13)
+__BSS_RUN__ ([linker generated]):
+    zerobss.o                 common/zerobss.s(8)
+__BSS_SIZE__ ([linker generated]):
+    zerobss.o                 common/zerobss.s(8)
+__CONSTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  runtime/condes.s(18)
+__CONSTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  runtime/condes.s(18)
+__DESTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  runtime/condes.s(19)
+__DESTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  runtime/condes.s(19)
+__EXEHDR__ (exehdr.o):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(7)
+__FILETYPE__ ([linker generated]):
+    exehdr.o                  apple2/exehdr.s(9)
+__HIMEM__ ([linker generated]):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(18)
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(17)
+__LCADDR__ ([linker generated]):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(19)
+__LCSIZE__ ([linker generated]):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(19)
+__LC_LAST__ ([linker generated]):
+    crt0.o                    apple2/crt0.s(13)
+__LC_START__ ([linker generated]):
+    crt0.o                    apple2/crt0.s(13)
+__MAIN_LAST__ ([linker generated]):
+    exehdr.o                  apple2/exehdr.s(10)
+__MAIN_START__ ([linker generated]):
+    exehdr.o                  apple2/exehdr.s(10)
+__ONCE_LOAD__ ([linker generated]):
+    crt0.o                    apple2/crt0.s(12)
+__ONCE_RUN__ ([linker generated]):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(18)
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(18)
+__ONCE_SIZE__ ([linker generated]):
+    crt0.o                    apple2/crt0.s(12)
+__STACKSIZE__ ([linker generated]):
+    [linker generated]        /usr/share/cc65/cfg/apple2-hgr.cfg(18)
+__STARTUP__ (crt0.o):
+    democ.o                   democ.s(13)
+_cgetc (cgetc.o):
+    democ.o                   democ.s(16)
+_clrscr (clrscr.o):
+    democ.o                   democ.s(14)
+_cputc (cputc.o):
+    cputs.o                   conio/cputs.s(9)
+_cputsxy (cputs.o):
+    democ.o                   democ.s(15)
+_main (democ.o):
+    callmain.o                runtime/callmain.s(11)
+_rand (rand.o):
+    democ.o                   democ.s(17)
+addysp (addysp.o):
+    incsp7.o                  runtime/incsp7.s(8)
+    incsp6.o                  runtime/incsp6.s(8)
+    incsp5.o                  runtime/incsp5.s(8)
+    incsp4.o                  runtime/incsp4.s(8)
+    incsp3.o                  runtime/incsp3.s(8)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+callmain (callmain.o):
+    crt0.o                    apple2/crt0.s(11)
+cursor (_cursor.o):
+    cgetc.o                   apple2/cgetc.s(10)
+decsp1 (decsp1.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+decsp2 (decsp2.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+decsp3 (decsp3.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+decsp4 (decsp4.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+decsp5 (decsp5.o):
+    democ.o                   democ.s(1489)
+donelib (condes.o):
+    crt0.o                    apple2/crt0.s(10)
+gotoxy (gotoxy.o):
+    cputs.o                   conio/cputs.s(9)
+    cputc.o                   apple2/cputc.s(13)
+incsp1 (incsp1.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+incsp2 (incsp2.o):
+    popptr1.o                 runtime/popptr1.s(8)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+incsp3 (incsp3.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+incsp4 (incsp4.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+incsp5 (incsp5.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+incsp6 (incsp6.o):
+    democ.o                   democ.s(1489)
+incsp7 (incsp7.o):
+    democ.o                   democ.s(1489)
+initlib (condes.o):
+    crt0.o                    apple2/crt0.s(10)
+mulax6 (mulax6.o):
+    democ.o                   democ.s(1489)
+negax (negabs.o):
+    shelp.o                   runtime/shelp.s(11)
+    mod.o                     runtime/mod.s(11)
+popa (popa.o):
+    gotoxy.o                  apple2/gotoxy.s(9)
+popax (incsp2.o):
+    shelp.o                   runtime/shelp.s(11)
+popptr1 (popptr1.o):
+    udiv.o                    runtime/udiv.s(9)
+    mul8.o                    runtime/mul8.s(9)
+popsargsudiv16 (shelp.o):
+    mod.o                     runtime/mod.s(11)
+ptr1 (zeropage.o):
+    zerobss.o                 common/zerobss.s(9)
+    udiv.o                    runtime/udiv.s(10)
+    shelp.o                   runtime/shelp.s(12)
+    popptr1.o                 runtime/popptr1.s(9)
+    mulax6.o                  runtime/mulax6.s(9)
+    mul8.o                    runtime/mul8.s(10)
+    cputs.o                   conio/cputs.s(10)
+ptr4 (zeropage.o):
+    udiv.o                    runtime/udiv.s(10)
+    shelp.o                   runtime/shelp.s(12)
+    mul8.o                    runtime/mul8.s(10)
+pusha (pusha.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+pusha0 (pushax.o):
+    democ.o                   democ.s(1489)
+pushax (pushax.o):
+    callmain.o                runtime/callmain.s(11)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+putchardirect (cputc.o):
+    cgetc.o                   apple2/cgetc.s(10)
+sp (zeropage.o):
+    subysp.o                  runtime/subysp.s(9)
+    pushax.o                  runtime/pushax.s(8)
+    pusha.o                   runtime/pusha.s(8)
+    popptr1.o                 runtime/popptr1.s(9)
+    popa.o                    runtime/popa.s(8)
+    incsp2.o                  runtime/incsp2.s(8)
+    incsp1.o                  runtime/incsp1.s(8)
+    decsp5.o                  runtime/decsp5.s(8)
+    decsp4.o                  runtime/decsp4.s(8)
+    decsp3.o                  runtime/decsp3.s(8)
+    decsp2.o                  runtime/decsp2.s(8)
+    decsp1.o                  runtime/decsp1.s(8)
+    crt0.o                    /build/cc65-MvQrHe/cc65-2.19/asminc/zeropage.inc(11)
+    addysp.o                  runtime/addysp.s(8)
+    democ.o                   democ.s(10)
+sreg (zeropage.o):
+    udiv.o                    runtime/udiv.s(10)
+    mod.o                     runtime/mod.s(12)
+subysp (subysp.o):
+    democ.o                   democ.s(1489)
+    democ.o                   democ.s(1489)
+tmp1 (zeropage.o):
+    shelp.o                   runtime/shelp.s(12)
+    mod.o                     runtime/mod.s(12)
+    cputs.o                   conio/cputs.s(10)
+tmp2 (zeropage.o):
+    shelp.o                   runtime/shelp.s(12)
+tosmoda0 (mod.o):
+    democ.o                   democ.s(1489)
+tosumula0 (mul8.o):
+    democ.o                   democ.s(1489)
+udiv16 (udiv.o):
+    shelp.o                   runtime/shelp.s(11)
+zerobss (zerobss.o):
+    crt0.o                    apple2/crt0.s(11)
+

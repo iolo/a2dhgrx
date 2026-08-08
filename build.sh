@@ -1,7 +1,7 @@
 #!/bin/bash
 DIMG="demo.po"
 BAS_SRC=(demo demoamp slideshow)
-C_SRC=(dhgrc)
+C_SRC=(dhgrc democ)
 ASM_SRC=(dhgrx dhgrxamp)
 
 build_bas() {

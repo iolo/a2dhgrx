@@ -5,41 +5,37 @@
 
 .include	"macro.inc"
 
-.macro AUX_BANK
-	sta $c055
-.endmacro
-
-.macro MAIN_BANK
-	sta $c054
-.endmacro
-
-; zero-page variables
-x1	=	$fa
-y1	=	$fb
-x2	=	$fc
-y2	=	$fd
-color	=	$fe
-ch	=	$ff
-src	=	$ce 	; pointer to source address (2 bytes)
-dst	=	$eb 	; pointer to destination address (2 bytes)
+; shared variables in zero-page
+; should be used with PUSH/PULL to avoid conflict with other routines
+x1	=	$fa	; 250d
+y1	=	$fb	; 251d
+x2	=	$fc	; 252d
+y2	=	$fd	; 253d
+color	=	$fe	; 254d
+ch	=	$ff	; 255d
+src	=	$ce	; 206d; pointer to source address (2 bytes)
+dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 
 ; entry point == jump table
 .proc	dhgrx
 	jmp	dhgr_init	; $6000(24576)
-	jmp	dhgr_exit	; $6003
-	jmp	dhgr_cls	; $6006
-	jmp	dhgr_plot	; $6009
-	jmp	dhgr_hline	; $600C
-	jmp	dhgr_vline	; $600F
-	jmp	dhgr_rect	; $6012
-	jmp	dhgr_fillrect	; $6015
-	jmp	dhgr_pixmap	; $6018
-	jmp	dhgr_bitmap	; $601B
-	jmp	dhgr_putc	; $601E
-	jmp	dhgr_puts	; $6021
-	jmp	dhgr_put8	; $6024
-	jmp	dhgr_putc8	; $6027
-	jmp	dhgr_puts8	; $602A
+	jmp	dhgr_exit	; +3
+	jmp	dhgr_cls	; +6
+	jmp	dhgr_plot	; +9
+	jmp	dhgr_hline	; +12
+	jmp	dhgr_vline	; +15
+	jmp	dhgr_rect	; +18
+	jmp	dhgr_fillrect	; +21
+	jmp	dhgr_pixmap	; +24
+	jmp	dhgr_bitmap	; +27
+	jmp	dhgr_putc	; +30
+	jmp	dhgr_puts	; +33
+	jmp	dhgr_putc_ucs2	; +36
+	jmp	dhgr_puts_ucs2	; +39
+	jmp	dhgr_puts_utf8	; +42
+	.word	font4x6		; +45
+	.word	font5x12	; +47
+	.word	font10x12	; +49
 .endproc
 
 ; switch to double hi-res mixed/page1
@@ -203,7 +199,7 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	lsr
 	lsr
 	and	#%00000001
-	ora	ch
+	ora	ch	; ch = composed byte for framebuffer
 
 	;MAIN_BANK
 	sta	(dst),y
@@ -224,7 +220,7 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	lda	color
 	asl
 	and	#%00011110
-	ora	ch
+	ora	ch	; ch = composed byte for framebuffer
 
 	;MAIN_BANK
 	sta	(dst),y
@@ -501,22 +497,22 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 ; @param y2
 ; @param color
 .proc	dhgr_rect
-	PUSH_VARS x1
+	PUSH	x1
 	jsr 	dhgr_hline	; hlin x1,x2,y1
-	PULL_VARS x1
+	PULL	x1
 
-	PUSH_VARS x1, y1
+	PUSH	x1, y1
 	lda 	y2
 	sta 	y1
 	jsr 	dhgr_hline	; hlin x1,x2,y2
-	PULL_VARS y1, x1
+	PULL	y1, x1
 
 	inc 	y1
 	dec 	y2
 
-	PUSH_VARS y1
+	PUSH	y1
 	jsr 	dhgr_vline	; vlin y1+1,y2-1,x1
-	PULL_VARS y1
+	PULL	y1
 
 	lda 	x2
 	sta 	x1
@@ -542,9 +538,9 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 @no_swap:
 
 @loopy:
-	PUSH_VARS x1
+	PUSH	x1
 	jsr 	dhgr_hline
-	PULL_VARS x1
+	PULL	x1
 	inc	y1
 	lda	y2
 	cmp	y1
@@ -605,8 +601,8 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 .proc	dhgr_bitmap
 	lda	x1
 	sta	@_x1
-	lda	color
-	sta	@_color
+	;//lda	color
+	;//sta	@_color
 
 @loop:
 	ldy	#0
@@ -615,8 +611,8 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 @loop_bit:
 	asl
 	bcc	@skip	; skip skip transparent
-	ldy	@_color
-	sty	color
+	;//ldy	@_color
+	;//sty	color
 	pha
 	phx
 	jsr 	dhgr_plot
@@ -647,9 +643,15 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	rts		; safe guard
 
 @_x1:	.byte	0
-@_color:.byte	0
+;//@_color:.byte	0
 .endproc
 
+FONT_WIDTH	= 4
+FONT_HEIGHT	= 6
+FONT_CODE_BEGIN = $20
+FONT_CODE_END = $7F
+FONT_GLYPH_BYTES = 3
+FONT_GLYPH_COUNT= 96
 
 ; draw char with 4x6 font
 ;
@@ -693,7 +695,6 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 .endproc
 
 
-
 ; draw text string with 4x6 font
 ;
 ; @param x1(modified)
@@ -706,11 +707,11 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 	lda	(src),y
 	beq	@break
 	sta	ch
-	PUSH_VARS x1, y1, color, src, src+1
+	PUSH	x1, y1, color, src, src+1
 	phy
 	jsr	dhgr_putc
 	ply
-	PULL_VARS src+1, src, color, y1, x1
+	PULL	src+1, src, color, y1, x1
 	iny		; next char
 
 	lda	x1
@@ -734,230 +735,342 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 .endproc
 
 
-; draw 7x8 bitmap; fast but byte-aligned
-;
-; @param x1(modified) 0..79
-; @param y1(modified) 0..191
-; @param src - pointer to pixel data; 1 bit per pixel; MSB ignored; 1*8=8bytes.
-.proc dhgr_put8
-	ldy	#0	; Y = src offset
-	lda	x1
-	lsr
-	sta	x1	; x1 = x1 / 2 = dst offset
-	bcc	@loopy_even
+ENG_FONT_ADDR = font5x12
+ENG_FONT_WIDTH = 5
+ENG_FONT_HEIGHT = 12
+ENG_CODE_BEGIN = $20
+ENG_CODE_END = $7f
+ENG_GLYPH_COUNT = 96	; 0x20 ~ 0x7f
+ENG_GLYPH_SIZE = 8	; 5x12 = 60bits -> 60/8 <= 8bytes
 
-@loopy_odd:
-	ldx	y1
-	lda	#<HGR_BASE
-	clc
-	adc	HGR_OFFSET_LO,x
-	sta	dst
-	lda	#>HGR_BASE
-	adc	HGR_OFFSET_HI,x
-	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
+KOR_FONT_WIDTH = 10
+KOR_FONT_HEIGHT = 12
+KOR_CODE_BEGIN = $ac00	; 가
+KOR_CODE_END = $d7a3	; 힣
+NUM_CHO_FORM = 3	; 0 for vertical-shaped, 1 for horizontal-shaped, 2 for compound
+NUM_JUNG_FORM = 1
+NUM_JONG_FORM = 1
+CHO_COUNT = 19		; ㄱ,ㄲ,ㄴ,ㄷ,ㄸ,ㄹ,ㅁ,ㅂ,ㅃ,ㅅ,ㅆ,ㅇ,ㅈ,ㅉ,ㅊ,ㅋ,ㅌ,ㅍ,ㅎ
+JUNG_COUNT = 21		; ㅏ,ㅐ,ㅑ,ㅒ,ㅓ,ㅔ,ㅕ,ㅖ,ㅗ,ㅘ,ㅙ,ㅚ,ㅛ,ㅜ,ㅝ,ㅞ,ㅟ,ㅠ,ㅡ,ㅢ,ㅣ
+JONG_COUNT = 28		; fill,ㄱ,ㄲ,ㄳ,ㄴ,ㄵ,ㄶ,ㄷ,ㄹ,ㄺ,ㄻ,ㄼ,ㄽ,ㄾ,ㄿ,ㅀ,ㅁ,ㅂ,ㅄ,ㅅ,ㅆ,ㅇ,ㅈ,ㅊ,ㅋ,ㅌ,ㅍ,ㅎ
+KOR_GLYPH_SIZE = 15	; 10x12 = 120bits -> 120/8 = 15bytes
+KOR_GLYPH_COUNT = NUM_CHO_FORM*CHO_COUNT + NUM_JUNG_FORM*JUNG_COUNT + NUM_JONG_FORM*(JONG_COUNT-1)
 
-	lda	(src),y
+KOR_FONT_ADDR = font10x12
+CHO_FONT_ADDR = KOR_FONT_ADDR
+JUNG_FONT_ADDR = CHO_FONT_ADDR + NUM_CHO_FORM * CHO_COUNT * KOR_GLYPH_SIZE
+JONG_FONT_ADDR = JUNG_FONT_ADDR + NUM_JUNG_FORM * JUNG_COUNT * KOR_GLYPH_SIZE
 
-	phy
-	ldy	x1
-	sta	(dst),y ; dst[x] = src[y]
-	ply
 
-	inc	y1
-	iny
-	cpy	#8 ; font height
-	bne	@loopy_odd
-	rts
+; variables for korean decomposition in zero-page
+cho	=	x1	; 250d
+jung	=	y1	; 251d
+jong	=	x2	; 252d
+code	=	x2	; 252d; unicode char code(2 bytes);
 
-@loopy_even:
-	ldx	y1
-	lda	#<HGR_BASE
-	clc
-	adc	HGR_OFFSET_LO,x
-	sta	dst
-	lda	#>HGR_BASE
-	adc	HGR_OFFSET_HI,x
-	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
-
-	lda	(src),y
-
-	phy
-	ldy	x1
-	AUX_BANK
-	sta	(dst),y	; dst[x] = src[y]
-	MAIN_BANK
-	ply
-
-	inc	y1
-	iny
-	cpy	#8
-	bne	@loopy_even
-	rts
-.endproc
-
-; draw 14x16 bitmap; fast but byte-aligned
-;
-; @param x1(modified) 0..79
-; @param y1(modified) 0..191
-; @param src - pointer to pixel data; 1 bit per pixel; MSB ignored; 2*8=16bytes
-.proc dhgr_put16
-	ldy	#0	; Y = src offset
-	lda	x1
-	lsr		;
-	sta	x1	; x1 = x1 / 2 = dst offset
-	bcc	@loopy_even
-
-@loopy_odd:
-	ldx	y1
-	lda	#<HGR_BASE
-	clc
-	adc	HGR_OFFSET_LO,x
-	sta	dst
-	lda	#>HGR_BASE
-	adc	HGR_OFFSET_HI,x
-	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
-
-	; first byte: main bank
-	lda	(src),y
-
-	phy
-	ldy	x1
-	sta	(dst),y	; dst[x] = src[y]
-	ply
-
-	; second byte: aux bank & next address
-	iny
-	lda	(src),y
-
-	ldy	x1
-	iny
-	AUX_BANK
-	sta	(dst),y	; dst[x+1] = src[++y]
-	MAIN_BANK
-
-	inc	y1
-	iny
-	cpy	#8 ; font height
-	bne	@loopy_odd
-	rts
-
-@loopy_even:
-	ldx	y1
-	lda	#<HGR_BASE
-	clc
-	adc	HGR_OFFSET_LO,x
-	sta	dst
-	lda	#>HGR_BASE
-	adc	HGR_OFFSET_HI,x
-	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
-
-	; first byte: aux bank
-	lda	(src),y
-
-	phy
-	ldy	x1
-	AUX_BANK
-	sta	(dst),y	; dst[x] = src[y]
-	MAIN_BANK
-	ply
-
-	; second byte: main bank & same address
-	iny
-	lda	(src),y
-
-	ldy	x1
-	sta	(dst),y	; dst[x] = src[++y]
-
-	inc	y1
-	iny
-	cpy	#16
-	bne	@loopy_even
-	rts
-.endproc
-
-; draw char
+; draw ucs2 char with 5x12 font
 ; @param x1(modified)
 ; @param y1(modified)
-; @param ch
-.proc dhgr_putc8
-	lda	#<font7x8
-	sta	src
-	lda	#>font7x8
-	sta	src+1
+; @param code(modified)
+; @param color
+; @returns carry=0 for english, set carry=1 for korean
+.proc dhgr_putc_ucs2
+	lda	code+1
+	bne	@kor	; korean if hi byte is not zero
 
-	lda	ch
+@eng:
+	lda	code
 	sec
-	sbc	#$20	; A = ch - $20
-	sta	ch
-	lsr
-	lsr
-	lsr
-	lsr
-	lsr
-	pha	; hi((ch - $20) * 8)
+	sbc	#ENG_CODE_BEGIN	; A = code - $20
 
-	lda	ch
+	ldx	#0
+	stx	ch	; ch=0; temporary use ch as hi byte
 	asl
+	rol	ch
 	asl
-	asl	; lo((ch - $20) * 8)
+	rol	ch
+	asl
+	rol	ch	; ch:A = A << 3 = (code - $20) * 8
 
 	clc
-	adc	src
+	adc	#<ENG_FONT_ADDR
 	sta	src
+	lda	ch	; hi-byte
+	adc	#>ENG_FONT_ADDR
+	sta	src+1	; dst = eng_font_addr + (code - $20) * 8
 
-	pla
-	adc	src+1
-	sta	src+1
+	lda	x1
+	adc	#(ENG_FONT_WIDTH-1)
+	sta	x2
+	lda	y1
+	adc	#(ENG_FONT_HEIGHT-1)
+	sta	y2
+	PUSH x1,y1
+	jsr	dhgr_bitmap	; draw eng font in src to framebuffer x1,y1,x1+5-1,y1+12-1
+	PULL y1,x1
 
-	jsr	dhgr_put8
-	;jsr	dhgr_put16
+	clc	; carry=0 for english
+	rts
+
+@kor:
+	PUSH	x1,y1
+
+	lda	#<kor_buf
+	sta	dst
+	lda	#>kor_buf
+	sta	dst+1	; dst = kor_buf
+
+	jsr	decompose_ucs2	; code -> cho,jung,jong
+
+; get cho font
+	lda	cho
+	; determine cho_form by jung and calculate cho font offset
+	ldy	jung
+	ldx	cho_form_by_jung,y	; cho_form=0,1,2
+	clc
+	adc	cho_form_offset,x	; cho_form_offset=cho_form*19=0,19,38
+	sta	cho	; cho = cho_form * cho_count + cho
+
+	ldx	#0
+	stx	ch	; ch=0 for hi-byte
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	sec
+	sbc	cho
+	sta	cho
+	lda	ch
+	sbc	#0
+	sta	ch	; ch:cho = (cho_form * cho_count + cho) * 15
+
+	lda	cho
+	clc
+	adc	#<CHO_FONT_ADDR
+	sta	src
+	lda	ch	; hi-byte
+	adc	#>CHO_FONT_ADDR
+	sta	src+1	; src = cho_font_base + (cho_form*cho_count + cho)*15; cho_form=0,1,2
+
+	ldy	#(KOR_GLYPH_SIZE-1)
+@loop_cho_font:
+	lda	(src),y
+	sta	(dst),y
+	dey
+	bpl	@loop_cho_font	; copy cho font in src to kor_buf in dst
+
+; get jung font
+	lda	jung
+	ldx	#0
+	stx	ch	; ch=0 for hi-byte
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	sec
+	sbc	jung
+	sta	jung
+	lda	ch
+	sbc	#0
+	sta	ch	; ch:jung = (jung << 4) - jung = jung * 15
+
+	lda	jung
+	clc
+	adc	#<JUNG_FONT_ADDR
+	sta	src
+	lda	ch
+	adc	#>JUNG_FONT_ADDR
+	sta	src+1	; src = jung_font_base + (jung_form*jung_count + jung)*15; jung_form=0 always for now
+
+	ldy	#(KOR_GLYPH_SIZE-1)
+@loop_jung_font:
+	lda	(dst),y
+	ora	(src),y
+	sta	(dst),y
+	dey
+	bpl	@loop_jung_font	; merge jung font in src into kor_buf in dst
+
+; get jong font
+	lda	jong
+	beq	@no_jong	; if jong==0, skip jong font
+	dec
+	sta	jong	; jong -= 1; no glyph for fill
+
+	ldx	#0
+	stx	ch	; ch=0 for hi-byte
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	asl
+	rol	ch
+	sec
+	sbc	jong
+	sta	jong
+	lda	ch
+	sbc	#0
+	sta	ch	; ch:jong = (jong << 4) - jong = jong * 15
+
+	lda	jong
+	clc
+	adc	#<JONG_FONT_ADDR
+	sta	src
+	lda	ch	; hi-byte
+	adc	#>JONG_FONT_ADDR
+	sta	src+1	; src = jong_font_base + (jong_form*jong_count + jong)*15; jong_form=0 always for now
+
+	ldy	#(KOR_GLYPH_SIZE-1)
+@loop_jong_font:
+	lda	(dst),y
+	ora	(src),y
+	sta	(dst),y
+	dey
+	bpl	@loop_jong_font	; merge jong font in src to kor_buf in dst
+
+@no_jong:
+	PULL	y1,x1
+
+	lda	#<kor_buf
+	sta	src
+	lda	#>kor_buf
+	sta	src+1	; src = kor_buf
+	lda	x1
+	clc
+	adc	#(KOR_FONT_WIDTH-1)
+	sta	x2
+	lda	y1
+	clc
+	adc	#(KOR_FONT_HEIGHT-1)
+	sta	y2
+	PUSH x1,y1
+	jsr	dhgr_bitmap	; draw kor font in src to framebuffer x1,y1,x1+10-1,y1+12-1
+	PULL y1,x1
+
+	sec	; carry=1 for korean
 	rts
 .endproc
 
-
-; draw text string
+; draw ucs2 text string
+;
 ; @param x1(modified)
 ; @param y1(modified)
 ; @param src - pointer to string ends with zero
-.proc	dhgr_puts8
-	ldy	#0
+; @param color
+.proc dhgr_puts_ucs2
+	ldy	#0 ; src index
 @loop:
-	lda	(src),y
-	beq	@break
-	sta	ch
-	PUSH_VARS x1, y1, src, src+1
+	lda	(src),y ; lo
+	sta	code
+	iny		; next byte
+	ora	(src),y
+	beq	@break	; break if hi=0 and lo=0
+	lda	(src),y ; hi
+	sta	code+1
 	phy
-	jsr	dhgr_putc8
+	PUSH src,src+1,x1,y1
+	jsr	dhgr_putc_ucs2
+	PULL y1,x1,src+1,src
 	ply
-	PULL_VARS src+1, src, y1, x1
-	iny		; next char
+	iny		; next ucs2 char
 
-	lda	x1
+	bcs	@forward_kor
+@forward_eng:
+	lda	#ENG_FONT_WIDTH
+	bne	@forward	; jmp always
+@forward_kor:
+	lda	#KOR_FONT_WIDTH
+@forward:
 	clc
-	adc	#1	; x1+=1 foward
+	adc	x1	; x1 += 5 for english, x1 += 10 for korean
 	sta	x1
-	cmp	#(DHGR_BYTES_PER_ROW)
-	bcc	@loop	; if x1 < 80
+	cmp	#(DHGR_WIDTH-5)
+	bcc	@loop	; if x1 < 140-5
 
 	lda	#0
 	sta	x1	; x=0 carrage return
 
 	lda	y1
 	clc
-	adc	#8	; y1+=8 line feed
+	adc	#12	; y1+=12 line feed
 	sta	y1
-	cmp	#(DHGR_HEIGHT-8)
-	bcc	@loop ; while y1 < 192-8
+	cmp	#(DHGR_HEIGHT-12)
+	bcc	@loop ; while y1 < 192-12
+	; TODO: scroll up? or return to top? or stop?
 @break:
 	rts
 .endproc
 
 
+; draw utf8 text string
+; @param x1(modified)
+; @param y1(modified)
+; @param color(modified)
+; @param src - pointer to string ends with zero
+.proc dhgr_puts_utf8
+	PUSH	x1,y1,color
+
+	lda	#<ucs2_buf
+	sta	dst
+	lda	#>ucs2_buf
+	sta	dst+1	; dst = ucs2_buf
+	jsr	utf8_to_ucs2	; convert utf8 in src to ucs2 in ucs2_buf
+
+	PULL	color,y1,x1
+
+	lda	#<ucs2_buf
+	sta	src
+	lda	#>ucs2_buf
+	sta	src+1	; src = ucs2_buf
+	jsr	dhgr_puts_ucs2 ; draw ucs2 string in src
+	rts
+.endproc
+
 .include	"softswitch.inc"
 .include	"math.inc"
 .include	"hgr.inc"
 .include	"dhgr.inc"
-.include	"4x6.inc"
-.include	"7x8.inc"
 ;.include	"pixmap.inc"
 ;.include	"bitmap.inc"
+.include	"kor.s"
+
+.align $100
+font4x6:
+	.incbin "font4x6.bin"
+
+;//.align $100
+font5x12:
+	.incbin "font5x12.bin"
+
+;//.align $100
+font10x12:
+	.incbin "font10x12.bin"
+
+cho_form_by_jung:
+	; cho=0..19, jung=0..20 -> cho_form=0,1,2
+	;     ㅏ,ㅐ,ㅑ,ㅒ,ㅓ,ㅔ,ㅕ,ㅖ,ㅗ,ㅘ,ㅙ,ㅚ,ㅛ,ㅜ,ㅝ,ㅞ,ㅟ,ㅠ,ㅡ,ㅢ,ㅣ
+	.byte 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 0
+
+cho_form_offset:
+	; cho_font_addr + cho_form * cho_count; cho_form=0,1,2; cho_count=19
+	.byte	0, CHO_COUNT, CHO_COUNT*2
+
+; kor font buffer
+kor_buf:
+	.res 15
+
+.align $100
+; utf8_to_ucs2 buffer
+ucs2_buf:
+	.res 256
+
+

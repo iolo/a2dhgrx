@@ -744,21 +744,22 @@ void image_test() {
 #define CHO_KIND 3
 #define JUNG_KIND 1
 #define JONG_KIND 1
-#define FONT_ASC_WIDTH 7
+#define FONT_ASC_WIDTH 5 //@@7
 #define FONT_ASC_WIDTH_BYTE 1
-#define FONT_KOR_WIDTH 14
+#define FONT_KOR_WIDTH 10 //@@14
 #define FONT_KOR_WIDTH_BYTE 2
 #define FONT_HEIGHT 12
 
 #define TEXT_LINE_HEIGHT FONT_HEIGHT
-#define TEXT_COLS (560 / FONT_ASC_WIDTH)
-#define TEXT_ROWS (192 / TEXT_LINE_HEIGHT)
+#define TEXT_COLS (140 / 5)//@@(560 / FONT_ASC_WIDTH)
+#define TEXT_ROWS (192 / 12)//@@(192 / TEXT_LINE_HEIGHT)
 
 #define NUM_ASC_FONT (0x7f - 0x20)
 #define NUM_HAN_FONT                                                           \
   (NUM_CHO * CHO_KIND + NUM_JUNG * JUNG_KIND + NUM_JONG * JONG_KIND)
 
-#include "7x12.c"
+#include "eng5x12.c"
+#include "kor10x12.c"
 
 #include "ko.c"
 
@@ -810,20 +811,52 @@ void puthan(uint8_t x, uint8_t y, uint8_t *cho, uint8_t *jung, uint8_t *jong) {
   }
 }
 
+void draw_bitmap(uint8_t x, uint8_t y, uint8_t width, uint8_t height,
+                 uint8_t *bitmap) {
+  register uint8_t i, j, byte_index, bitmask, bit;
+  byte_index = 0;
+  bitmask = 0b10000000;
+  for (i = 0; i < height; i++) {
+    for (j = 0; j < width; j++) {
+      bit = bitmap[byte_index] & bitmask;
+      bitmask >>= 1;
+      if (bitmask == 0) {
+        bitmask = 0b10000000;
+        byte_index++;
+      }
+      plot(x*5 + j, y + i, bit ? WHITE : BLACK);
+    }
+  }
+}
+
+// eng=5x12=8byte, kor=10x12=15byte
+static uint8_t glyph_buf[15];
+
+void puthan_bitmap(uint8_t x, uint8_t y, uint8_t *cho, uint8_t *jung, uint8_t *jong) {
+  register uint8_t i, p, byte1, byte2;
+  for (i = 0; i < 15; i++) {
+    glyph_buf[i] = cho[i] | (jung ? jung[i] : 0) | (jong ? jong[i] : 0);
+  }
+  draw_bitmap(x, y, 10, 12, glyph_buf);
+}
+
 int8_t putucs2(uint8_t x, uint8_t y, uint16_t code) {
   uint8_t cho, jung, jong, cho_index, jung_index, jong_index;
   if (code < 0x20) {
     return 0;
   }
   if (code < 0x80) {
-    putasc(x, y, asc[code - ASC_BEGIN]);
+    //@@putasc(x, y, asc[code - ASC_BEGIN]);
+    draw_bitmap(x, y, 5, 12, &eng5x12_bin[(code - ASC_BEGIN) * 8]);
     return 1;
   }
   decomposeHangul(code, &cho, &jung, &jong);
   cho_index = NUM_CHO * cho_kind_by_jung[jung] + cho;
   jung_index = CHO_KIND * NUM_CHO + jung;
   jong_index = CHO_KIND * NUM_CHO + JUNG_KIND * NUM_JUNG + jong;
-  puthan(x, y, han[cho_index], han[jung_index], han[jong_index]);
+  //@@puthan(x, y, han[cho_index], han[jung_index], han[jong_index]);
+  puthan_bitmap(x, y, &kor10x12_bin[cho_index*15], &kor10x12_bin[jung_index*15], &kor10x12_bin[jong_index*15]);
+
   return 2;
 }
 
@@ -923,7 +956,6 @@ void text_test() {
 }
 
 void main() {
-  /*
   char c;
 
   while (1) {
@@ -985,34 +1017,4 @@ void main() {
     cgetc();
     dhgr_exit();
   }
-  */
-  register uint8_t y;
-  register uint8_t* addr;
-
-// |bank      | AUX        |MAIN         | AUX         | MAIN       |   |
-// |----------|------------|-------------+-------------|------------|---|
-// |address   | $2000      |$2000        | $2001       | $2001      |...|
-// |----------|------------|-------------+-------------|------------|---|
-// |bit offset| 7 654 3210 | 7 65 4321 0 | 7 6 5432 10 | 7 6543 210 |...|
-// |pixel     | - BBB AAAA | - DD CCCC B | - F EEEE DD | - GGGG FFF |...|
-// |pixel bit | - 123 0123 | - 23 0123 0 | - 3 0123 01 | - 0123 012 |...|
-// |x         |   1   0    |   3  2    1 |   5 4    3  |   6    5   |...|
-  dhgr_init();
-  cls(BLACK);
-  for (y = 0; y < 192; y++) {
-    addr = HGR_BASE + HGR_OFFSET[y];
-    AUX_BANK();
-    *addr = y & 0b0001111;
-    MAIN_BANK();
-  }
-  cgetc();
-  cls(WHITE);
-  for (y = 0; y < 192; y++) {
-    addr = HGR_BASE + HGR_OFFSET[y];
-    AUX_BANK();
-    *addr = y & 0b0001111;
-    MAIN_BANK();
-  }
-  cgetc();
-  dhgr_exit();
 }
