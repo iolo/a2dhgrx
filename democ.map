@@ -1,97 +1,181 @@
 Modules list:
 -------------
-democ.c.17795.0.o:
-    CODE              Offs=000000  Size=000842  Align=00001  Fill=0000
-    RODATA            Offs=000000  Size=000107  Align=00001  Fill=0000
+democ.c.11431.0.o:
+    CODE              Offs=000000  Size=000A9D  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000146  Align=00001  Fill=0000
     DATA              Offs=000000  Size=000022  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(_cursor.o):
     BSS               Offs=000000  Size=000001  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(_directerrno.o):
+    CODE              Offs=000A9D  Size=000009  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(_heap.o):
+    DATA              Offs=000022  Size=00000A  Align=00001  Fill=0000
+    ONCE              Offs=000000  Size=000010  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(_mappederrno.o):
+    CODE              Offs=000AA6  Size=00000F  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(_oserror.o):
+    BSS               Offs=000001  Size=000001  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(_seterrno.o):
+    CODE              Offs=000AB5  Size=000009  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(addeqsp.o):
+    CODE              Offs=000ABE  Size=000011  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(addysp.o):
-    CODE              Offs=000842  Size=00000E  Align=00001  Fill=0000
+    CODE              Offs=000ACF  Size=00000E  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(callmain.o):
-    CODE              Offs=000850  Size=000042  Align=00001  Fill=0000
-    DATA              Offs=000022  Size=000004  Align=00001  Fill=0000
+    CODE              Offs=000ADD  Size=000042  Align=00001  Fill=0000
+    DATA              Offs=00002C  Size=000004  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(cgetc.o):
-    CODE              Offs=000892  Size=00002E  Align=00001  Fill=0000
+    CODE              Offs=000B1F  Size=00002E  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(close.o):
+    CODE              Offs=000B4D  Size=00001C  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(clrscr.o):
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(compl.o):
+    CODE              Offs=000B69  Size=000009  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(condes.o):
-    CODE              Offs=0008C0  Size=00000C  Align=00001  Fill=0000
-    DATA              Offs=000026  Size=000025  Align=00001  Fill=0000
-    ONCE              Offs=000000  Size=00000C  Align=00001  Fill=0000
+    CODE              Offs=000B72  Size=00000C  Align=00001  Fill=0000
+    DATA              Offs=000030  Size=000025  Align=00001  Fill=0000
+    ONCE              Offs=000010  Size=00000C  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(cout.o):
+    LOWCODE           Offs=000000  Size=00000A  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(cputc.o):
-    CODE              Offs=0008CC  Size=00006F  Align=00001  Fill=0000
-    ONCE              Offs=00000C  Size=000007  Align=00001  Fill=0000
+    CODE              Offs=000B7E  Size=00006F  Align=00001  Fill=0000
+    ONCE              Offs=00001C  Size=000007  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(cputs.o):
-    CODE              Offs=00093B  Size=00001D  Align=00001  Fill=0000
+    CODE              Offs=000BED  Size=00001D  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(crt0.o):
-    CODE              Offs=000958  Size=00001E  Align=00001  Fill=0000
-    RODATA            Offs=000107  Size=000007  Align=00001  Fill=0000
-    DATA              Offs=00004B  Size=000003  Align=00001  Fill=0000
+    CODE              Offs=000C0A  Size=00001E  Align=00001  Fill=0000
+    RODATA            Offs=000146  Size=000007  Align=00001  Fill=0000
+    DATA              Offs=000055  Size=000003  Align=00001  Fill=0000
     STARTUP           Offs=000000  Size=00000C  Align=00001  Fill=0000
-    ONCE              Offs=000013  Size=000083  Align=00001  Fill=0000
+    ONCE              Offs=000023  Size=000083  Align=00001  Fill=0000
     INIT              Offs=000000  Size=00001D  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(decax1.o):
+    CODE              Offs=000C28  Size=000007  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(decax4.o):
+    CODE              Offs=000C2F  Size=000007  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp1.o):
-    CODE              Offs=000976  Size=000009  Align=00001  Fill=0000
+    CODE              Offs=000C36  Size=000009  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp2.o):
-    CODE              Offs=00097F  Size=00000D  Align=00001  Fill=0000
+    CODE              Offs=000C3F  Size=00000D  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp3.o):
-    CODE              Offs=00098C  Size=00000D  Align=00001  Fill=0000
+    CODE              Offs=000C4C  Size=00000D  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp4.o):
-    CODE              Offs=000999  Size=00000D  Align=00001  Fill=0000
+    CODE              Offs=000C59  Size=00000D  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp5.o):
-    CODE              Offs=0009A6  Size=00000D  Align=00001  Fill=0000
+    CODE              Offs=000C66  Size=00000D  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(decsp7.o):
+    CODE              Offs=000C73  Size=00000D  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(detect80cols.o):
+    DATA              Offs=000058  Size=000001  Align=00001  Fill=0000
+    ONCE              Offs=0000A6  Size=00001C  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(dosdetect.o):
+    DATA              Offs=000059  Size=000001  Align=00001  Fill=0000
+    ONCE              Offs=0000C2  Size=000014  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(errno.o):
+    BSS               Offs=000002  Size=000002  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(exehdr.o):
     EXEHDR            Offs=000000  Size=00003A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(filedes.o):
+    CODE              Offs=000C80  Size=000016  Align=00001  Fill=0000
+    DATA              Offs=00005A  Size=000020  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(filename.o):
+    CODE              Offs=000C96  Size=00006F  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(free.o):
+    CODE              Offs=000D05  Size=0001D3  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(gotoxy.o):
-    CODE              Offs=0009B3  Size=000019  Align=00001  Fill=0000
+    CODE              Offs=000ED8  Size=000019  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(home.o):
-    LOWCODE           Offs=000000  Size=00000A  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp1.o):
-    CODE              Offs=0009CC  Size=000007  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp2.o):
-    CODE              Offs=0009D3  Size=000015  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp3.o):
-    CODE              Offs=0009E8  Size=000005  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp4.o):
-    CODE              Offs=0009ED  Size=000005  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp5.o):
-    CODE              Offs=0009F2  Size=000005  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp6.o):
-    CODE              Offs=0009F7  Size=000005  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp7.o):
-    CODE              Offs=0009FC  Size=000005  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(lc-copy-applesoft.o):
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(mod.o):
-    CODE              Offs=000A01  Size=000011  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(mul8.o):
-    CODE              Offs=000A12  Size=00003A  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(mulax6.o):
-    CODE              Offs=000A4C  Size=000016  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(negabs.o):
-    CODE              Offs=000A62  Size=000012  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(popa.o):
-    CODE              Offs=000A74  Size=00000A  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(popptr1.o):
-    CODE              Offs=000A7E  Size=00000E  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(pusha.o):
-    CODE              Offs=000A8C  Size=000016  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(pushax.o):
-    CODE              Offs=000AA2  Size=00001A  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(rand.o):
-    CODE              Offs=000ABC  Size=000034  Align=00001  Fill=0000
-    DATA              Offs=00004E  Size=000004  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(shelp.o):
-    CODE              Offs=000AF0  Size=000020  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(subysp.o):
-    CODE              Offs=000B10  Size=00000D  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(udiv.o):
-    CODE              Offs=000B1D  Size=00004F  Align=00001  Fill=0000
-/home/iolo/.local/share/cc65/lib/apple2enh.lib(vtabz.o):
     LOWCODE           Offs=00000A  Size=00000A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incaxy.o):
+    CODE              Offs=000EF1  Size=00000B  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp1.o):
+    CODE              Offs=000EFC  Size=000007  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp2.o):
+    CODE              Offs=000F03  Size=000015  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp3.o):
+    CODE              Offs=000F18  Size=000005  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp4.o):
+    CODE              Offs=000F1D  Size=000005  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp5.o):
+    CODE              Offs=000F22  Size=000005  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp6.o):
+    CODE              Offs=000F27  Size=000005  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(incsp7.o):
+    CODE              Offs=000F2C  Size=000005  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(iobuf.o):
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(lc-copy-applesoft.o):
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(ldaxi.o):
+    CODE              Offs=000F31  Size=00000D  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(ldaxsp.o):
+    CODE              Offs=000F3E  Size=000009  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(malloc.o):
+    CODE              Offs=000F47  Size=000110  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(mli.o):
+    BSS               Offs=000004  Size=000012  Align=00001  Fill=0000
+    DATA              Offs=00007A  Size=000024  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(mod.o):
+    CODE              Offs=001057  Size=000011  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(mul8.o):
+    CODE              Offs=001068  Size=00003A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(mulax6.o):
+    CODE              Offs=0010A2  Size=000016  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(negabs.o):
+    CODE              Offs=0010B8  Size=000012  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(open.o):
+    CODE              Offs=0010CA  Size=0000EA  Align=00001  Fill=0000
+    DATA              Offs=00009E  Size=000009  Align=00001  Fill=0000
+    ONCE              Offs=0000D6  Size=000009  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(oserror.o):
+    CODE              Offs=0011B4  Size=000016  Align=00001  Fill=0000
+    RODATA            Offs=00014D  Size=000032  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(pmemalign.o):
+    CODE              Offs=0011CA  Size=0001E0  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(popa.o):
+    CODE              Offs=0013AA  Size=00000A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(popptr1.o):
+    CODE              Offs=0013B4  Size=00000E  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(pusha.o):
+    CODE              Offs=0013C2  Size=000016  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(pushax.o):
+    CODE              Offs=0013D8  Size=00001A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(pushwsp.o):
+    CODE              Offs=0013F2  Size=00001C  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(rand.o):
+    CODE              Offs=00140E  Size=000034  Align=00001  Fill=0000
+    DATA              Offs=0000A7  Size=000004  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(rdkey.o):
+    LOWCODE           Offs=000014  Size=00000A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(read.o):
+    CODE              Offs=001442  Size=000058  Align=00001  Fill=0000
+    ONCE              Offs=0000DF  Size=000007  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(returnFFFF.o):
+    CODE              Offs=00149A  Size=000004  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(rwcommon.o):
+    CODE              Offs=00149E  Size=000033  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(shelp.o):
+    CODE              Offs=0014D1  Size=000020  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(staxsp.o):
+    CODE              Offs=0014F1  Size=00000B  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(staxspi.o):
+    CODE              Offs=0014FC  Size=00001A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(sub.o):
+    CODE              Offs=001516  Size=000014  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(subeqsp.o):
+    CODE              Offs=00152A  Size=000015  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(subysp.o):
+    CODE              Offs=00153F  Size=00000D  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(udiv.o):
+    CODE              Offs=00154C  Size=00004F  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(videomode.o):
+    LOWCODE           Offs=00001E  Size=000024  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(vtabz.o):
+    LOWCODE           Offs=000042  Size=00000A  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(zerobss.o):
-    CODE              Offs=000B6C  Size=000023  Align=00001  Fill=0000
+    CODE              Offs=00159B  Size=000023  Align=00001  Fill=0000
 /home/iolo/.local/share/cc65/lib/apple2enh.lib(zeropage.o):
     ZEROPAGE          Offs=000000  Size=00001A  Align=00001  Fill=0000
+/home/iolo/.local/share/cc65/lib/apple2enh.lib(mli_set_pathname.o):
+    CODE              Offs=0015BE  Size=00000B  Align=00001  Fill=0000
 
 
 Segment list:
@@ -101,109 +185,175 @@ Name                   Start     End    Size  Align
 ZEROPAGE              000080  000099  00001A  00001
 EXEHDR                0007C9  000802  00003A  00001
 STARTUP               000803  00080E  00000C  00001
-LOWCODE               00080F  000822  000014  00001
-CODE                  004000  004B8E  000B8F  00001
-RODATA                004B8F  004C9C  00010E  00001
-DATA                  004C9D  004CEE  000052  00001
-INIT                  004CEF  004D0B  00001D  00001
-BSS                   004D0C  004D0C  000001  00001
-ONCE                  004D0C  004DA3  000098  00001
+LOWCODE               00080F  00085A  00004C  00001
+CODE                  004000  0055C8  0015C9  00001
+RODATA                0055C9  005749  000181  00001
+DATA                  00574A  0057F4  0000AB  00001
+INIT                  0057F5  005811  00001D  00001
+BSS                   005812  005827  000016  00001
+ONCE                  005812  005903  0000F2  00001
 
 
 Exports list by name:
 ---------------------
-HOME                      00080F RLA    VTABZ                     000819 RLA    
-__BSS_RUN__               004D0C RLA    __BSS_SIZE__              000001 REA    
-__CONSTRUCTOR_COUNT__     000001 REA    __CONSTRUCTOR_TABLE__     004DA2 RLA    
-__DESTRUCTOR_COUNT__      000000 REA    __DESTRUCTOR_TABLE__      004C9D RLA    
+COUT                      00080F RLA    HOME                      000819 RLA    
+RDKEY                     000823 RLA    VTABZ                     000851 RLA    
+__BSS_RUN__               005812 RLA    __BSS_SIZE__              000016 REA    
+__CONSTRUCTOR_COUNT__     000006 REA    __CONSTRUCTOR_TABLE__     0058F8 RLA    
+__DESTRUCTOR_COUNT__      000001 REA    __DESTRUCTOR_TABLE__      005748 RLA    
 __EXEHDR__                000001 REA    __FILETYPE__              000006 REA    
 __HIMEM__                 009600 REA    __LCADDR__                00D400 REA    
 __LCSIZE__                000C00 REA    __LC_LAST__               00D400 RLA    
-__LC_START__              00D400 RLA    __MAIN_LAST__             004DA4 RLA    
-__MAIN_START__            000803 RLA    __ONCE_LOAD__             004D0C RLA    
-__ONCE_RUN__              004D0C RLA    __ONCE_SIZE__             000098 REA    
+__LC_START__              00D400 RLA    __MAIN_LAST__             005904 RLA    
+__MAIN_START__            000803 RLA    __ONCE_LOAD__             005812 RLA    
+__ONCE_RUN__              005812 RLA    __ONCE_SIZE__             0000F2 REA    
 __STACKSIZE__             000800 REA    __STARTUP__               000001 REA    
-_cgetc                    004892 RLA    _clrscr                   00080F RLA    
-_cputc                    0048D1 RLA    _cputsxy                  00493B RLA    
-_exit                     004867 RLA    _main                     0045FC RLA    
-_rand                     004AC8 RLA    addysp                    004843 RLA    
-bltu2                     00D39A RLA    c_sp                      000080 RLZ    
-callmain                  004850 RLA    cursor                    004D0C RLA    
-decsp1                    004976 RLA    decsp2                    00497F RLA    
-decsp3                    00498C RLA    decsp4                    004999 RLA    
-decsp5                    0049A6 RLA    done                      004CE8 RLA    
-donelib                   0048C0 RLA    gotoxy                    0049B3 RLA    
-incsp1                    0049CC RLA    incsp2                    0049DA RLA    
-incsp3                    0049E8 RLA    incsp4                    0049ED RLA    
-incsp5                    0049F2 RLA    incsp6                    0049F7 RLA    
-incsp7                    0049FC RLA    initconio                 004D18  LAI   
-initlib                   004D0C RLA    mulax6                    004A4C RLA    
-negax                     004A66 RLA    popa                      004A74 RLA    
-popax                     0049D3 RLA    popptr1                   004A7E RLA    
-popsargsudiv16            004AF0 RLA    ptr1                      000088 RLZ    
-ptr4                      00008E RLZ    pusha                     004A90 RLA    
-pusha0                    004AA4 RLA    pushax                    004AA6 RLA    
-putchardirect             004918 RLA    reset                     004958 RLA    
-rvsave                    004D09 RLA    sreg                      000082 RLZ    
-subysp                    004B10 RLA    tmp1                      000090 RLZ    
+___directerrno            004A9D RLA    ___errno                  005814 RLA    
+___heapend                005770 RLA    ___heapfirst              005772 RLA    
+___heaplast               005774 RLA    ___heapptr                00576E RLA    
+___mappederrno            004AA6 RLA    ___oserror                005813 RLA    
+___osmaperrno             0051B4 RLA    ___seterrno               004AB5 RLA    
+__dos_type                0057A3 RLA    _cgetc                    004B1F RLA    
+_close                    004B4D RLA    _clrscr                   000819 RLA    
+_cputc                    004B83 RLA    _cputsxy                  004BED RLA    
+_exit                     004AF4 RLA    _free                     004D05 RLA    
+_main                     00481F RLA    _malloc                   004F47 RLA    
+_open                     0050CA RLA    _posix_memalign           0051CA RLA    
+_rand                     00541A RLA    _read                     005442 RLA    
+_videomode                00082D RLA    addeq0sp                  004ABE RLA    
+addysp                    004AD0 RLA    addysp1                   004ACF RLA    
+aux80col                  0057A2 RLA    bltu2                     00D39A RLA    
+c_sp                      000080 RLZ    callmain                  004ADD RLA    
+callmli                   0057C4 RLA    closeallfiles             0051A6  LAI   
+closedirect               00519C RLA    complax                   004B69 RLA    
+cursor                    005812 RLA    decax1                    004C28 RLA    
+decax4                    004C2F RLA    decsp1                    004C36 RLA    
+decsp2                    004C3F RLA    decsp3                    004C4C RLA    
+decsp4                    004C59 RLA    decsp5                    004C66 RLA    
+decsp7                    004C73 RLA    detect80cols              0058C0  LAI   
+done                      00579F RLA    donelib                   004B72 RLA    
+fdtab                     0057A4 RLA    freebuffer                005194 RLA    
+getfd                     004C80 RLA    gotoxy                    004ED8 RLA    
+incax4                    004EF1 RLA    incaxy                    004EF3 RLA    
+incsp1                    004EFC RLA    incsp2                    004F0A RLA    
+incsp3                    004F18 RLA    incsp4                    004F1D RLA    
+incsp5                    004F22 RLA    incsp6                    004F27 RLA    
+incsp7                    004F2C RLA    initconio                 00582E  LAI   
+initdostype               0058D4  LAI   initheap                  005812  LAI   
+initlib                   005822 RLA    initprompt                0058F1  LAI   
+iobuf_alloc               0051CA RLA    iobuf_free                004D05 RLA    
+ldaxidx                   004F33 RLA    ldaxysp                   004F40 RLA    
+mli_set_pathname_tos      0055BE RLA    mliparam                  005816 RLA    
+mulax6                    0050A2 RLA    negax                     0050BC RLA    
+popa                      0053AA RLA    popax                     004F03 RLA    
+popname                   004D00 RLA    popptr1                   0053B4 RLA    
+popsargsudiv16            0054D1 RLA    ptr1                      000088 RLZ    
+ptr2                      00008A RLZ    ptr3                      00008C RLZ    
+ptr4                      00008E RLZ    pusha                     0053C6 RLA    
+pusha0                    0053DA RLA    pushax                    0053DC RLA    
+pushname_tos              004C96 RLA    pushwysp                  0053F4 RLA    
+putchardirect             004BCA RLA    raisefilelevel            0058E8  LAI   
+regbank                   000094 RLZ    reset                     004C0A RLA    
+returnFFFF                00549A RLA    rvsave                    00580F RLA    
+rwcommon                  0054AB RLA    rwprolog                  00549E RLA    
+sreg                      000082 RLZ    staxspidx                 0054FC RLA    
+staxysp                   0054F3 RLA    subeqysp                  00552C RLA    
+subysp                    00553F RLA    tmp1                      000090 RLZ    
 tmp2                      000091 RLZ    tmp3                      000092 RLZ    
-tosmoda0                  004A01 RLA    tosumula0                 004A12 RLA    
-udiv16                    004B2E RLA    zerobss                   004B6C RLA    
-zpsave                    004CEF RLA    
+tosmoda0                  005057 RLA    tossubax                  005518 RLA    
+tosumula0                 005068 RLA    udiv16                    00555D RLA    
+zerobss                   00559B RLA    zpsave                    0057F5 RLA    
+
 
 
 Exports list by value:
 ----------------------
-__DESTRUCTOR_COUNT__      000000 REA    __BSS_SIZE__              000001 REA    
-__CONSTRUCTOR_COUNT__     000001 REA    __EXEHDR__                000001 REA    
-__STARTUP__               000001 REA    __FILETYPE__              000006 REA    
+__DESTRUCTOR_COUNT__      000001 REA    __EXEHDR__                000001 REA    
+__STARTUP__               000001 REA    __CONSTRUCTOR_COUNT__     000006 REA    
+__FILETYPE__              000006 REA    __BSS_SIZE__              000016 REA    
 c_sp                      000080 RLZ    sreg                      000082 RLZ    
-ptr1                      000088 RLZ    ptr4                      00008E RLZ    
+ptr1                      000088 RLZ    ptr2                      00008A RLZ    
+ptr3                      00008C RLZ    ptr4                      00008E RLZ    
 tmp1                      000090 RLZ    tmp2                      000091 RLZ    
-tmp3                      000092 RLZ    __ONCE_SIZE__             000098 REA    
-__STACKSIZE__             000800 REA    __MAIN_START__            000803 RLA    
-HOME                      00080F RLA    _clrscr                   00080F RLA    
-VTABZ                     000819 RLA    __LCSIZE__                000C00 REA    
-_main                     0045FC RLA    addysp                    004843 RLA    
-callmain                  004850 RLA    _exit                     004867 RLA    
-_cgetc                    004892 RLA    donelib                   0048C0 RLA    
-_cputc                    0048D1 RLA    putchardirect             004918 RLA    
-_cputsxy                  00493B RLA    reset                     004958 RLA    
-decsp1                    004976 RLA    decsp2                    00497F RLA    
-decsp3                    00498C RLA    decsp4                    004999 RLA    
-decsp5                    0049A6 RLA    gotoxy                    0049B3 RLA    
-incsp1                    0049CC RLA    popax                     0049D3 RLA    
-incsp2                    0049DA RLA    incsp3                    0049E8 RLA    
-incsp4                    0049ED RLA    incsp5                    0049F2 RLA    
-incsp6                    0049F7 RLA    incsp7                    0049FC RLA    
-tosmoda0                  004A01 RLA    tosumula0                 004A12 RLA    
-mulax6                    004A4C RLA    negax                     004A66 RLA    
-popa                      004A74 RLA    popptr1                   004A7E RLA    
-pusha                     004A90 RLA    pusha0                    004AA4 RLA    
-pushax                    004AA6 RLA    _rand                     004AC8 RLA    
-popsargsudiv16            004AF0 RLA    subysp                    004B10 RLA    
-udiv16                    004B2E RLA    zerobss                   004B6C RLA    
-__DESTRUCTOR_TABLE__      004C9D RLA    done                      004CE8 RLA    
-zpsave                    004CEF RLA    rvsave                    004D09 RLA    
-__BSS_RUN__               004D0C RLA    __ONCE_LOAD__             004D0C RLA    
-__ONCE_RUN__              004D0C RLA    cursor                    004D0C RLA    
-initlib                   004D0C RLA    initconio                 004D18  LAI   
-__CONSTRUCTOR_TABLE__     004DA2 RLA    __MAIN_LAST__             004DA4 RLA    
-__HIMEM__                 009600 REA    bltu2                     00D39A RLA    
-__LCADDR__                00D400 REA    __LC_LAST__               00D400 RLA    
-__LC_START__              00D400 RLA    
+tmp3                      000092 RLZ    regbank                   000094 RLZ    
+__ONCE_SIZE__             0000F2 REA    __STACKSIZE__             000800 REA    
+__MAIN_START__            000803 RLA    COUT                      00080F RLA    
+HOME                      000819 RLA    _clrscr                   000819 RLA    
+RDKEY                     000823 RLA    _videomode                00082D RLA    
+VTABZ                     000851 RLA    __LCSIZE__                000C00 REA    
+_main                     00481F RLA    ___directerrno            004A9D RLA    
+___mappederrno            004AA6 RLA    ___seterrno               004AB5 RLA    
+addeq0sp                  004ABE RLA    addysp1                   004ACF RLA    
+addysp                    004AD0 RLA    callmain                  004ADD RLA    
+_exit                     004AF4 RLA    _cgetc                    004B1F RLA    
+_close                    004B4D RLA    complax                   004B69 RLA    
+donelib                   004B72 RLA    _cputc                    004B83 RLA    
+putchardirect             004BCA RLA    _cputsxy                  004BED RLA    
+reset                     004C0A RLA    decax1                    004C28 RLA    
+decax4                    004C2F RLA    decsp1                    004C36 RLA    
+decsp2                    004C3F RLA    decsp3                    004C4C RLA    
+decsp4                    004C59 RLA    decsp5                    004C66 RLA    
+decsp7                    004C73 RLA    getfd                     004C80 RLA    
+pushname_tos              004C96 RLA    popname                   004D00 RLA    
+_free                     004D05 RLA    iobuf_free                004D05 RLA    
+gotoxy                    004ED8 RLA    incax4                    004EF1 RLA    
+incaxy                    004EF3 RLA    incsp1                    004EFC RLA    
+popax                     004F03 RLA    incsp2                    004F0A RLA    
+incsp3                    004F18 RLA    incsp4                    004F1D RLA    
+incsp5                    004F22 RLA    incsp6                    004F27 RLA    
+incsp7                    004F2C RLA    ldaxidx                   004F33 RLA    
+ldaxysp                   004F40 RLA    _malloc                   004F47 RLA    
+tosmoda0                  005057 RLA    tosumula0                 005068 RLA    
+mulax6                    0050A2 RLA    negax                     0050BC RLA    
+_open                     0050CA RLA    freebuffer                005194 RLA    
+closedirect               00519C RLA    closeallfiles             0051A6  LAI   
+___osmaperrno             0051B4 RLA    _posix_memalign           0051CA RLA    
+iobuf_alloc               0051CA RLA    popa                      0053AA RLA    
+popptr1                   0053B4 RLA    pusha                     0053C6 RLA    
+pusha0                    0053DA RLA    pushax                    0053DC RLA    
+pushwysp                  0053F4 RLA    _rand                     00541A RLA    
+_read                     005442 RLA    returnFFFF                00549A RLA    
+rwprolog                  00549E RLA    rwcommon                  0054AB RLA    
+popsargsudiv16            0054D1 RLA    staxysp                   0054F3 RLA    
+staxspidx                 0054FC RLA    tossubax                  005518 RLA    
+subeqysp                  00552C RLA    subysp                    00553F RLA    
+udiv16                    00555D RLA    zerobss                   00559B RLA    
+mli_set_pathname_tos      0055BE RLA    __DESTRUCTOR_TABLE__      005748 RLA    
+___heapptr                00576E RLA    ___heapend                005770 RLA    
+___heapfirst              005772 RLA    ___heaplast               005774 RLA    
+done                      00579F RLA    aux80col                  0057A2 RLA    
+__dos_type                0057A3 RLA    fdtab                     0057A4 RLA    
+callmli                   0057C4 RLA    zpsave                    0057F5 RLA    
+rvsave                    00580F RLA    __BSS_RUN__               005812 RLA    
+__ONCE_LOAD__             005812 RLA    __ONCE_RUN__              005812 RLA    
+cursor                    005812 RLA    initheap                  005812  LAI   
+___oserror                005813 RLA    ___errno                  005814 RLA    
+mliparam                  005816 RLA    initlib                   005822 RLA    
+initconio                 00582E  LAI   detect80cols              0058C0  LAI   
+initdostype               0058D4  LAI   raisefilelevel            0058E8  LAI   
+initprompt                0058F1  LAI   __CONSTRUCTOR_TABLE__     0058F8 RLA    
+__MAIN_LAST__             005904 RLA    __HIMEM__                 009600 REA    
+bltu2                     00D39A RLA    __LCADDR__                00D400 REA    
+__LC_LAST__               00D400 RLA    __LC_START__              00D400 RLA    
+
 
 
 Imports list:
 -------------
+COUT (cout.o):
+    read.o                    apple2/read.s:10
 HOME (home.o):
     clrscr.o                  apple2/clrscr.s:8
+RDKEY (rdkey.o):
+    read.o                    apple2/read.s:10
 VTABZ (vtabz.o):
     gotoxy.o                  apple2/gotoxy.s:9
     cputc.o                   apple2/cputc.s:13
 __BSS_RUN__ ([linker generated]):
+    _heap.o                   common/_heap.s:8
     zerobss.o                 common/zerobss.s:8
 __BSS_SIZE__ ([linker generated]):
+    _heap.o                   common/_heap.s:8
     zerobss.o                 common/zerobss.s:8
 __CONSTRUCTOR_COUNT__ ([linker generated]):
     condes.o                  runtime/condes.s:18
@@ -240,35 +390,106 @@ __ONCE_RUN__ ([linker generated]):
 __ONCE_SIZE__ ([linker generated]):
     crt0.o                    apple2/crt0.s:14
 __STACKSIZE__ ([linker generated]):
+    _heap.o                   common/_heap.s:8
     [linker generated]        /home/iolo/.local/share/cc65/cfg/apple2-hgr.cfg:18
 __STARTUP__ (crt0.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:13
+    democ.c.11431.0.o         democ.c.11431.0.s:13
+___directerrno (_directerrno.o):
+    read.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+    close.o                   /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+___errno (errno.o):
+    _seterrno.o               /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+___heapend (_heap.o):
+    malloc.o                  /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:33
+___heapfirst (_heap.o):
+    malloc.o                  /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:34
+    free.o                    /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:34
+___heaplast (_heap.o):
+    malloc.o                  /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:35
+    free.o                    /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:35
+___heapptr (_heap.o):
+    malloc.o                  /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:32
+    free.o                    /home/iolo/workspace/tmp/cc65/asminc/_heap.inc:32
+___mappederrno (_mappederrno.o):
+    rwcommon.o                /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+    close.o                   /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
+___oserror (_oserror.o):
+    _mappederrno.o            /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+    _directerrno.o            /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+    rwcommon.o                /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+    read.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:7
+___osmaperrno (oserror.o):
+    _mappederrno.o            /home/iolo/workspace/tmp/cc65/asminc/errno.inc:8
+___seterrno (_seterrno.o):
+    _mappederrno.o            /home/iolo/workspace/tmp/cc65/asminc/errno.inc:9
+    _directerrno.o            /home/iolo/workspace/tmp/cc65/asminc/errno.inc:9
+__dos_type (dosdetect.o):
+    mli.o                     apple2/mli.s:7
+    open.o                    apple2/open.s:12
 _cgetc (cgetc.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:16
+    democ.c.11431.0.o         democ.c.11431.0.s:17
+_close (close.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:19
 _clrscr (clrscr.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:14
+    democ.c.11431.0.o         democ.c.11431.0.s:15
 _cputc (cputc.o):
     cputs.o                   conio/cputs.s:9
 _cputsxy (cputs.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:15
+    democ.c.11431.0.o         democ.c.11431.0.s:16
 _exit (callmain.o):
     crt0.o                    apple2/crt0.s:11
-_main (democ.c.17795.0.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:21
+_free (free.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:19
+    iobuf.o                   apple2/iobuf.s:8
+_main (democ.c.11431.0.o):
     callmain.o                apple2/callmain.s:11
+_malloc (malloc.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:18
+_open (open.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:18
+_posix_memalign (pmemalign.o):
+    iobuf.o                   apple2/iobuf.s:8
 _rand (rand.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:17
+    democ.c.11431.0.o         democ.c.11431.0.s:20
+_read (read.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:22
+_videomode (videomode.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:14
+addeq0sp (addeqsp.o):
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 addysp (addysp.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+    filename.o                apple2/filename.s:8
+    open.o                    apple2/open.s:14
     incsp7.o                  runtime/incsp7.s:8
     incsp6.o                  runtime/incsp6.s:8
     incsp5.o                  runtime/incsp5.s:8
     incsp4.o                  runtime/incsp4.s:8
     incsp3.o                  runtime/incsp3.s:8
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+addysp1 (addysp.o):
+    sub.o                     runtime/sub.s:8
+aux80col (detect80cols.o):
+    videomode.o               apple2/videomode.s:8
 bltu2 (lc-copy-applesoft.o):
     crt0.o                    apple2/crt0.s:13
 c_sp (zeropage.o):
-    callmain.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
+    _heap.o                   common/_heap.s:9
+    ldaxsp.o                  runtime/ldaxsp.s:8
+    decsp7.o                  runtime/decsp7.s:8
+    subeqsp.o                 runtime/subeqsp.s:8
+    sub.o                     runtime/sub.s:9
+    staxspi.o                 runtime/staxspi.s:10
+    staxsp.o                  runtime/staxsp.s:8
+    pushwsp.o                 runtime/pushwsp.s:8
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:10
+    filename.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
+    mli_set_pathname.o        /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
     subysp.o                  runtime/subysp.s:9
     pushax.o                  runtime/pushax.s:8
     pusha.o                   runtime/pusha.s:8
@@ -282,133 +503,250 @@ c_sp (zeropage.o):
     decsp2.o                  runtime/decsp2.s:8
     decsp1.o                  runtime/decsp1.s:8
     crt0.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
+    callmain.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
     addysp.o                  runtime/addysp.s:8
-    democ.c.17795.0.o         democ.c.17795.0.s:10
+    addeqsp.o                 runtime/addeqsp.s:8
+    democ.c.11431.0.o         democ.c.11431.0.s:10
 callmain (callmain.o):
     crt0.o                    apple2/crt0.s:12
+callmli (mli.o):
+    filename.o                apple2/mli.inc:148
+    rwcommon.o                apple2/mli.inc:148
+    open.o                    apple2/mli.inc:148
+closedirect (open.o):
+    close.o                   apple2/close.s:9
+complax (compl.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 cursor (_cursor.o):
     cgetc.o                   apple2/cgetc.s:14
+decax1 (decax1.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+decax4 (decax4.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 decsp1 (decsp1.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    filename.o                apple2/filename.s:8
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 decsp2 (decsp2.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 decsp3 (decsp3.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 decsp4 (decsp4.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 decsp5 (decsp5.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+decsp7 (decsp7.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 done (crt0.o):
     callmain.o                apple2/callmain.s:11
 donelib (condes.o):
     callmain.o                apple2/callmain.s:11
+fdtab (filedes.o):
+    read.o                    apple2/filedes.inc:13
+    open.o                    apple2/filedes.inc:13
+    close.o                   apple2/filedes.inc:13
+freebuffer (open.o):
+    close.o                   apple2/close.s:9
+getfd (filedes.o):
+    rwcommon.o                apple2/filedes.inc:14
+    close.o                   apple2/filedes.inc:14
 gotoxy (gotoxy.o):
     cputs.o                   conio/cputs.s:9
     cputc.o                   apple2/cputc.s:13
+incax4 (incaxy.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+incaxy (incaxy.o):
+    open.o                    apple2/open.s:14
 incsp1 (incsp1.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp2 (incsp2.o):
+    staxspi.o                 runtime/staxspi.s:9
     popptr1.o                 runtime/popptr1.s:8
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp3 (incsp3.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp4 (incsp4.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    open.o                    apple2/open.s:14
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp5 (incsp5.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp6 (incsp6.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 incsp7 (incsp7.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 initlib (condes.o):
     crt0.o                    apple2/crt0.s:11
+iobuf_alloc (iobuf.o):
+    open.o                    apple2/open.s:13
+iobuf_free (iobuf.o):
+    open.o                    apple2/open.s:13
+ldaxidx (ldaxi.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+ldaxysp (ldaxsp.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+mli_set_pathname_tos (mli_set_pathname.o):
+    open.o                    apple2/open.s:12
+mliparam (mli.o):
+    filename.o                apple2/mli.inc:147
+    mli_set_pathname.o        apple2/mli.inc:147
+    rwcommon.o                apple2/mli.inc:147
+    open.o                    apple2/mli.inc:147
 mulax6 (mulax6.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 negax (negabs.o):
     shelp.o                   runtime/shelp.s:11
     mod.o                     runtime/mod.s:11
 popa (popa.o):
     gotoxy.o                  apple2/gotoxy.s:9
 popax (incsp2.o):
+    filename.o                apple2/filename.s:8
     shelp.o                   runtime/shelp.s:11
+    rwcommon.o                apple2/rwcommon.s:6
+    open.o                    apple2/open.s:14
+popname (filename.o):
+    open.o                    apple2/open.s:12
 popptr1 (popptr1.o):
     udiv.o                    runtime/udiv.s:9
+    rwcommon.o                apple2/rwcommon.s:6
     mul8.o                    runtime/mul8.s:9
 popsargsudiv16 (shelp.o):
     mod.o                     runtime/mod.s:11
 ptr1 (zeropage.o):
+    malloc.o                  common/malloc.s:108
+    ldaxi.o                   runtime/ldaxi.s:8
+    free.o                    common/free.s:62
+    staxspi.o                 runtime/staxspi.s:10
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:11
+    filename.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
     zerobss.o                 common/zerobss.s:9
     udiv.o                    runtime/udiv.s:10
     shelp.o                   runtime/shelp.s:12
+    rwcommon.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
+    read.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
     popptr1.o                 runtime/popptr1.s:9
     mulax6.o                  runtime/mulax6.s:9
     mul8.o                    runtime/mul8.s:10
     cputs.o                   conio/cputs.s:10
+ptr2 (zeropage.o):
+    malloc.o                  common/malloc.s:108
+    free.o                    common/free.s:62
+    rwcommon.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
+    read.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
+ptr3 (zeropage.o):
+    malloc.o                  common/malloc.s:108
+    free.o                    common/free.s:62
+    read.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:12
 ptr4 (zeropage.o):
+    free.o                    common/free.s:62
     udiv.o                    runtime/udiv.s:10
     shelp.o                   runtime/shelp.s:12
     mul8.o                    runtime/mul8.s:10
 pusha (pusha.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 pusha0 (pushax.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 pushax (pushax.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+    open.o                    apple2/open.s:14
     callmain.o                apple2/callmain.s:11
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+pushname_tos (filename.o):
+    open.o                    apple2/open.s:12
+pushwysp (pushwsp.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 putchardirect (cputc.o):
     cgetc.o                   apple2/cgetc.s:14
+regbank (zeropage.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:10
 reset (crt0.o):
     callmain.o                apple2/callmain.s:12
+returnFFFF (returnFFFF.o):
+    videomode.o               apple2/videomode.s:9
 rvsave (crt0.o):
     callmain.o                apple2/callmain.s:12
+rwcommon (rwcommon.o):
+    read.o                    apple2/read.s:9
+rwprolog (rwcommon.o):
+    read.o                    apple2/read.s:9
 sreg (zeropage.o):
     udiv.o                    runtime/udiv.s:10
     mod.o                     runtime/mod.s:12
+staxspidx (staxspi.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+staxysp (staxsp.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
+subeqysp (subeqsp.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 subysp (subysp.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    filename.o                apple2/filename.s:8
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 tmp1 (zeropage.o):
+    staxspi.o                 runtime/staxspi.s:10
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:11
+    incaxy.o                  runtime/incaxy.s:8
+    filename.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
     shelp.o                   runtime/shelp.s:12
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
     mod.o                     runtime/mod.s:12
 tmp2 (zeropage.o):
     shelp.o                   runtime/shelp.s:12
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
 tmp3 (zeropage.o):
+    open.o                    /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
     cputc.o                   /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
     cgetc.o                   /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
 tosmoda0 (mod.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
+tossubax (sub.o):
+    pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 tosumula0 (mul8.o):
-    democ.c.17795.0.o         democ.c.17795.0.s:1510
+    democ.c.11431.0.o         democ.c.11431.0.s:1939
 udiv16 (udiv.o):
     shelp.o                   runtime/shelp.s:11
 zerobss (zerobss.o):

@@ -31,9 +31,11 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 	jmp	dhgr_puts	; +30
 	jmp	dhgr_puts_ucs2	; +33
 	jmp	dhgr_puts_utf8	; +36
-	.word	font4x6		; +39
-	.word	font5x12	; +41
-	.word	font10x12	; +43
+	jmp	dhgr_load	; +39
+	jmp	dhgr_save	; +42
+	.word	font4x6		; +45
+	.word	font5x12	; +47
+	.word	font10x12	; +49
 .endproc
 
 ; switch to double hi-res mixed/page1
@@ -113,7 +115,7 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 	sta     (dst),y
 
 	iny	; x++
-	cpy	#(DHGR_BYTES_PER_ROW/2)	; 40 in aux + 40 in main
+	cpy	#(DHGR_WIDTH_BYTES/2)	; 40 in aux + 40 in main
 	bne	@loop_x ; while(x!=40)
 
 	inx	; y++
@@ -138,10 +140,9 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y1]
 
 	ldx	x1
-	lda     DIV7_TBL,x
-	asl
+	lda     HGR_OFFSET_X,x
 	tay	; Y = (x1 / 7) * 2 = byte offset of x1
-	lda	MOD7_TBL,x	; A = x1 % 7 = color pixel group
+	lda	HGR_PIXEL_GROUP,x	; A = x1 % 7 = pixel group
 	bne	@not_group_a
 
 @group_a:
@@ -399,7 +400,7 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 ;
 @loopx_left:
 	ldx	x1
-	lda	MOD7_TBL,x
+	lda	HGR_PIXEL_GROUP,x
 	beq	@end_loopx_left; while (x1 % 7)
 	jsr 	dhgr_plot
 	inc	x1
@@ -416,8 +417,7 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y]
 
 	ldx	x1
-	lda	DIV7_TBL,x
-	asl
+	lda	HGR_OFFSET_X,x
 	tay	; Y = (x1 / 7) * 2 = byte offset of x1
 
 	lda	color
@@ -633,6 +633,7 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 
 @continue:
 	dex		; next bit
+
 	bne	@loop_bit
 	inc	src	; next byte
 	bne	@loop
@@ -644,11 +645,97 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 ;//@_color:.byte	0
 .endproc
 
+; load byte-aligned rectangular area from src to video memory
+;
+; @param x1 0..39 (40 bytes per row)
+; @param y1 0..191
+; @param x2 0..39
+; @param y2 0..191
+; @param src(modified)
+.proc dhgr_load
+	ldx	y1	; NOTE: reg. X for y
+@loop_y:
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	dst
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	dst+1	; dst = HGR_BASE + HGR_OFFSET[y]
+
+	ldy	x1	; NOTE: reg. Y for x(for zeropage indirect addressing)
+@loop_x:
+	lda	(src)
+	AUX_BANK
+	sta	(dst),y	; aux bank = *src++
+	MAIN_BANK
+	INC16	src
+
+	lda	(src)
+	sta	(dst),y ; main bank = *src++
+	INC16	src
+
+	iny
+	cpy	x2
+	bcc	@loop_x ; while(x <= x2)
+	beq	@loop_x
+
+	inx
+	cpx	y2
+	bcc	@loop_y ; while(y <= y2)
+	beq	@loop_y
+
+	rts
+.endproc
+
+; save byte-aligned rectangular area from video memory to dst
+;
+; @param x1 0..39 (40 bytes per row)
+; @param y1 0..191
+; @param x2 0..39
+; @param y2 0..191
+; @param dst
+.proc dhgr_save
+	ldx	y1	; NOTE: reg. X for y
+@loop_y:
+	lda	#<HGR_BASE
+	clc
+	adc	HGR_OFFSET_LO,x
+	sta	src
+	lda	#>HGR_BASE
+	adc	HGR_OFFSET_HI,x
+	sta	src+1	; src = HGR_BASE + HGR_OFFSET[y]
+
+	ldy	x1	; NOTE: reg. Y for x(for zeropage indirect addressing)
+@loop_x:
+	AUX_BANK
+	lda	(src),y
+	MAIN_BANK
+	sta	(dst)	; *dst++ = aux bank
+	INC16	dst
+
+	lda	(src),y
+	sta	(dst)	; *dst++ = main bank(same address)
+	INC16	dst
+
+	iny
+	cpy	x2
+	bcc	@loop_x ; while(x <= x2)
+	beq	@loop_x
+
+	inx
+	cpx	y2
+	bcc	@loop_y ; while(y <= y2)
+	beq	@loop_y
+
+	rts
+.endproc
+
 FONT_WIDTH	= 4
 FONT_HEIGHT	= 6
 FONT_CODE_BEGIN = $20
-FONT_CODE_END = $7F
-FONT_GLYPH_BYTES = 3
+FONT_CODE_END	= $7F
+FONT_GLYPH_BYTES= 3
 FONT_GLYPH_COUNT= 96
 
 ; draw char with 4x6 font
@@ -1035,23 +1122,10 @@ code	=	x2	; 252d; unicode char code(2 bytes);
 
 .include	"softswitch.inc"
 .include	"math.inc"
-.include	"hgr.inc"
 .include	"dhgr.inc"
 ;.include	"pixmap.inc"
 ;.include	"bitmap.inc"
 .include	"kor.s"
-
-.align $100
-font4x6:
-	.incbin "font4x6.bin"
-
-;//.align $100
-font5x12:
-	.incbin "font5x12.bin"
-
-;//.align $100
-font10x12:
-	.incbin "font10x12.bin"
 
 cho_form_by_jung:
 	; cho=0..19, jung=0..20 -> cho_form=0,1,2
@@ -1071,4 +1145,14 @@ kor_buf:
 ucs2_buf:
 	.res 256
 
+.align $100
+font4x6:
+	.incbin "font4x6.bin"
 
+;//.align $100
+font5x12:
+	.incbin "font5x12.bin"
+
+;//.align $100
+font10x12:
+	.incbin "font10x12.bin"

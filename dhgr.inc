@@ -1,3 +1,5 @@
+.include "hgr.inc"
+
 ; DHGR mode pixel layout
 ;
 ; 80 bytes per row(40 in AUX, 40 in MAIN), 7 color-pixels per 4 bytes, total 140 color-pixels per row.
@@ -12,74 +14,16 @@
 ; |x         |   1   0    |   3  2    1 |   5 4    3  |   6    5   |...|
 ;
 
-DHGR_WIDTH = 140  ; 140 color-pixels, 7 color-pixels per 4 bytes = 20 groups of 4 bytes = 80 bytes per row
-DHGR_HEIGHT = 192
-DHGR_BYTES_PER_ROW = 80 ; 40 bytes in AUX + 40 bytes in MAIN
+DHGR_PAGE1_BASE	= HGR_PAGE1_BASE
+DHGR_PAGE2_BASE	= HGR_PAGE2_BASE
+DHGR_BASE				= DHGR_PAGE1_BASE
 
-.ifndef DIV7_TBL
+DHGR_WIDTH			= HGR_WIDTH							; 140 color-pixels, 7 color-pixels in 4 bytes = 20 groups of 4 bytes = 80 bytes per row
+DHGR_HEIGHT			= HGR_HEIGHT
+DHGR_WIDTH_BYTES= HGR_WIDTH_BYTES * 2		; 40 bytes in AUX + 40 bytes in MAIN
 
-; pixel x(0..139) -> byte offset x(0..39) in row
-; pixel 0..6 -> byte 0..1, pixel 17..13 -> byte 2..3, ... pixel 138..139 -> byte 38..39
-; DHGR_OFFSET_X[x] = (x / 7) * 2
-;
-; see also HGR_OFFSET_LO/HGR_OFFSET_HI
-
-.align $100
-DHGR_OFFSET_X:
-	.byte 0, 0, 0, 0, 0, 0, 0 ; pixels 0..6
-	.byte 2, 2, 2, 2, 2, 2, 2 ; pixels 7..13
-	.byte 4, 4, 4, 4, 4, 4, 4 ; pixels 14..20
-	.byte 6, 6, 6, 6, 6, 6, 6 ; pixels 21..27
-	.byte 8, 8, 8, 8, 8, 8, 8 ; pixels 28..34
-	.byte 10, 10, 10, 10, 10, 10, 10 ; pixels 35..41
-	.byte 12, 12, 12, 12, 12, 12, 12 ; pixels 42..48
-	.byte 14, 14, 14, 14, 14, 14, 14 ; pixels 49..55
-	.byte 16, 16, 16, 16, 16, 16, 16 ; pixels 56..62
-	.byte 18, 18, 18, 18, 18, 18, 18 ; pixels 63..69
-	.byte 20, 20, 20, 20, 20, 20, 20 ; pixels 70..76
-	.byte 22, 22, 22, 22, 22, 22, 22 ; pixels 77..83
-	.byte 24, 24, 24, 24, 24, 24, 24 ; pixels 84..90
-	.byte 26, 26, 26, 26, 26, 26, 26 ; pixels 91..97
-	.byte 28, 28, 28, 28, 28, 28, 28 ; pixels 98..104
-	.byte 30, 30, 30, 30, 30, 30, 30 ; pixels 105..111
-	.byte 32, 32, 32, 32, 32, 32, 32 ; pixels 112..118
-	.byte 34, 34, 34, 34, 34, 34, 34 ; pixels 119..125
-	.byte 36, 36, 36, 36, 36, 36, 36 ; pixels 126..132
-	.byte 38, 38, 38, 38, 38, 38, 38 ; pixels 133..139
-	;.res 256-140
-.endif
-
-.ifndef MOD7_TBL
-
-; pixel x(0..139) -> pixel group(0..6; A..G in DHGR pixel layout)
-; x % 7 = 0..6 -> pixel group 0..6(A..G)
-;
-; pixel group will determine which 4 bits of the 4 bytes will be used to store the color-pixel.
-
-.align $100
-DHGR_PIXEL_GROUP:
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	.byte 0, 1, 2, 3, 4, 5, 6
-	;.res 256-140
-.endif
+DHGR_OFFSET_X		= HGR_OFFSET_X
+DHGR_PIXEL_GROUP= HGR_PIXEL_GROUP
 
 ; color 0..15 -> fill bytes 0..3
 ;

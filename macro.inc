@@ -79,3 +79,18 @@
 	jsr	$c311	; auxmove
 .endmacro
 
+.macro INC16 oper
+  ;;lda #1
+  ;;clc
+  ;;adc oper
+  ;;sta oper
+  ;;lda #0
+  ;;adc oper+1
+  ;;sta oper+1
+  .local @no_carry
+  inc	oper
+	bne	@no_carry
+  inc	oper+1
+@no_carry:
+.endmacro
+

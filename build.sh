@@ -3,9 +3,9 @@
 export CC65_HOME=~/.local/share/cc65
 
 DIMG="demo.po"
-BAS_SRC=(demo demoamp slideshow)
-C_SRC=(dhgrc democ)
 ASM_SRC=(dhgrx dhgrxamp)
+BAS_SRC=(demo demoamp)
+C_SRC=(democ)
 
 build_bas() {
 	echo "Building $1.bas..."

@@ -2,125 +2,12 @@
 #include <conio.h>
 #include <fcntl.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#define DG 0x6000
-#define X1 0xfa
-#define Y1 0xfb
-#define X2 0xfc
-#define Y2 0xfd
-#define COLOR 0xfe
-#define CH 0xff
-#define SRC 0xce
-#define DST 0xeb
-
-#define POKE(addr, val) *((uint8_t*)addr) = val
-#define PEEK(addr) *((uint8_t*)addr)
-#define CALL(addr) __asm__("jsr %w", addr)
-
-void __fastcall__ dhgr_init() {
-  CALL(DG);
-}
-
-void __fastcall__ dhgr_exit() {
-  CALL(DG+3);
-}
-
-void __fastcall__ dhgr_cls(uint8_t color) {
-  POKE(COLOR, color);
-  CALL(DG+6);
-}
-
-void __fastcall__ dhgr_plot(uint8_t x, uint8_t y, uint8_t c) {
-  POKE(X1, x);
-  POKE(Y1, y);
-  POKE(COLOR, c);
-  CALL(DG+9);
-}
-
-void __fastcall__ dhgr_hline(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t c) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(X2, x2);
-  POKE(COLOR, c);
-  CALL(DG+12);
-}
-
-void __fastcall__ dhgr_vline(uint8_t x1, uint8_t y1, uint8_t y2, uint8_t c) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(Y2, y2);
-  POKE(COLOR, c);
-  CALL(DG+15);
-}
-
-void __fastcall__ dhgr_rect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(X2, x2);
-  POKE(Y2, y2);
-  POKE(COLOR, c);
-  CALL(DG+18);
-}
-
-void __fastcall__ dhgr_fillrect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(X2, x2);
-  POKE(Y2, y2);
-  POKE(COLOR, c);
-  CALL(DG+21);
-}
-
-void __fastcall__ dhgr_pixmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const uint8_t* data) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(X2, x2);
-  POKE(Y2, y2);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+24);
-}
-
-void __fastcall__ dhgr_bitmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t color, const uint8_t* data) {
-  POKE(X1, x1);
-  POKE(Y1, y1);
-  POKE(X2, x2);
-  POKE(Y2, y2);
-  POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+27);
-}
-
-void __fastcall__ dhgr_puts(uint8_t x, uint8_t y, uint8_t color, const char* data) {
-  POKE(X1, x);
-  POKE(Y1, y);
-  POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+30);
-}
-
-void __fastcall__ dhgr_puts2(uint8_t x, uint8_t y, uint8_t color, const uint16_t* data) {
-  POKE(X1, x);
-  POKE(Y1, y);
-  POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+33);
-}
-
-void __fastcall__ dhgr_puts_utf8(uint8_t x, uint8_t y, uint8_t color, const char* data) {
-  POKE(X1, x);
-  POKE(Y1, y);
-  POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+36);
-}
+#include "dhgrxlib.c"
 
 void cls_demo() {
   uint8_t c;
@@ -261,8 +148,41 @@ void text_demo() {
   }
 }
 
+void load_save_demo() {
+  int fd = open("IMAGE1.DHGR", O_RDONLY);
+  int i;
+  if (fd != -1) {
+    POKE(0xC055, 0);
+    read(fd, (void*)0x2000, 0x2000);
+    //MAIN2AUX(0x2000, 0x3fff, 0x2000);
+    POKE(0xC054, 0);
+    read(fd, (void*)0x2000, 0x2000);
+    close(fd);
+  } else {
+    cputsxy(0, 23, "file not found: IMAGE1.DHGR");
+    exit(1);
+  }
+  for (i = 0; i < 10; i++) {
+    dhgr_save(10, 30, 30, 130, (uint8_t*)0x8000);
+    dhgr_load(10-2, 30+5, 30-2, 130+5, (uint8_t*)0x8000);
+  }
+}
+
+void dhgrx_init() {
+  int fd = open("DHGRX", O_RDONLY);
+  if (fd != -1) {
+    videomode(VIDEOMODE_80x24);
+    read(fd, (void*)0x6000, 0x2000);
+    close(fd);
+  } else {
+    cputsxy(0, 23, "file not found: DHGRX");
+    exit(1);
+  }
+}
+
 void main() {
   char c;
+  dhgrx_init();
   while (1) {
     clrscr();
     cputsxy(0, 0, "DHGRX DEMO");
@@ -275,7 +195,8 @@ void main() {
     cputsxy(0, 7, "7. PIXMAP");
     cputsxy(0, 8, "8. BITMAP");
     cputsxy(0, 9, "9. TEXT");
-    cputsxy(0, 10, "Q. QUIT");
+    cputsxy(0, 10, "A. LOAD/SAVE");
+    cputsxy(0, 11, "Q. QUIT");
     cputsxy(0, 12, "SELECT..");
     c = cgetc();
 
@@ -323,6 +244,10 @@ void main() {
       case '9':
         cputsxy(0, 20, "TEXT");
         text_demo();
+        break;
+      case 'A':
+        cputsxy(0, 20, "LOAD/SAVE");
+        load_save_demo();
         break;
     }
 

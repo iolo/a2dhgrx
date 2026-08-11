@@ -1,27 +1,8 @@
-#define DHGR_WIDTH 140
-#define DHGR_HEIGHT 192
+#include <stdint.h>
+#include <peekpoke.h>
+#include "dhgrxlib.h"
 
-typedef enum {
-  BLACK   = 0, // 0000
-  DKBLUE  = 1, // 0001
-  DKGREEN = 2, // 0010
-  BLUE    = 3, // 0011
-  BROWN   = 4, // 0100
-  LTGRAY  = 5, // 0101
-  GREEN   = 6, // 0110
-  AQUA    = 7, // 0111
-  RED     = 8, // 1000
-  PURPLE  = 9, // 1001
-  DKGRAY  = 10,// 1010
-  LTBLUE  = 11,// 1011
-  ORANGE  = 12,// 1100
-  PINK    = 13,// 1101
-  YELLOW  = 14,// 1110
-  WHITE   = 15 // 1111
-} dhgr_color_t;
-
-
-#define DG 0x6000
+// zero-page variables used by the library
 #define X1 0xfa
 #define Y1 0xfb
 #define X2 0xfc
@@ -31,28 +12,28 @@ typedef enum {
 #define SRC 0xce
 #define DST 0xeb
 
-#define POKE(addr, val) *((uint8_t*)addr) = val
-#define PEEK(addr) *((uint8_t*)addr)
+//#define POKE(addr, val) *((uint8_t*)addr) = val
+//#define PEEK(addr) *((uint8_t*)addr)
 #define CALL(addr) __asm__("jsr %w", addr)
 
 void __fastcall__ dhgr_init() {
-  CALL(DG);
+  CALL(DHGRX_ADDR);
 }
 
 void __fastcall__ dhgr_exit() {
-  CALL(DG+3);
+  CALL(DHGRX_ADDR+3);
 }
 
 void __fastcall__ dhgr_cls(uint8_t color) {
   POKE(COLOR, color);
-  CALL(DG+6);
+  CALL(DHGRX_ADDR+6);
 }
 
 void __fastcall__ dhgr_plot(uint8_t x, uint8_t y, uint8_t c) {
   POKE(X1, x);
   POKE(Y1, y);
   POKE(COLOR, c);
-  CALL(DG+9);
+  CALL(DHGRX_ADDR+9);
 }
 
 void __fastcall__ dhgr_hline(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t c) {
@@ -60,7 +41,7 @@ void __fastcall__ dhgr_hline(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t c) {
   POKE(Y1, y1);
   POKE(X2, x2);
   POKE(COLOR, c);
-  CALL(DG+12);
+  CALL(DHGRX_ADDR+12);
 }
 
 void __fastcall__ dhgr_vline(uint8_t x1, uint8_t y1, uint8_t y2, uint8_t c) {
@@ -68,7 +49,7 @@ void __fastcall__ dhgr_vline(uint8_t x1, uint8_t y1, uint8_t y2, uint8_t c) {
   POKE(Y1, y1);
   POKE(Y2, y2);
   POKE(COLOR, c);
-  CALL(DG+15);
+  CALL(DHGRX_ADDR+15);
 }
 
 void __fastcall__ dhgr_rect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c) {
@@ -77,7 +58,7 @@ void __fastcall__ dhgr_rect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint
   POKE(X2, x2);
   POKE(Y2, y2);
   POKE(COLOR, c);
-  CALL(DG+18);
+  CALL(DHGRX_ADDR+18);
 }
 
 void __fastcall__ dhgr_fillrect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c) {
@@ -86,7 +67,7 @@ void __fastcall__ dhgr_fillrect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, 
   POKE(X2, x2);
   POKE(Y2, y2);
   POKE(COLOR, c);
-  CALL(DG+21);
+  CALL(DHGRX_ADDR+21);
 }
 
 void __fastcall__ dhgr_pixmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const uint8_t* data) {
@@ -94,9 +75,8 @@ void __fastcall__ dhgr_pixmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, co
   POKE(Y1, y1);
   POKE(X2, x2);
   POKE(Y2, y2);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+24);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+24);
 }
 
 void __fastcall__ dhgr_bitmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t color, const uint8_t* data) {
@@ -105,41 +85,50 @@ void __fastcall__ dhgr_bitmap(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, ui
   POKE(X2, x2);
   POKE(Y2, y2);
   POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+27);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+27);
 }
 
 void __fastcall__ dhgr_puts(uint8_t x, uint8_t y, uint8_t color, const char* data) {
   POKE(X1, x);
   POKE(Y1, y);
   POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+33);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+30);
 }
 
 void __fastcall__ dhgr_puts2(uint8_t x, uint8_t y, uint8_t color, const uint16_t* data) {
   POKE(X1, x);
   POKE(Y1, y);
   POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+39);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+33);
 }
 
 void __fastcall__ dhgr_puts_utf8(uint8_t x, uint8_t y, uint8_t color, const char* data) {
   POKE(X1, x);
   POKE(Y1, y);
   POKE(COLOR, color);
-  POKE(SRC, (uint16_t)data & 0xff);
-  POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+42);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+36);
 }
 
-char dhgr_getc() {
-  // TODO: blink cursor
-  return cgetc();
+void __fastcall__ dhgr_load(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const uint8_t* data) {
+  POKE(X1, x1);
+  POKE(Y1, y1);
+  POKE(X2, x2);
+  POKE(Y2, y2);
+  POKEW(SRC, (unsigned)data);
+  CALL(DHGRX_ADDR+39);
+}
+
+void __fastcall__ dhgr_save(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const uint8_t* data) {
+  POKE(X1, x1);
+  POKE(Y1, y1);
+  POKE(X2, x2);
+  POKE(Y2, y2);
+  POKEW(DST, (unsigned)data);
+  CALL(DHGRX_ADDR+42);
 }
 
 void __fastcall__ dhgr_mixed() {
@@ -150,3 +139,18 @@ void __fastcall__ dhgr_fullscreen() {
   POKE(0xC052, 0);
 }
 
+void __fastcall__ MAIN2AUX(uint16_t src0, uint16_t src1, uint16_t dst0) {
+  POKEW(0x3c, (unsigned)src0);
+  POKEW(0x3e, (unsigned)src1);
+  POKEW(0x42, (unsigned)dst0);
+  __asm__("sec");
+  __asm__("jsr $c311");
+}
+
+void __fastcall__ AUX2MAIN(uint16_t src0, uint16_t src1, uint16_t dst0) {
+  POKEW(0x3c, (unsigned)src0);
+  POKEW(0x3e, (unsigned)src1);
+  POKEW(0x42, (unsigned)dst0);
+  __asm__("clc");
+  __asm__("jsr $c311");
+}
