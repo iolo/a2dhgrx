@@ -28,9 +28,11 @@ Apple //e Double Hi-Res Graphics Extension
   - x1, y1, x2, y2, src
 - bitmap
   - x1, y1, x2, y2, src, color
-- putc
-  - x1, y1, color, ch
 - puts
+  - x1, y1, color, src
+- puts_ucs2 (experimental)
+  - x1, y1, color, src
+- puts_ucs2 (experimental)
   - x1, y1, color, src
 
 ### Pixmap(color sprite)
@@ -64,9 +66,7 @@ Apple //e Double Hi-Res Graphics Extension
 - &F x1,y1,x2,y2 - fillrect
 - &XDRAW src TO x1,y1,x2,y2 - pixmap
 - &DRAW src TO x1,y1,x2,y2 - bixmap
-- &PRINT number - putc
 - &PRINT string - puts
-  - NOTE: no `;` and `,` support. use `+` for concatenation.
 - &COLOR=color
 - &HTAB x1
 - &VTAB y1

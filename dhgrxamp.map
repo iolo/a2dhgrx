@@ -1,14 +1,14 @@
 Modules list:
 -------------
-dhgrxamp.o:
-    CODE              Offs=000000  Size=000163  Align=00001  Fill=0000
+dhgrxamp.s.17806.0.o:
+    CODE              Offs=000000  Size=000159  Align=00001  Fill=0000
 
 
 Segment list:
 -------------
 Name                   Start     End    Size  Align
 ----------------------------------------------------
-CODE                  000000  000162  000163  00001
+CODE                  000000  000158  000159  00001
 
 
 Exports list by name:

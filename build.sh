@@ -1,4 +1,7 @@
 #!/bin/bash
+#export CC65_HOME=/usr/local/share/cc65
+export CC65_HOME=~/.local/share/cc65
+
 DIMG="demo.po"
 BAS_SRC=(demo demoamp slideshow)
 C_SRC=(dhgrc democ)

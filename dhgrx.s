@@ -28,14 +28,12 @@ dst	=	$eb	; 235d; pointer to destination address (2 bytes)
 	jmp	dhgr_fillrect	; +21
 	jmp	dhgr_pixmap	; +24
 	jmp	dhgr_bitmap	; +27
-	jmp	dhgr_putc	; +30
-	jmp	dhgr_puts	; +33
-	jmp	dhgr_putc_ucs2	; +36
-	jmp	dhgr_puts_ucs2	; +39
-	jmp	dhgr_puts_utf8	; +42
-	.word	font4x6		; +45
-	.word	font5x12	; +47
-	.word	font10x12	; +49
+	jmp	dhgr_puts	; +30
+	jmp	dhgr_puts_ucs2	; +33
+	jmp	dhgr_puts_utf8	; +36
+	.word	font4x6		; +39
+	.word	font5x12	; +41
+	.word	font10x12	; +43
 .endproc
 
 ; switch to double hi-res mixed/page1

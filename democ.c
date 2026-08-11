@@ -1,4 +1,4 @@
-#include <apple2.h>
+#include <apple2enh.h>
 #include <conio.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -101,7 +101,7 @@ void __fastcall__ dhgr_puts(uint8_t x, uint8_t y, uint8_t color, const char* dat
   POKE(COLOR, color);
   POKE(SRC, (uint16_t)data & 0xff);
   POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+33);
+  CALL(DG+30);
 }
 
 void __fastcall__ dhgr_puts2(uint8_t x, uint8_t y, uint8_t color, const uint16_t* data) {
@@ -110,7 +110,7 @@ void __fastcall__ dhgr_puts2(uint8_t x, uint8_t y, uint8_t color, const uint16_t
   POKE(COLOR, color);
   POKE(SRC, (uint16_t)data & 0xff);
   POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+39);
+  CALL(DG+33);
 }
 
 void __fastcall__ dhgr_puts_utf8(uint8_t x, uint8_t y, uint8_t color, const char* data) {
@@ -119,7 +119,7 @@ void __fastcall__ dhgr_puts_utf8(uint8_t x, uint8_t y, uint8_t color, const char
   POKE(COLOR, color);
   POKE(SRC, (uint16_t)data & 0xff);
   POKE(SRC+1, ((uint16_t)data >> 8) & 0xff);
-  CALL(DG+42);
+  CALL(DG+36);
 }
 
 void cls_demo() {
@@ -228,11 +228,10 @@ void bitmap_demo() {
 
 char* ascii = "Hello,World! 1234567890";
 uint16_t ucs2[] = {
-  'H', 'e', 'l', 'l', 'o', ',', 'w', 'o', 'r', 'l', 'd', '!', ' ',
-  0xd55c, 0xae00, ' ', 0xac00, 0xb098, 0xb2e4, 0xb77c, 0,
+  'H', 'e', 'l', 'l', 'o', ',',
+  0xd55c, 0xae00, 0x0021, 0x0020, 0xac00, 0xb098, 0xb2e4, 0xb77c, 0
 };
-//char* utf8 = "Hello,World! 한글 가나다라";
-char* utf8 = "Hi,한글";
+char* utf8 = "Hello,한글! 가나다라";
 
 void text_demo() {
   uint8_t i, c;

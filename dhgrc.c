@@ -1,4 +1,4 @@
-#include <apple2.h>
+#include <apple2enh.h>
 #include <conio.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -875,8 +875,8 @@ void putucs2str(uint8_t x, uint8_t y, uint16_t *str) {
   }
 }
 
-void pututf8str(uint8_t x, uint8_t y, uint8_t *str) {
-  uint8_t *p = str;
+void pututf8str(uint8_t x, uint8_t y, char *str) {
+  char *p = str;
   uint8_t byte1, byte2, byte3, byte4;
   uint16_t code;
   while (*p != 0) {
@@ -938,9 +938,10 @@ uint16_t ucs2_sample[] = {
     0xce58, 0xc544, 0xd504, 0xb2e4, 0x2e,   0,
 };
 
-uint8_t *utf8_sample =
+char* utf8_sample =
     "Hello,World! ABCDEFGHIJKLMNOPQRSTUVEXYZ abcdefghijklmnopqrstuvwxyz "
     "1234567890 !@#$%^&*()-=_+[]{};:<>,./? 한글은 아름답다 그러나 골치아프다!";
+
 void text_test() {
   cls(BLACK);
   putucs2str(0, 0, (uint16_t *)ucs2_sample);

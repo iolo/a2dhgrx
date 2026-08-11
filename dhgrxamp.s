@@ -13,17 +13,16 @@ dst	=	$eb 	; pointer to destination address (2 bytes)
 
 ; dhgr routines
 dhgr_init	=	$6000
-dhgr_exit	=	$6003
-dhgr_cls	=	$6006
-dhgr_plot	=	$6009
-dhgr_hline	=	$600c
-dhgr_vline	=	$600f
-dhgr_rect	=	$6012
-dhgr_fillrect	=	$6015
-dhgr_pixmap	=	$6018
-dhgr_bitmap	=	$601b
-dhgr_putc	=	$601e
-dhgr_puts	=	$6021
+dhgr_exit	=	$6000+3
+dhgr_cls	=	$6000+6
+dhgr_plot	=	$6000+9
+dhgr_hline	=	$6000+12
+dhgr_vline	=	$6000+15
+dhgr_rect	=	$6000+18
+dhgr_fillrect	=	$6000+21
+dhgr_pixmap	=	$6000+24
+dhgr_bitmap	=	$6000+27
+dhgr_puts	=	$6000+30
 
 ; applesoft basic tokens
 bas_gr		=	$88
@@ -226,11 +225,11 @@ bas_getadr	=	$e752	; Convert FAC to a 16-bit value in LINNUM.
 	jsr	bas_frmevl
 	bit	bas_valtyp
 	bmi	@is_str
-	; number
-	jsr	bas_mkint
-	ldx	bas_fac+4
-	stx	ch
-	jsr	dhgr_putc
+;;	; number
+;;	jsr	bas_mkint
+;;	ldx	bas_fac+4
+;;	stx	ch
+;;	jsr	dhgr_putc
 	rts
 
 @is_str:
