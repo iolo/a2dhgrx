@@ -1016,7 +1016,7 @@ Current file: dhgrx.s
 00645E  1  A5 FA 48 A5  	PUSH	x1,y1
 006462  1  FB 48        
 006464  1               
-006464  1  A9 6F        	lda	#<kor_buf
+006464  1  A9 5D        	lda	#<kor_buf
 006466  1  85 EB        	sta	dst
 006468  1  A9 6B        	lda	#>kor_buf
 00646A  1  85 EC        	sta	dst+1	; dst = kor_buf
@@ -1027,9 +1027,9 @@ Current file: dhgrx.s
 00646F  1  A5 FA        	lda	cho
 006471  1               	; determine cho_form by jung and calculate cho font offset
 006471  1  A4 FB        	ldy	jung
-006473  1  BE 57 6B     	ldx	cho_form_by_jung,y	; cho_form=0,1,2
+006473  1  BE 45 6B     	ldx	cho_form_by_jung,y	; cho_form=0,1,2
 006476  1  18           	clc
-006477  1  7D 6C 6B     	adc	cho_form_offset,x	; cho_form_offset=cho_form*19=0,19,38
+006477  1  7D 5A 6B     	adc	cho_form_offset,x	; cho_form_offset=cho_form*19=0,19,38
 00647A  1  85 FA        	sta	cho	; cho = cho_form * cho_count + cho
 00647C  1               
 00647C  1  A2 00        	ldx	#0
@@ -1142,7 +1142,7 @@ Current file: dhgrx.s
 00651C  1  68 85 FB 68  	PULL	y1,x1
 006520  1  85 FA        
 006522  1               
-006522  1  A9 6F        	lda	#<kor_buf
+006522  1  A9 5D        	lda	#<kor_buf
 006524  1  85 CE        	sta	src
 006526  1  A9 6B        	lda	#>kor_buf
 006528  1  85 CF        	sta	src+1	; src = kor_buf
@@ -1980,191 +1980,191 @@ Current file: dhgrx.s
 006A68  2               ; @param code(modified)
 006A68  2               ; @return cho, jung, jong
 006A68  2               .proc decompose_ucs2
-006A68  2               	; ensure (syllable < 0xAC00 || syllable > 0xD7A3)
-006A68  2  A5 FD        	lda	code+1
-006A6A  2  C9 AC        	cmp	#>KOR_CODE_BEGIN
-006A6C  2  90 68        	bcc	@not_hangul	; error if hi(code) < $AC
-006A6E  2  C9 D7        	cmp	#>KOR_CODE_END
-006A70  2  F0 02        	beq	@check_lo
-006A72  2  B0 62        	bcs	@not_hangul	; error if hi(code) >= $D7
-006A74  2               @check_lo:
-006A74  2  A5 FC        	lda	code
-006A76  2  C9 A4        	cmp	#<(KOR_CODE_END+1)
-006A78  2  B0 5C        	bcs	@not_hangul	; error if hi(code) == $D7 and lo(code) >= $A4
-006A7A  2               
-006A7A  2  A5 FC        	lda	code
-006A7C  2  38           	sec
-006A7D  2  E9 00        	sbc	#<KOR_CODE_BEGIN
-006A7F  2  85 FC        	sta	code
-006A81  2  A5 FD        	lda	code+1
-006A83  2  E9 AC        	sbc	#>KOR_CODE_BEGIN
-006A85  2  85 FD        	sta	code+1		;  code -= 0xAC00;
+006A68  2               ;;	; ensure (syllable < 0xAC00 || syllable > 0xD7A3)
+006A68  2               ;;	lda	code+1
+006A68  2               ;;	cmp	#>KOR_CODE_BEGIN
+006A68  2               ;;	bcc	@not_hangul	; error if hi(code) < $AC
+006A68  2               ;;	cmp	#>KOR_CODE_END
+006A68  2               ;;	beq	@check_lo
+006A68  2               ;;	bcs	@not_hangul	; error if hi(code) >= $D7
+006A68  2               ;;@check_lo:
+006A68  2               ;;	lda	code
+006A68  2               ;;	cmp	#<(KOR_CODE_END+1)
+006A68  2               ;;	bcs	@not_hangul	; error if hi(code) == $D7 and lo(code) >= $A4
+006A68  2               
+006A68  2  A5 FC        	lda	code
+006A6A  2  38           	sec
+006A6B  2  E9 00        	sbc	#<KOR_CODE_BEGIN
+006A6D  2  85 FC        	sta	code
+006A6F  2  A5 FD        	lda	code+1
+006A71  2  E9 AC        	sbc	#>KOR_CODE_BEGIN
+006A73  2  85 FD        	sta	code+1		;  code -= 0xAC00;
+006A75  2               
+006A75  2  A5 50 48 A5  	MATH_PUSH16 MATH_AX,MATH_BX,MATH_CX
+006A79  2  51 48 A5 54  
+006A7D  2  48 A5 55 48  
 006A87  2               
-006A87  2  A5 50 48 A5  	MATH_PUSH16 MATH_AX,MATH_BX,MATH_CX
-006A8B  2  51 48 A5 54  
-006A8F  2  48 A5 55 48  
-006A99  2               
-006A99  2               	; jong = code % JONG_COUNTT
-006A99  2               	; jung = (code / JONG_COUNT) % JUNG_COUNT
-006A99  2               	; cho = (code / JONG_COUNT) / JUNG_COUNT
-006A99  2               
-006A99  2               	; MATH_AX = code / 28, MATH_CX = code % 28
-006A99  2  A5 FC 85 50  	MATH_LOAD16 MATH_AX,code
-006A9D  2  A5 FD 85 51  
-006AA1  2  A9 1C 85 54  	MATH_LOAD16 MATH_BX,#JONG_COUNT
-006AA5  2  A9 00 85 55  
-006AA9  2  20 CE 65     	jsr	MATH_DIV16
-006AAC  2  A5 52 85 FC  	MATH_STORE8 MATH_CL,jong
-006AB0  2               
-006AB0  2               	; MATH_AX = (code / 28) / 21, MATH_CX = (code / 28) % 21
-006AB0  2  A9 15 85 54  	MATH_LOAD16 MATH_BX,#JUNG_COUNT
-006AB4  2  A9 00 85 55  
-006AB8  2  20 CE 65     	jsr	MATH_DIV16
-006ABB  2  A5 52 85 FB  	MATH_STORE8 MATH_CL,jung
-006ABF  2  A5 50 85 FA  	MATH_STORE8 MATH_AL,cho
-006AC3  2               
-006AC3  2  68 85 53 68  	MATH_PULL16 MATH_CX,MATH_BX,MATH_AX
-006AC7  2  85 52 68 85  
-006ACB  2  55 68 85 54  
-006AD5  2  60           	rts
-006AD6  2               
-006AD6  2               @not_hangul:
-006AD6  2  A9 00        	lda #0
-006AD8  2  85 FA        	sta cho
-006ADA  2  85 FB        	sta jung
-006ADC  2  85 FC        	sta jong
-006ADE  2  60           	rts
-006ADF  2               .endproc
-006ADF  2               
-006ADF  2               ; compose cho, jung, jong into ucs2
-006ADF  2               ; @param cho
-006ADF  2               ; @param jung
-006ADF  2               ; @param jong
-006ADF  2               ; @returns src
-006ADF  2               .proc compose_ucs2
-006ADF  2  A9 12        	lda #(CHO_COUNT-1)
-006AE1  2  C5 FA        	cmp cho
-006AE3  2  90 0C        	bcc @error	; 18 < cho
-006AE5  2  A9 14        	lda #(JUNG_COUNT-1)
-006AE7  2  C5 FB        	cmp jung
-006AE9  2  90 06        	bcc @error	; 20 < jung
-006AEB  2  A9 1B        	lda #(JONG_COUNT-1)
-006AED  2  C5 FC        	cmp jong
-006AEF  2  90 00        	bcc @error	; 27 < jong
-006AF1  2               @error:
-006AF1  2  A9 7F        	lda #$7f
-006AF3  2  85 FC        	sta code
-006AF5  2  A9 00        	lda #0
-006AF7  2  85 FD        	sta code+1
-006AF9  2  60           	rts
-006AFA  2               
-006AFA  2               	; code = cho * 588 + jung * 28 + jong
-006AFA  2               
-006AFA  2               	; 588 = 512 + 64 + 8 + 4
-006AFA  2               	; code += cho << 2; // cho * 4
-006AFA  2  A5 FA        	lda cho
-006AFC  2  0A           	asl
-006AFD  2  0A           	asl
-006AFE  2  18           	clc
-006AFF  2  AA           	tax
-006B00  2  65 FC        	adc code
-006B02  2  A9 00        	lda #0
-006B04  2  65 FD        	adc code+1
-006B06  2               	; code += cho << 3; // cho * 8
-006B06  2  8A           	txa
-006B07  2  0A           	asl
-006B08  2  18           	clc
-006B09  2  AA           	tax
-006B0A  2  65 FC        	adc code
-006B0C  2  A9 00        	lda #0
-006B0E  2  65 FD        	adc code+1
-006B10  2               	; code += cho << 6; // cho * 64
-006B10  2  8A           	txa
-006B11  2  0A           	asl
-006B12  2  0A           	asl
-006B13  2  0A           	asl
-006B14  2  AA           	tax
-006B15  2  18           	clc
-006B16  2  65 FC        	adc code
-006B18  2  A9 00        	lda #0
-006B1A  2  65 FD        	adc code+1
-006B1C  2               	; code += cho << 9; // cho * 512
-006B1C  2  8A           	txa
-006B1D  2  0A           	asl
-006B1E  2  0A           	asl
-006B1F  2  0A           	asl
-006B20  2  18           	clc
-006B21  2  65 FC        	adc code
-006B23  2  A9 00        	lda #0
-006B25  2  65 FD        	adc code+1
-006B27  2               
-006B27  2               	; 28 = 16 + 8 + 4
-006B27  2               	; code += jung << 2; // jung * 4
-006B27  2  A5 FB        	lda jung
-006B29  2  0A           	asl
-006B2A  2  0A           	asl
-006B2B  2  18           	clc
-006B2C  2  AA           	tax
-006B2D  2  65 FC        	adc code
-006B2F  2  A9 00        	lda #0
-006B31  2  65 FD        	adc code+1
-006B33  2               	; code += jung << 3; // jung * 8
-006B33  2  8A           	txa
-006B34  2  0A           	asl
-006B35  2  AA           	tax
-006B36  2  18           	clc
-006B37  2  65 FC        	adc code
-006B39  2  A9 00        	lda #0
-006B3B  2  65 FD        	adc code+1
-006B3D  2               	; code += jung << 4; // jung * 16
-006B3D  2  8A           	txa
-006B3E  2  0A           	asl
-006B3F  2  AA           	tax
-006B40  2  18           	clc
-006B41  2  65 FC        	adc code
-006B43  2  A9 00        	lda #0
-006B45  2  65 FD        	adc code+1
-006B47  2               
-006B47  2               	; code += jong;
-006B47  2  A5 FC        	lda jong
-006B49  2  18           	clc
-006B4A  2  65 FC        	adc code
-006B4C  2  A9 00        	lda #0
-006B4E  2  65 FD        	adc code+1
-006B50  2               
-006B50  2               	; code += 0xAC00
-006B50  2               	;lda code
-006B50  2               	;clc
-006B50  2               	;adc #$00
-006B50  2  A5 FD        	lda code+1
-006B52  2  69 AC        	adc #$AC
-006B54  2  85 FD        	sta code+1
-006B56  2               
-006B56  2  60           	rts
-006B57  2               .endproc
-006B57  2               
-006B57  2               
-006B57  1               
-006B57  1               cho_form_by_jung:
-006B57  1               	; cho=0..19, jung=0..20 -> cho_form=0,1,2
-006B57  1               	;     ㅏ,ㅐ,ㅑ,ㅒ,ㅓ,ㅔ,ㅕ,ㅖ,ㅗ,ㅘ,ㅙ,ㅚ,ㅛ,ㅜ,ㅝ,ㅞ,ㅟ,ㅠ,ㅡ,ㅢ,ㅣ
-006B57  1  00 00 00 00  	.byte 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 0
-006B5B  1  00 00 00 00  
-006B5F  1  01 02 02 02  
+006A87  2               	; jong = code % JONG_COUNTT
+006A87  2               	; jung = (code / JONG_COUNT) % JUNG_COUNT
+006A87  2               	; cho = (code / JONG_COUNT) / JUNG_COUNT
+006A87  2               
+006A87  2               	; MATH_AX = code / 28, MATH_CX = code % 28
+006A87  2  A5 FC 85 50  	MATH_LOAD16 MATH_AX,code
+006A8B  2  A5 FD 85 51  
+006A8F  2  A9 1C 85 54  	MATH_LOAD16 MATH_BX,#JONG_COUNT
+006A93  2  A9 00 85 55  
+006A97  2  20 CE 65     	jsr	MATH_DIV16
+006A9A  2  A5 52 85 FC  	MATH_STORE8 MATH_CL,jong
+006A9E  2               
+006A9E  2               	; MATH_AX = (code / 28) / 21, MATH_CX = (code / 28) % 21
+006A9E  2  A9 15 85 54  	MATH_LOAD16 MATH_BX,#JUNG_COUNT
+006AA2  2  A9 00 85 55  
+006AA6  2  20 CE 65     	jsr	MATH_DIV16
+006AA9  2  A5 52 85 FB  	MATH_STORE8 MATH_CL,jung
+006AAD  2  A5 50 85 FA  	MATH_STORE8 MATH_AL,cho
+006AB1  2               
+006AB1  2  68 85 53 68  	MATH_PULL16 MATH_CX,MATH_BX,MATH_AX
+006AB5  2  85 52 68 85  
+006AB9  2  55 68 85 54  
+006AC3  2  60           	rts
+006AC4  2               
+006AC4  2               @not_hangul:
+006AC4  2  A9 00        	lda #0
+006AC6  2  85 FA        	sta cho
+006AC8  2  85 FB        	sta jung
+006ACA  2  85 FC        	sta jong
+006ACC  2  60           	rts
+006ACD  2               .endproc
+006ACD  2               
+006ACD  2               ; compose cho, jung, jong into ucs2
+006ACD  2               ; @param cho
+006ACD  2               ; @param jung
+006ACD  2               ; @param jong
+006ACD  2               ; @returns src
+006ACD  2               .proc compose_ucs2
+006ACD  2  A9 12        	lda #(CHO_COUNT-1)
+006ACF  2  C5 FA        	cmp cho
+006AD1  2  90 0C        	bcc @error	; 18 < cho
+006AD3  2  A9 14        	lda #(JUNG_COUNT-1)
+006AD5  2  C5 FB        	cmp jung
+006AD7  2  90 06        	bcc @error	; 20 < jung
+006AD9  2  A9 1B        	lda #(JONG_COUNT-1)
+006ADB  2  C5 FC        	cmp jong
+006ADD  2  90 00        	bcc @error	; 27 < jong
+006ADF  2               @error:
+006ADF  2  A9 7F        	lda #$7f
+006AE1  2  85 FC        	sta code
+006AE3  2  A9 00        	lda #0
+006AE5  2  85 FD        	sta code+1
+006AE7  2  60           	rts
+006AE8  2               
+006AE8  2               	; code = cho * 588 + jung * 28 + jong
+006AE8  2               
+006AE8  2               	; 588 = 512 + 64 + 8 + 4
+006AE8  2               	; code += cho << 2; // cho * 4
+006AE8  2  A5 FA        	lda cho
+006AEA  2  0A           	asl
+006AEB  2  0A           	asl
+006AEC  2  18           	clc
+006AED  2  AA           	tax
+006AEE  2  65 FC        	adc code
+006AF0  2  A9 00        	lda #0
+006AF2  2  65 FD        	adc code+1
+006AF4  2               	; code += cho << 3; // cho * 8
+006AF4  2  8A           	txa
+006AF5  2  0A           	asl
+006AF6  2  18           	clc
+006AF7  2  AA           	tax
+006AF8  2  65 FC        	adc code
+006AFA  2  A9 00        	lda #0
+006AFC  2  65 FD        	adc code+1
+006AFE  2               	; code += cho << 6; // cho * 64
+006AFE  2  8A           	txa
+006AFF  2  0A           	asl
+006B00  2  0A           	asl
+006B01  2  0A           	asl
+006B02  2  AA           	tax
+006B03  2  18           	clc
+006B04  2  65 FC        	adc code
+006B06  2  A9 00        	lda #0
+006B08  2  65 FD        	adc code+1
+006B0A  2               	; code += cho << 9; // cho * 512
+006B0A  2  8A           	txa
+006B0B  2  0A           	asl
+006B0C  2  0A           	asl
+006B0D  2  0A           	asl
+006B0E  2  18           	clc
+006B0F  2  65 FC        	adc code
+006B11  2  A9 00        	lda #0
+006B13  2  65 FD        	adc code+1
+006B15  2               
+006B15  2               	; 28 = 16 + 8 + 4
+006B15  2               	; code += jung << 2; // jung * 4
+006B15  2  A5 FB        	lda jung
+006B17  2  0A           	asl
+006B18  2  0A           	asl
+006B19  2  18           	clc
+006B1A  2  AA           	tax
+006B1B  2  65 FC        	adc code
+006B1D  2  A9 00        	lda #0
+006B1F  2  65 FD        	adc code+1
+006B21  2               	; code += jung << 3; // jung * 8
+006B21  2  8A           	txa
+006B22  2  0A           	asl
+006B23  2  AA           	tax
+006B24  2  18           	clc
+006B25  2  65 FC        	adc code
+006B27  2  A9 00        	lda #0
+006B29  2  65 FD        	adc code+1
+006B2B  2               	; code += jung << 4; // jung * 16
+006B2B  2  8A           	txa
+006B2C  2  0A           	asl
+006B2D  2  AA           	tax
+006B2E  2  18           	clc
+006B2F  2  65 FC        	adc code
+006B31  2  A9 00        	lda #0
+006B33  2  65 FD        	adc code+1
+006B35  2               
+006B35  2               	; code += jong;
+006B35  2  A5 FC        	lda jong
+006B37  2  18           	clc
+006B38  2  65 FC        	adc code
+006B3A  2  A9 00        	lda #0
+006B3C  2  65 FD        	adc code+1
+006B3E  2               
+006B3E  2               	; code += 0xAC00
+006B3E  2               	;lda code
+006B3E  2               	;clc
+006B3E  2               	;adc #$00
+006B3E  2  A5 FD        	lda code+1
+006B40  2  69 AC        	adc #$AC
+006B42  2  85 FD        	sta code+1
+006B44  2               
+006B44  2  60           	rts
+006B45  2               .endproc
+006B45  2               
+006B45  2               
+006B45  1               
+006B45  1               cho_form_by_jung:
+006B45  1               	; cho=0..19, jung=0..20 -> cho_form=0,1,2
+006B45  1               	;     ㅏ,ㅐ,ㅑ,ㅒ,ㅓ,ㅔ,ㅕ,ㅖ,ㅗ,ㅘ,ㅙ,ㅚ,ㅛ,ㅜ,ㅝ,ㅞ,ㅟ,ㅠ,ㅡ,ㅢ,ㅣ
+006B45  1  00 00 00 00  	.byte 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 0
+006B49  1  00 00 00 00  
+006B4D  1  01 02 02 02  
+006B5A  1               
+006B5A  1               cho_form_offset:
+006B5A  1               	; cho_font_addr + cho_form * cho_count; cho_form=0,1,2; cho_count=19
+006B5A  1  00 13 26     	.byte	0, CHO_COUNT, CHO_COUNT*2
+006B5D  1               
+006B5D  1               ; kor font buffer
+006B5D  1               kor_buf:
+006B5D  1  xx xx xx xx  	.res 15
+006B61  1  xx xx xx xx  
+006B65  1  xx xx xx xx  
 006B6C  1               
-006B6C  1               cho_form_offset:
-006B6C  1               	; cho_font_addr + cho_form * cho_count; cho_form=0,1,2; cho_count=19
-006B6C  1  00 13 26     	.byte	0, CHO_COUNT, CHO_COUNT*2
-006B6F  1               
-006B6F  1               ; kor font buffer
-006B6F  1               kor_buf:
-006B6F  1  xx xx xx xx  	.res 15
-006B73  1  xx xx xx xx  
-006B77  1  xx xx xx xx  
-006B7E  1               
-006B7E  1  xx xx xx xx  .align $100
-006B82  1  xx xx xx xx  
-006B86  1  xx xx xx xx  
+006B6C  1  xx xx xx xx  .align $100
+006B70  1  xx xx xx xx  
+006B74  1  xx xx xx xx  
 006C00  1               ; utf8_to_ucs2 buffer
 006C00  1               ucs2_buf:
 006C00  1  xx xx xx xx  	.res 256

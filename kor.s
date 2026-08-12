@@ -150,17 +150,17 @@ code = color
 ; @param code(modified)
 ; @return cho, jung, jong
 .proc decompose_ucs2
-	; ensure (syllable < 0xAC00 || syllable > 0xD7A3)
-	lda	code+1
-	cmp	#>KOR_CODE_BEGIN
-	bcc	@not_hangul	; error if hi(code) < $AC
-	cmp	#>KOR_CODE_END
-	beq	@check_lo
-	bcs	@not_hangul	; error if hi(code) >= $D7
-@check_lo:
-	lda	code
-	cmp	#<(KOR_CODE_END+1)
-	bcs	@not_hangul	; error if hi(code) == $D7 and lo(code) >= $A4
+;;	; ensure (syllable < 0xAC00 || syllable > 0xD7A3)
+;;	lda	code+1
+;;	cmp	#>KOR_CODE_BEGIN
+;;	bcc	@not_hangul	; error if hi(code) < $AC
+;;	cmp	#>KOR_CODE_END
+;;	beq	@check_lo
+;;	bcs	@not_hangul	; error if hi(code) >= $D7
+;;@check_lo:
+;;	lda	code
+;;	cmp	#<(KOR_CODE_END+1)
+;;	bcs	@not_hangul	; error if hi(code) == $D7 and lo(code) >= $A4
 
 	lda	code
 	sec

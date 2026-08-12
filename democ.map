@@ -1,6 +1,6 @@
 Modules list:
 -------------
-democ.c.11431.0.o:
+democ.c.14891.0.o:
     CODE              Offs=000000  Size=000A9D  Align=00001  Fill=0000
     RODATA            Offs=000000  Size=000146  Align=00001  Fill=0000
     DATA              Offs=000000  Size=000022  Align=00001  Fill=0000
@@ -393,7 +393,7 @@ __STACKSIZE__ ([linker generated]):
     _heap.o                   common/_heap.s:8
     [linker generated]        /home/iolo/.local/share/cc65/cfg/apple2-hgr.cfg:18
 __STARTUP__ (crt0.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:13
+    democ.c.14891.0.o         democ.c.14891.0.s:13
 ___directerrno (_directerrno.o):
     read.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
     open.o                    /home/iolo/workspace/tmp/cc65/asminc/errno.inc:10
@@ -430,37 +430,37 @@ __dos_type (dosdetect.o):
     mli.o                     apple2/mli.s:7
     open.o                    apple2/open.s:12
 _cgetc (cgetc.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:17
+    democ.c.14891.0.o         democ.c.14891.0.s:17
 _close (close.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:19
+    democ.c.14891.0.o         democ.c.14891.0.s:19
 _clrscr (clrscr.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:15
+    democ.c.14891.0.o         democ.c.14891.0.s:15
 _cputc (cputc.o):
     cputs.o                   conio/cputs.s:9
 _cputsxy (cputs.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:16
+    democ.c.14891.0.o         democ.c.14891.0.s:16
 _exit (callmain.o):
     crt0.o                    apple2/crt0.s:11
-    democ.c.11431.0.o         democ.c.11431.0.s:21
+    democ.c.14891.0.o         democ.c.14891.0.s:21
 _free (free.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:19
     iobuf.o                   apple2/iobuf.s:8
-_main (democ.c.11431.0.o):
+_main (democ.c.14891.0.o):
     callmain.o                apple2/callmain.s:11
 _malloc (malloc.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:18
 _open (open.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:18
+    democ.c.14891.0.o         democ.c.14891.0.s:18
 _posix_memalign (pmemalign.o):
     iobuf.o                   apple2/iobuf.s:8
 _rand (rand.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:20
+    democ.c.14891.0.o         democ.c.14891.0.s:20
 _read (read.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:22
+    democ.c.14891.0.o         democ.c.14891.0.s:22
 _videomode (videomode.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:14
+    democ.c.14891.0.o         democ.c.14891.0.s:14
 addeq0sp (addeqsp.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 addysp (addysp.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
     filename.o                apple2/filename.s:8
@@ -470,8 +470,8 @@ addysp (addysp.o):
     incsp5.o                  runtime/incsp5.s:8
     incsp4.o                  runtime/incsp4.s:8
     incsp3.o                  runtime/incsp3.s:8
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 addysp1 (addysp.o):
     sub.o                     runtime/sub.s:8
 aux80col (detect80cols.o):
@@ -506,7 +506,7 @@ c_sp (zeropage.o):
     callmain.o                /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:11
     addysp.o                  runtime/addysp.s:8
     addeqsp.o                 runtime/addeqsp.s:8
-    democ.c.11431.0.o         democ.c.11431.0.s:10
+    democ.c.14891.0.o         democ.c.14891.0.s:10
 callmain (callmain.o):
     crt0.o                    apple2/crt0.s:12
 callmli (mli.o):
@@ -525,28 +525,28 @@ decax4 (decax4.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 decsp1 (decsp1.o):
     filename.o                apple2/filename.s:8
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 decsp2 (decsp2.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 decsp3 (decsp3.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 decsp4 (decsp4.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 decsp5 (decsp5.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 decsp7 (decsp7.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 done (crt0.o):
@@ -570,39 +570,39 @@ incax4 (incaxy.o):
 incaxy (incaxy.o):
     open.o                    apple2/open.s:14
 incsp1 (incsp1.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp2 (incsp2.o):
     staxspi.o                 runtime/staxspi.s:9
     popptr1.o                 runtime/popptr1.s:8
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp3 (incsp3.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp4 (incsp4.o):
     open.o                    apple2/open.s:14
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp5 (incsp5.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp6 (incsp6.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 incsp7 (incsp7.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 initlib (condes.o):
     crt0.o                    apple2/crt0.s:11
 iobuf_alloc (iobuf.o):
@@ -621,7 +621,7 @@ mliparam (mli.o):
     rwcommon.o                apple2/mli.inc:147
     open.o                    apple2/mli.inc:147
 mulax6 (mulax6.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 negax (negabs.o):
     shelp.o                   runtime/shelp.s:11
     mod.o                     runtime/mod.s:11
@@ -671,30 +671,30 @@ ptr4 (zeropage.o):
     shelp.o                   runtime/shelp.s:12
     mul8.o                    runtime/mul8.s:10
 pusha (pusha.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 pusha0 (pushax.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 pushax (pushax.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
     open.o                    apple2/open.s:14
     callmain.o                apple2/callmain.s:11
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 pushname_tos (filename.o):
     open.o                    apple2/open.s:12
 pushwysp (pushwsp.o):
@@ -724,8 +724,8 @@ subeqysp (subeqsp.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 subysp (subysp.o):
     filename.o                apple2/filename.s:8
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 tmp1 (zeropage.o):
     staxspi.o                 runtime/staxspi.s:10
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:11
@@ -742,11 +742,11 @@ tmp3 (zeropage.o):
     cputc.o                   /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
     cgetc.o                   /home/iolo/workspace/tmp/cc65/asminc/zeropage.inc:13
 tosmoda0 (mod.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 tossubax (sub.o):
     pmemalign.o               ../libwrk/apple2enh/pmemalign.s:333
 tosumula0 (mul8.o):
-    democ.c.11431.0.o         democ.c.11431.0.s:1939
+    democ.c.14891.0.o         democ.c.14891.0.s:1939
 udiv16 (udiv.o):
     shelp.o                   runtime/shelp.s:11
 zerobss (zerobss.o):
